@@ -2,7 +2,7 @@
 
 ## 1. Per iniziare
 
-Prima di iniziare essere sicuri di aver installato gli strumenti e i software necessari. <br>
+Prima di iniziare assicurarsi di aver installato gli strumenti e i software necessari. <br>
 Clona la repository:
 ```
 git clone https://github.com/byteclubunipd/Progetto-SWE.git
@@ -29,8 +29,18 @@ Esempi:
 - Analisi_dei_requisiti v8.8.8
 
 ## 4. Standard di codifica
-- Seguire lo standard di codifica 
+- Per nominare variabili e funzioni usare il camelCase;
+- Usare nomi chiari e descrittivi;
+- Inserire commenti nei casi in cui il codice non sia autoesplicativo;
+- Mantenere il codice pulito e semplice, senza creare funzioni e variabili inutili.
 
 ## 5. Testing
+- Prima di fare una commit effettuare una sessione di test;
+- Assicurarsi che dopo le modifiche il processo di build del progetto non dia errori;
+- Assicurarsi che le modifiche non vadano a influenzare il corretto funzionamento dei moduli già esistenti.
 
 ## 6. Commits e Pull requests
+- Scrivere messaggi chiari e descrittivi nelle commit;
+- Spiegare il fine delle modifiche nella pull request, possibilmente evidenziando la issue;
+- Descrivere come sono stati testati i cambiamenti;
+- Inserire il verificatore per la verifica della pull request.
