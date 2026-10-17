@@ -20,7 +20,7 @@
     "Concordare le tecnologie da usare per la documentazione",
   ),
   diario: (
-    "La riunione è stata dedicata all'allineamento del gruppo sulle scelte tecnologiche, strutturali della repository e workflow.",
+    "La riunione è stata dedicata all'allineamento del gruppo sulle scelte tecnologiche, strutturali della repository e workflow. SOno stati scelti: Typst per i template dei docmenti, Python per gli script di build dei documenti nel workflow GitHub.",
     "Per la documentazione è stato scelto Typst al posto di LaTeX, perché considerato più moderno e più veloce da compilare; questo potrebbe risultare rilevante per i tempi della CI.",
     "Sono state raccolte domande sui capitolati, iniziando dal capitolato C3, con l'obiettivo di contattare le aziende interessate: il piano da utilizzare quando l'utente non dispone di un abbonamento al servizio LLM, la gestione della privacy e della wake word, la compatibilità dell'uso di Rust con l'opzione hardware B, l'organizzazione degli incontri di formazione, la progettazione del contenitore estetico, la disponibilità di più set hardware per l'interconnessione dei dispositivi e la gestione dei server per l'elaborazione delle domande degli utenti.",
     "I documenti sono stati divisi in due categorie: 1) verbali e diari di bordo, per i quali si utilizza la nomenclatura VE/VI/DDB_YYYY-MM-DD; 2) Documenti tecnici, per i quali si utilizza la nomenclatura [Nome documento] vx.y.z. In quest'ultima, x identifica le modifiche sostanziali al contenuto, y le modifiche alla struttura e z le modifiche allo stile.",
@@ -30,7 +30,7 @@
   todo: (
     ("Tutti", "Pensare alle domande relative al capitolato C8"),
     (EH, "Definire le specifiche della repository GitHub e del file Contributing.md"),
-    (RP, "Creare template in Typst per verbali, diario di bordo e documenti"),
+    (RP, "Creare template in Typst per verbali, diario di bordo e documenti. Creare workflow di build in Python"),
     (BG, "Contattare via email l'azienda Uranion, capitolato C3, ponendo le domande concordate"),
   ),
 )
