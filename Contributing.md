@@ -44,3 +44,41 @@ Esempi:
 - Spiegare il fine delle modifiche nella pull request, possibilmente evidenziando la issue;
 - Descrivere come sono stati testati i cambiamenti;
 - Inserire il verificatore per la verifica della pull request.
+
+## 7. Typst e template
+
+### Installazione
+
+Typst è un sistema di composizione di documenti. Installarlo usando uno dei seguenti comandi:
+
+- **Windows** (Windows Package Manager): `winget install --id Typst.Typst`;
+- **macOS** (Homebrew): `brew install typst`;
+- **Linux**: `sudo apt install typst` (se disponibile nella distribuzione) oppure `cargo install typst-cli`.
+
+Verificare l'installazione con `typst --version` (si consiglia di riavviare VScode). Per altre modalità consultare la [documentazione ufficiale](https://typst.app/docs/).
+
+### Compilazione
+
+Eseguire i comandi dalla cartella principale del progetto. Per compilare un file `.typ` in PDF:
+
+```bash
+typst compile --root . docs/5_Templates/verbale.typ docs/6_Output/verbale.pdf
+```
+
+Per ricompilare automaticamente il documento mentre si modifica un file sorgente (lo fa quando salvi) usare:
+
+```bash
+typst watch --root . docs/5_Templates/verbale.typ docs/6_Output/verbale.pdf
+```
+
+Sostituire i percorsi con il documento da generare e con il nome del PDF desiderato. Gli asset usati dai template devono rimanere nella cartella `docs/5_Templates/assets/`.
+
+### Struttura delle cartelle
+
+- `docs/1_Diario_di_bordo/`, `docs/2_Candidatura/`, `docs/3_RTB/` e `docs/4_PB/` contengono i documenti organizzati per fase; i verbali sono divisi in `interni/` ed `esterni/`.
+- `docs/5_Templates/` contiene i sorgenti Typst riutilizzabili e le immagini nella sottocartella `assets/`.
+- `docs/6_Output/` contiene i PDF generati, con una struttura analoga a quella dei documenti sorgente. I file `.gitkeep` servono a mantenere nel repository le cartelle vuote.
+
+### Template
+
+`base.typ` contiene impostazioni e componenti condivisi, come layout, font, spaziature, eccetera. `verbale.typ`, `diario_di_bordo.typ` e `documento.typ` sono template completi per i rispettivi tipi di documento; i file `*_vuoto.typ` sono versioni minimali da copiare, incollare nella cartella desiderata, modificare con gli elementi da scrivere nel documento e compilare.

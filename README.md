@@ -27,6 +27,12 @@ Inoltre è presente anche un file **Contributing.md**: File che contiene le istr
 ### Consultare le risorse
 È possibile consultare l'ultima versione di ogni documento in formato PDF nella cartella [6_Output](docs/6_Output) o tramite il [sito web dedicato.](https://byteclubunipd.github.io/Progetto-SWE/)
 
+
+La pubblicazione su GitHub Pages parte sia da `main` sia da `develop`. I due branch
+aggiornano lo stesso sito: il contenuto online corrisponde all'ultima pubblicazione
+completata. L'ambiente `github-pages` deve consentire entrambi i branch nelle
+impostazioni **Settings > Environments > github-pages > Deployment branches and tags**.
+
 ## Componenti del gruppo
 
 | Cognome      | Nome             | Matricola |
