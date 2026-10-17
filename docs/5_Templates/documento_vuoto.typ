@@ -1,21 +1,35 @@
 #import "/docs/5_Templates/documento.typ": *
 
+// Modello compilabile: sostituire i segnaposto con i dati effettivi.
+// Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
-  titolo: "",
+  titolo: "Titolo del documento",
   versione: "0.1.0",
-  stato: "",
-  redazione: tutti,
-  verifica: ,
-  approvazione: ,
+  stato: "In redazione",
+  redazione: ("Nome Cognome",),
+  verifica: "Nome verificatore",
+  approvazione: "Nome approvatore",
   proprietario: "ByteClub",
-  uso: "",
-  destinatari: "",
+  uso: "Interno o esterno",
+  destinatari: "Destinatari del documento",
   modifiche: (
-    ("0.1.0", "", , ""),
+    ("0.1.0", "YYYY-MM-DD", "Nome Cognome", "Descrizione della modifica"),
   ),
-  indice: false,
+  indice: true,
 )
 
+= Introduzione
 
+[Descrivere lo scopo del documento e il contesto di riferimento.]
 
-#align(right)[Il gruppo *ByteClub*]
+= Contenuti
+
+[Sostituire questa sezione con i contenuti effettivi del documento.]
+
+== Approfondimento
+
+[Inserire eventuali sottosezioni, tabelle e riferimenti necessari.]
+
+= Conclusioni
+
+[Riportare le conclusioni e gli eventuali passi successivi.]

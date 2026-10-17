@@ -1,4 +1,4 @@
-#import "base.typ": base, copertina, indice-documento, tabella-dati
+#import "base.typ": base, copertina, indice-documento, tabella-dati, tutti, BG, EH, MMI, MMO, RP, LS
 
 #let documento(
   titolo: "Documento",
