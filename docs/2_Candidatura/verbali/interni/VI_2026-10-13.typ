@@ -3,7 +3,7 @@
 #show: verbale.with(
   titolo: "Verbale Riunione",
   data: "13 ottobre 2026",
-  versione: "0.1.0",
+  versione: false,
   autori: (EH,),
   tipo-riunione: "Interna",
   luogo: "Bar Dai chimici",
@@ -11,7 +11,7 @@
   ora-fine: "14:00",
   responsabile: RP,
   scriba: EH,
-  partecipanti: (LS, MMO, MMI, BG, RP, EH),
+  partecipanti: (tutti),
   ordine-del-giorno: (
     "Conoscere ogni componente del gruppo e rompere il ghiaccio",
     "Definire un nome e un logo",
