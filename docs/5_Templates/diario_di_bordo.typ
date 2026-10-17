@@ -1,8 +1,8 @@
-#import "base.typ": base, copertina, intestazione, slide-finale, tutti
+#import "base.typ": base, copertina, intestazione, slideFinale, tutti
 
 // Struttura del diario: copertina, tre sezioni e slide di ringraziamento.
 // Gli elementi degli elenchi possono essere stringhe oppure contenuti [...].
-#let diario-di-bordo(
+#let diarioDiBordo(
   titolo: "Diario di bordo",
   data: "",
   fase: "",
@@ -13,12 +13,12 @@
   criticita: (),
   body,
 ) = {
-  let titolo-completo = if data == "" { titolo } else { titolo + " " + data }
+  let titoloCompleto = if data == "" { titolo } else { titolo + " " + data }
   let sottotitolo = (fase, data).filter(valore => valore != "").join(" – ")
-  set document(title: titolo-completo, author: autori)
+  set document(title: titoloCompleto, author: autori)
   base(
     presentazione: true,
-    intestazione: intestazione(titolo-completo, presentazione: true),
+    intestazione: intestazione(titoloCompleto, presentazione: true),
     [
       #copertina(
         titolo,
@@ -43,7 +43,7 @@
       #body
 
       #pagebreak(weak: true)
-      #slide-finale("Grazie per l'ascolto")
+      #slideFinale("Grazie per l'ascolto")
     ],
   )
 }

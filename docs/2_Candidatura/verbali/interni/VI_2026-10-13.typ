@@ -5,14 +5,14 @@
   data: "13 ottobre 2026",
   versione: false,
   autori: (EH,),
-  tipo-riunione: "Interna",
+  tipoRiunione: "Interna",
   luogo: "Bar Dai chimici",
-  ora-inizio: "12:30",
-  ora-fine: "14:00",
+  oraInizio: "12:30",
+  oraFine: "14:00",
   responsabile: RP,
   scriba: EH,
   partecipanti: (tutti),
-  ordine-del-giorno: (
+  ordineDelGiorno: (
     "Conoscere ogni componente del gruppo e rompere il ghiaccio",
     "Definire un nome e un logo",
     "Creare una mail",

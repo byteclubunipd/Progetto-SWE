@@ -1,40 +1,40 @@
-#let bruno-grimaldi = "Bruno Grimaldi"
-#let elico-huang = "Elico Huang"
-#let mattia-milan = "Mattia Milan"
-#let margherita-monaco = "Margherita Monaco"
-#let riccardo-pontello = "Riccardo Pontello"
-#let lorenca-shiroka = "Lorenca Shiroka"
+#let brunoGrimaldi = "Bruno Grimaldi"
+#let elicoHuang = "Elico Huang"
+#let mattiaMilan = "Mattia Milan"
+#let margheritaMonaco = "Margherita Monaco"
+#let riccardoPontello = "Riccardo Pontello"
+#let lorencaShiroka = "Lorenca Shiroka"
 
-#let BG = bruno-grimaldi
-#let EH = elico-huang
-#let MMI = mattia-milan
-#let MMO = margherita-monaco
-#let RP = riccardo-pontello
-#let LS = lorenca-shiroka
+#let BG = brunoGrimaldi
+#let EH = elicoHuang
+#let MMI = mattiaMilan
+#let MMO = margheritaMonaco
+#let RP = riccardoPontello
+#let LS = lorencaShiroka
 
 #let tutti = (
-  bruno-grimaldi,
-  elico-huang,
-  mattia-milan,
-  margherita-monaco,
-  riccardo-pontello,
-  lorenca-shiroka,
+  brunoGrimaldi,
+  elicoHuang,
+  mattiaMilan,
+  margheritaMonaco,
+  riccardoPontello,
+  lorencaShiroka,
 )
 
 #let logo(larghezza: 2cm) = image("assets/logo.png", width: larghezza)
 
 // Equivalente di lightgray definito con gray=0.95.
 #let lightgray = luma(95%)
-#let profondita-documento = 5
+#let profonditaDocumento = 5
 
 // hyperref con hidelinks: i normali link Typst restano senza cornici.
 // La formattazione esplicita dei tre comandi LaTeX usa un solo helper.
-#let stile-riferimento(body) = strong(underline(body))
-#let bulhref(destinazione, testo) = link(destinazione, stile-riferimento(testo))
+#let stileRiferimento(body) = strong(underline(body))
+#let bulhref(destinazione, testo) = link(destinazione, stileRiferimento(testo))
 #let bulhyperlink = bulhref
 #let bulref(destinazione) = {
   show link: it => it.body
-  stile-riferimento(ref(destinazione, supplement: none))
+  stileRiferimento(ref(destinazione, supplement: none))
 }
 
 // image, table, calc, colori, par(justify), formule, lorem e il simbolo €
@@ -63,7 +63,7 @@
   }
 ]
 
-#let pié-di-pagina(tipo: "", data: "", numerazione: "1", presentazione: false) = block(
+#let pieDiPagina(tipo: "", data: "", numerazione: "1", presentazione: false) = block(
   width: 100%,
   inset: (top: 4pt),
   stroke: (top: 0.4pt),
@@ -81,7 +81,7 @@
   }
 ]
 // paragraph e subparagraph: titolo in linea con il testo successivo.
-#let titolo-paragrafo(titolo) = {
+#let titoloParagrafo(titolo) = {
   v(1.4em, weak: true)
   text(size: 10pt, weight: "bold")[
     #context {
@@ -99,7 +99,7 @@
   data: "",
   intestazione: none,
   numerazione: "1",
-  numero-titoli: "1.1.",
+  numeroTitoli: "1.1.",
   presentazione: false,
   body,
 ) = {
@@ -113,14 +113,14 @@
     header: intestazione,
     header-ascent: 11.62976pt,
     footer: if numerazione == none { none } else {
-      pié-di-pagina(tipo: tipo, data: data, numerazione: numerazione, presentazione: presentazione)
+      pieDiPagina(tipo: tipo, data: data, numerazione: numerazione, presentazione: presentazione)
     },
   )
   set par(justify: true, first-line-indent: 0pt, leading: 0.65em, spacing: if presentazione { 0.65em } else { 1em })
   // Come secnumdepth=5: dal sesto livello i titoli restano senza numero.
-  set heading(numbering: if presentazione or numero-titoli == none { none } else {
-    (..livelli) => if livelli.pos().len() <= profondita-documento {
-      numbering(numero-titoli, ..livelli.pos())
+  set heading(numbering: if presentazione or numeroTitoli == none { none } else {
+    (..livelli) => if livelli.pos().len() <= profonditaDocumento {
+      numbering(numeroTitoli, ..livelli.pos())
     }
   })
   set list(indent: 1em, body-indent: 0.5em, tight: false, spacing: if presentazione { 1em } else { 0.7em })
@@ -128,7 +128,7 @@
   // 3.25ex e 1.5ex del Computer Modern corrispondono circa a 1.4em e 0.65em.
   show heading.where(level: 4): set text(size: 10pt)
   show heading.where(level: 4): set block(above: 1.4em, below: 0.65em)
-  show heading.where(level: 5).or(heading.where(level: 6)): titolo-paragrafo
+  show heading.where(level: 5).or(heading.where(level: 6)): titoloParagrafo
   if presentazione {
     show heading.where(level: 1): set text(size: 32pt, hyphenate: false)
     body
@@ -138,14 +138,14 @@
 }
 
 // L'indice definisce solo la propria resa; il template decide dove inserirlo.
-#let indice-documento() = {
+#let indiceDocumento() = {
   show outline.entry: set block(above: 0.4em, below: 0.4em)
   set outline.entry(fill: repeat[.])
-  outline(title: [Indice], indent: 1em, depth: profondita-documento)
+  outline(title: [Indice], indent: 1em, depth: profonditaDocumento)
 }
 
 // Tabelle con intestazione comune a registri, attività e altri dati.
-#let tabella-dati(colonne: auto, intestazioni: (), righe: ()) = block(
+#let tabellaDati(colonne: auto, intestazioni: (), righe: ()) = block(
   above: 0.5cm,
   table(
     columns: colonne,
@@ -158,8 +158,8 @@
 )
 
 // Metadati di copertina: due colonne senza cornice esterna.
-#let tabella-informazioni(campi) = {
-  let valore-cella(valore) = if type(valore) == array {
+#let tabellaInformazioni(campi) = {
+  let valoreCella(valore) = if type(valore) == array {
     valore.map(elemento => [#elemento]).join(linebreak())
   } else {
     valore
@@ -172,12 +172,12 @@
       left: if x == 1 { 0.5pt } else { none },
       bottom: if y < campi.len() - 1 { 0.5pt } else { none },
     ),
-    ..campi.map(campo => (strong(campo.at(0)), valore-cella(campo.at(1)))).flatten(),
+    ..campi.map(campo => (strong(campo.at(0)), valoreCella(campo.at(1)))).flatten(),
   ))
 }
 
 // Un solo contenuto grafico per copertine di documenti e presentazioni.
-#let contenuto-copertina(
+#let contenutoCopertina(
   titolo,
   data: "",
   versione: "",
@@ -185,17 +185,17 @@
   informazioni: (),
   presentazione: false,
 ) = {
-  let mostra-versione = versione != false and versione != none and versione != ""
+  let mostraVersione = versione != false and versione != none and versione != ""
   // 142.5 pt corrispondono a 190 px a 96 dpi.
-  let larghezza-loghi = 142.5pt
-  let colonne-copertina = (1fr, 1fr)
-  let spazio-colonne = 0.5cm
+  let larghezzaLoghi = 142.5pt
+  let colonneCopertina = (1fr, 1fr)
+  let spazioColonne = 0.5cm
   grid(
-    columns: colonne-copertina,
+    columns: colonneCopertina,
     align: center + horizon,
-    column-gutter: spazio-colonne,
-    logo(larghezza: larghezza-loghi),
-    image("assets/logounipd.png", width: larghezza-loghi),
+    column-gutter: spazioColonne,
+    logo(larghezza: larghezzaLoghi),
+    image("assets/logounipd.png", width: larghezzaLoghi),
   )
   v(0.5cm)
   align(center, text(size: if presentazione { 14pt } else { 10pt },
@@ -209,10 +209,10 @@
       #v(0.5cm)
       #text(size: if presentazione { 20pt } else { 14pt }, weight: "bold", data)
     ]
-    #if mostra-versione or (not presentazione and autori.len() > 0) [
+    #if mostraVersione or (not presentazione and autori.len() > 0) [
       #v(0.7cm)
       #set text(size: if presentazione { 12pt } else { 9pt })
-      #if mostra-versione [Versione: #versione]
+      #if mostraVersione [Versione: #versione]
       #if not presentazione and autori.len() > 0 [
         #linebreak()
         Redazione: #autori.join(", ")
@@ -224,22 +224,22 @@
     if autori.len() > 0 {
       set text(size: 18pt)
       // Stessi assi dei loghi; riempimento dall'alto verso il basso.
-      let numero-righe = calc.ceil(autori.len() / 2)
+      let numeroRighe = calc.ceil(autori.len() / 2)
       grid(
-        columns: colonne-copertina,
-        column-gutter: spazio-colonne,
+        columns: colonneCopertina,
+        column-gutter: spazioColonne,
         align: center,
         row-gutter: 0.3cm,
-        ..range(numero-righe).map(riga => (
+        ..range(numeroRighe).map(riga => (
           [#autori.at(riga)],
-          [#autori.at(riga + numero-righe, default: "")],
+          [#autori.at(riga + numeroRighe, default: "")],
         )).flatten(),
       )
     }
   }
   if informazioni.len() > 0 {
     v(1.5cm)
-    tabella-informazioni(informazioni)
+    tabellaInformazioni(informazioni)
   }
 }
 
@@ -253,7 +253,7 @@
   informazioni: (),
   presentazione: false,
 ) = {
-  let contenuto = contenuto-copertina(
+  let contenuto = contenutoCopertina(
     titolo,
     data: data,
     versione: versione,
@@ -269,7 +269,7 @@
   }
 }
 // Resa grafica della slide di chiusura; il testo è deciso dal template.
-#let slide-finale(testo) = align(
+#let slideFinale(testo) = align(
   center + horizon,
   text(size: 38pt, weight: "bold", testo),
 )

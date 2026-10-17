@@ -1,4 +1,4 @@
-#import "base.typ": base, copertina, indice-documento, tabella-dati, tutti, BG, EH, MMI, MMO, RP, LS
+#import "base.typ": base, copertina, indiceDocumento, tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
 
 #let documento(
   titolo: "Documento",
@@ -29,7 +29,7 @@
 
     #pagebreak()
     #heading(numbering: none, outlined: false)[Registro delle modifiche]
-    #tabella-dati(
+    #tabellaDati(
       colonne: (auto, auto, auto, 1fr),
       intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
       righe: modifiche,
@@ -37,7 +37,7 @@
 
     #pagebreak()
     #if indice [
-      #indice-documento()
+      #indiceDocumento()
       #pagebreak()
     ]
     #body

@@ -5,14 +5,14 @@
   data: "16 ottobre 2026",
   versione: false,
   autori: (EH,),
-  tipo-riunione: "Interna",
+  tipoRiunione: "Interna",
   luogo: "Discord",
-  ora-inizio: "15:00",
-  ora-fine: "16:00",
+  oraInizio: "15:00",
+  oraFine: "16:00",
   responsabile: RP,
   scriba: EH,
   partecipanti: (tutti),
-  ordine-del-giorno: (
+  ordineDelGiorno: (
     "Raccogliere domande sui capitolati scelti",
     "Definire le specifiche del repository GitHub",
     "Definire uno standard di nomenclatura per i documenti",

@@ -2,6 +2,5 @@ docs/3_RTB
 docs/6_Output/3_RTB
 docs/4_PB
 docs/6_Output/4_PB
-/.site-build/
 __pycache__/
-website/index.generated.html
+/website/build/

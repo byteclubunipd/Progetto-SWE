@@ -32,44 +32,56 @@ jobs:
           typst-version: '0.15.1'
       - name: Verifica generatore
         run: python -m unittest discover -s test -p test_build_documents.py -v
+      - name: Verifica modelli Typst
+        shell: bash
+        run: |
+          for templatePath in docs/5_Templates/*_vuoto.typ; do
+            typst compile --root . --creation-timestamp 0 "$templatePath" "$RUNNER_TEMP/$(basename "$templatePath" .typ).pdf"
+          done
       - name: Compila documenti e genera HTML
-        run: python .github/scripts/build_documents.py --site
+        run: python .github/scripts/build_documents.py
       - name: Conserva anteprima
         uses: actions/upload-artifact@v4
         with:
           name: documentazione
-          path: .site-build/
+          path: website/build/
           retention-days: 14
           if-no-files-found: error
-      - name: Aggiorna PDF e catalogo nel branch
+      - name: Salva PDF e manifest nel branch di lavoro
         id: save
         if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/heads/')
         env:
-          BRANCH: ${{ github.ref_name }}
-          EXPECTED_SHA: ${{ github.sha }}
+          branchName: ${{ github.ref_name }}
+          expectedSha: ${{ github.sha }}
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           set -euo pipefail
           echo "current=false" >> "$GITHUB_OUTPUT"
           gh auth setup-git --hostname github.com
-          git fetch origin "$BRANCH"
-          if [ "$(git rev-parse FETCH_HEAD)" != "$EXPECTED_SHA" ]; then
+          git fetch origin "$branchName"
+          if [ "$(git rev-parse FETCH_HEAD)" != "$expectedSha" ]; then
             echo "Il branch contiene un push più recente: risultati non salvati."
             exit 0
           fi
-          git add -- docs/6_Output \
-            website/index.generated.html .github/typst-manifest.json
+          # Gitflow: main e develop ricevono modifiche soltanto tramite pull request.
+          if [ "$branchName" = "main" ] || [ "$branchName" = "develop" ]; then
+            echo "Branch di integrazione: nessun commit automatico."
+            echo "current=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Il sito generato in website/build rimane ignorato da Git.
+          git add -- docs/6_Output .github/typst-manifest.json
           if git diff --cached --quiet; then
             echo "current=true" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(docs): aggiorna PDF e catalogo"
-          if ! git push origin "HEAD:refs/heads/$BRANCH"; then
-            git fetch origin "$BRANCH"
-            if [ "$(git rev-parse FETCH_HEAD)" != "$EXPECTED_SHA" ]; then
+          git commit -m "chore(docs): aggiorna PDF e manifest"
+          if ! git push origin "HEAD:refs/heads/$branchName"; then
+            git fetch origin "$branchName"
+            if [ "$(git rev-parse FETCH_HEAD)" != "$expectedSha" ]; then
               echo "Un nuovo push ha preceduto questo aggiornamento: nessuna sovrascrittura."
               exit 0
             fi
@@ -80,7 +92,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && steps.save.outputs.current == 'true'
         uses: actions/upload-pages-artifact@v4
         with:
-          path: .site-build/
+          path: website/build/
 
   deploy:
     needs: build

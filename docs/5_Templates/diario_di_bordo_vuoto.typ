@@ -1,8 +1,9 @@
 #import "/docs/5_Templates/diario_di_bordo.typ": *
 
+// Nomenclatura: DDB_YYYY-MM-DD.typ, senza versione nel nome.
 // Modello compilabile: sostituire i segnaposto con i dati effettivi.
 // Salvare il documento nella cartella della fase in docs/1_Diario_di_bordo.
-#show: diario-di-bordo.with(
+#show: diarioDiBordo.with(
   data: "YYYY-MM-DD",
   fase: "Fase del progetto",
   versione: false,

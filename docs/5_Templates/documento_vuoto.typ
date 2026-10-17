@@ -1,5 +1,6 @@
 #import "/docs/5_Templates/documento.typ": *
 
+// Nomenclatura: Nome_documento v0.1.0.typ; x contenuto, y struttura, z stile.
 // Modello compilabile: sostituire i segnaposto con i dati effettivi.
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(

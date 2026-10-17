@@ -1,18 +1,18 @@
-#import "base.typ": base, copertina, indice-documento, tabella-dati, tutti, BG, EH, MMI, MMO, RP, LS
+#import "base.typ": base, copertina, indiceDocumento, tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
 
 #let verbale(
   titolo: "Verbale Riunione",
   data: "",
   versione: "0.1.0",
   autori: (),
-  tipo-riunione: "",
+  tipoRiunione: "",
   luogo: "",
-  ora-inizio: "",
-  ora-fine: "",
+  oraInizio: "",
+  oraFine: "",
   responsabile: "",
   scriba: "",
   partecipanti: (),
-  ordine-del-giorno: (),
+  ordineDelGiorno: (),
   diario: (),
   todo: (),
   body,
@@ -24,16 +24,16 @@
       #copertina(titolo, data: data, versione: versione, autori: autori)
 
       #pagebreak()
-      #indice-documento()
+      #indiceDocumento()
 
       #pagebreak()
       = Informazioni generali
       #list(
-        [*Tipo di riunione:* #tipo-riunione],
+        [*Tipo di riunione:* #tipoRiunione],
         [*Luogo:* #luogo],
         [*Data:* #data],
-        [*Ora inizio:* #ora-inizio],
-        [*Ora fine:* #ora-fine],
+        [*Ora inizio:* #oraInizio],
+        [*Ora fine:* #oraFine],
         [*Responsabile:* #responsabile],
         [*Scriba:* #scriba],
         [
@@ -48,7 +48,7 @@
 
       #pagebreak()
       = Ordine del giorno
-      #list(..ordine-del-giorno)
+      #list(..ordineDelGiorno)
 
       #pagebreak()
       = Diario della riunione
@@ -58,7 +58,7 @@
       = TODO
       Durante la riunione sono emerse le seguenti attività da svolgere:
 
-      #tabella-dati(
+      #tabellaDati(
         colonne: (2fr, 3fr),
         intestazioni: ([Assegnatario], [Attività TODO]),
         righe: todo,
