@@ -123,11 +123,13 @@
       numbering(numeroTitoli, ..livelli.pos())
     }
   })
-  set list(indent: 1em, body-indent: 0.5em, tight: false, spacing: if presentazione { 1em } else { 0.7em })
+  set list(indent: 1em, body-indent: 0.5em, tight: false, spacing: 1.5em)
+  set enum(indent: 1em, body-indent: 0.5em, tight: false, spacing: 1.5em)
   show heading: set text(weight: "bold")
+  show heading: set block(above: 1.2em, below: 1.2em)
   // 3.25ex e 1.5ex del Computer Modern corrispondono circa a 1.4em e 0.65em.
   show heading.where(level: 4): set text(size: 10pt)
-  show heading.where(level: 4): set block(above: 1.4em, below: 0.65em)
+  show heading.where(level: 4): set block(above: 1.4em, below: 1.2em)
   show heading.where(level: 5).or(heading.where(level: 6)): titoloParagrafo
   if presentazione {
     show heading.where(level: 1): set text(size: 32pt, hyphenate: false)
@@ -139,7 +141,7 @@
 
 // L'indice definisce solo la propria resa; il template decide dove inserirlo.
 #let indiceDocumento() = {
-  show outline.entry: set block(above: 0.4em, below: 0.4em)
+  show outline.entry: set block(above: 0.75em, below: 0.75em)
   set outline.entry(fill: repeat[.])
   outline(title: [Indice], indent: 1em, depth: profonditaDocumento)
 }
@@ -201,24 +203,35 @@
   align(center, text(size: if presentazione { 14pt } else { 10pt },
     bulhref("mailto:byteclubunipd@gmail.com", "byteclubunipd@gmail.com"),
   ))
-  v(if presentazione { 1fr } else { 1.2cm })
-  align(center)[
-    #set par(justify: false, spacing: 0pt)
-    #text(size: if presentazione { 38pt } else { 24pt }, weight: "bold", titolo)
-    #if data != "" [
-      #v(0.5cm)
-      #text(size: if presentazione { 20pt } else { 14pt }, weight: "bold", data)
-    ]
-    #if mostraVersione or (not presentazione and autori.len() > 0) [
-      #v(0.7cm)
-      #set text(size: if presentazione { 12pt } else { 9pt })
-      #if mostraVersione [Versione: #versione]
-      #if not presentazione and autori.len() > 0 [
-        #linebreak()
-        Redazione: #autori.join(", ")
+  if presentazione {
+    place(center + horizon, align(center)[
+      #set par(justify: false, spacing: 0pt)
+      #text(size: 38pt, weight: "bold", titolo)
+      #if data != "" [
+        #v(0.5cm)
+        #text(size: 20pt, weight: "bold", data)
+      ]
+    ])
+  } else {
+    v(1.2cm)
+    align(center)[
+      #set par(justify: false, spacing: 0pt)
+      #text(size: 24pt, weight: "bold", titolo)
+      #if data != "" [
+        #v(0.5cm)
+        #text(size: 14pt, weight: "bold", data)
+      ]
+      #if mostraVersione or autori.len() > 0 [
+        #v(0.7cm)
+        #set text(size: 9pt)
+        #if mostraVersione [Versione: #versione]
+        #if autori.len() > 0 [
+          #linebreak()
+          Redazione: #autori.join(", ")
+        ]
       ]
     ]
-  ]
+  }
   if presentazione {
     v(1fr)
     if autori.len() > 0 {

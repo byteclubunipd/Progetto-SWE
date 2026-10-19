@@ -10,7 +10,8 @@
   autori: tutti,
   retrospettiva: (),
   backlog: (),
-  criticita: (),
+  difficolta: (),
+  dubbi: (),
   body,
 ) = {
   let titoloCompleto = if data == "" { titolo } else { titolo + " " + data }
@@ -29,16 +30,20 @@
       )
       #pagebreak(weak: true)
 
-      = Progressi raggiunti e confronto (_retrospettiva_)
-      #list(..retrospettiva)
+      = Progressi raggiunti nel periodo trascorso
+      #enum(numbering: "1.a.i.", ..retrospettiva)
 
       #pagebreak()
-      = Obiettivi e attività programmate (_backlog_)
-      #list(..backlog)
+      = Attività programmate nel prossimo periodo
+      #enum(numbering: "1.a.i.", ..backlog)
 
       #pagebreak()
-      = Analisi delle criticità e decisioni pendenti
-      #list(..criticita)
+      = Analisi delle difficoltà incontrate
+      #enum(numbering: "1.a.i.", ..difficolta)
+
+      #pagebreak()
+      = Dubbi su come procedere
+      #enum(numbering: "1.a.i.", ..dubbi)
 
       #body
 
