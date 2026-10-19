@@ -20,10 +20,7 @@
   ),
   diario: (
     "Per prima cosa abbiamo concordato le date per l'incontro con l'azienda Uranium (C3)",
-    "Dopodiché abbiamo raccolto le domande per il secondo capitolato:",
-    "1. Come possiamo rilevare le informazioni che le API di Shopify non rendono visibile? Basta segnalare il fatto che non possiamo accedervi o creare false informazioni?",
-    "2. Potreste mostrarci un esempio di documentazione tecnica che considerate adeguata per un passaggio di consegne?",
-    "3. Avete già in mente delle regole per attribuire i livelli di confidenza alle dipendenze oppure dobbiamo definirle autonomamente?",
+    "Dopodiché abbiamo raccolto le domande per il secondo capitolato.",
     "Infine abbiamo chiarito il lavoro svolto e il lavoro ancora da svolgere, abbiamo anche individuato il problema che tante volte le comunicazioni inviate tramite Whatsapp venivano sommerse dagli altri messaggi, quindi abbiamo deciso che le comunicazioni verranno recapitate tramite un canale discord apposito",
   ),
   todo: (
