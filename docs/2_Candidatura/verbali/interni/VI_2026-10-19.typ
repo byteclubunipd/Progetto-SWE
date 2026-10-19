@@ -13,15 +13,16 @@
   scriba: EH,
   partecipanti: (tutti),
   ordineDelGiorno: (
-    "Concordare date per incontro con Uranium (C3)",
-    "Raccogliere domande per la seconda azienda ",
+    "Concordare date per incontro con Uranion (C3)",
+    "Raccogliere domande per l'azienda Walue (C8)",
     "Allineamento generale sul lavoro svolto",
     "Risoluzione di problemi riscontrati",
   ),
   diario: (
-    "Per prima cosa abbiamo concordato le date per l'incontro con l'azienda Uranium (C3)",
-    "Dopodiché abbiamo raccolto le domande per il secondo capitolato.",
-    "Infine abbiamo chiarito il lavoro svolto e il lavoro ancora da svolgere, abbiamo anche individuato il problema che tante volte le comunicazioni inviate tramite Whatsapp venivano sommerse dagli altri messaggi, quindi abbiamo deciso che le comunicazioni verranno recapitate tramite un canale discord apposito",
+    "Concordato le date per l'incontro con l'azienda Uranium (C3).",
+    "Raccolto le domande per il capitolato C8.",
+    "Chiarito il lavoro svolto e il lavoro ancora da svolgere.",
+    "Individuato il problema che tante volte le comunicazioni inviate tramite Whatsapp venivano sommerse dagli altri messaggi, quindi abbiamo deciso che le comunicazioni verranno recapitate tramite un canale discord apposito",
   ),
   todo: (
     (LS, "Inviare mail di richiesta incontro con l'azienda Uranium"),
