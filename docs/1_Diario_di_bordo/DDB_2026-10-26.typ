@@ -1,0 +1,42 @@
+#import "/docs/5_Templates/diario_di_bordo.typ": *
+
+#show: diarioDiBordo.with(
+  data: "2026-10-26",
+  fase: "",
+  versione: "",
+  autori: (MMI,),
+  retrospettiva: (
+    [
+      In seguito alla creazione del gruppo tramite canale di messaggistica e alla definizione di nome e logo, il gruppo si è impegnato a:
+      - Stilare una lista di 5 aziende di interesse per tutti i membri del gruppo, tra cui ne sono state scelte 3;
+      - Inizializzare il repository GitHub, aggiungendo tutti i componenti del gruppo, definendo la struttura e il futuro sviluppo dei branch, creando la prima milestone per la candidatura e infine configurando e popolando l'issue tracking system (assegnando i task in base alle competenze e alle disponibilità orarie dei singoli);
+      - Organizzare almeno un incontro settimanale per:
+        - monitorare il corretto avanzamento del gruppo nei rispettivi task;
+        - chiarire eventuali dubbi;
+        - stilare le domande da sottoporre alle aziende scelte e concordarne gli incontri;
+      - Completare diversi task tra cui:
+        - creazione del sito web per la documentazione del gruppo;
+        - stesura della lettera di presentazione per le aziende scelte;
+        - stesura della valutazione dei capitolati;
+      - Organizzare ed effettuare una chiamata conoscitiva con l'azienda _Uranion_ (21/10/2026).
+    ],
+  ),
+  backlog: (
+    [
+      Le attività programmate per la settimana successiva sono:
+      - Organizzare un incontro conoscitivo con le restanti due aziende scelte dal gruppo;
+      - Completare tutta la documentazione rimanente, tra cui:
+        - Studio di fattibilità;
+        - Lettera di presentazione;
+        - Preventivo costi e assunzione impegni;
+    ],
+    [Tutte le attività sopra elencate devono essere completate nella settimana successiva per permettere all'intero gruppo di candidarsi formalmente per il capitolato d'interesse con la relativa azienda proponente.],
+  ),
+  criticita: (
+    [
+      Le criticità riscontrate in questo primo periodo di progetto sono state:
+      - *Criticità nella comunicazione*: inizialmente, a causa della presenza di un solo canale principale di messaggistica e dei differenti orari lavorativi di alcuni membri, le comunicazioni e le decisioni prese andavano disperse nel flusso dei messaggi. \ \
+        *Soluzione*: si è deciso di mantenere un canale dedicato a discussioni e chiarimenti veloci e istituire un altro canale di comunicazione dove registrare sinteticamente le decisioni prese, corredate delle relative motivazioni (se di interesse comune).
+    ],
+  ),
+)

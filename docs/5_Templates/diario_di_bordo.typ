@@ -1,4 +1,4 @@
-#import "base.typ": base, copertina, intestazione, slideFinale, tutti
+#import "base.typ": base, copertina, intestazione, slideFinale, tutti, BG, EH, MMI, MMO, RP, LS
 
 // Struttura del diario: copertina, tre sezioni e slide di ringraziamento.
 // Gli elementi degli elenchi possono essere stringhe oppure contenuti [...].
