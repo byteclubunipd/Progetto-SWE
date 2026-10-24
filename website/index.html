@@ -5,17 +5,44 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/desktop.css" media="screen and (min-width: 1024px)">
+
+   <script src="js/script.js"></script>
   <title>ByteClub — Documentazione</title>
 </head>
 <body>
-  <h1>ByteClub</h1>
+    <header>
+      <button id="bottoneMenu">Menù</button>
+      <nav id="menu">
+        <p class="titolo-menu">Menù</p>
+        <ul>
+          <li><a href="#diario"> Diario di bordo</a></li>
+          <li><a href="#candidatura"> Candidatura </a></li>
+          <li><a href="#contatti"> Contatti </a></li>
+          <li><a href="#about"> About </a></li>
+        </ul>
+      </nav>
+      <div id="overlay-sfondo"></div>
+      <div id="intestazione">
+          <div id="logo">
+            <img src="assets/logoNoBg.png" alt="Logo ByteClub">
+          </div> 
+          <h1>ByteClub</h1>
+      </div>
+   
+  </header>
   <main>
-    <section>
-      <h2>1_Diario_di_bordo</h2>
+    <section id="introduzione">
+      <p>Sito di documentazione del progetto del corso di Ingegneria del Software del gruppo 10</p>
+      <p>Università degli studi di Padova, Corso di laurea in Informatica, A.A. 2026/27 </p>
+      <p id="data-aggiornamento">Ultimo aggiornamento: [DATA_AGGIORNAMENTO]</p>
+    </section>
+    <section id="diario">
+      <h2>Diario di bordo</h2>
       [DIARI_DI_BORDO]
     </section>
-    <section>
-      <h2>2_Candidatura</h2>
+    <section id="candidatura">
+      <h2>Candidatura</h2>
       <section>
         <h3>Documenti</h3>
         [CANDIDATURA_DOCUMENTI]
@@ -28,6 +55,38 @@
         <h3>Verbali esterni</h3>
         [VERBALI_ESTERNI]
       </section>
+    </section>
+    <section id="contatti">
+      <h2>Contatti</h2>
+     
+      <h3> Membri del Team</h3>
+      <div class="cardTeam">
+        <div class="personCard">
+          <p> Bruno Grimaldi <a href="mailto:bruno.grimaldi@studenti.unipd.it">bruno.grimaldi@studenti.unipd.it</a></p>
+        </div>
+        <div class="personCard">
+          <p> Elico Huang <a href="mailto:elico.huang@studenti.unipd.it">elico.huang@studenti.unipd.it</a></p>
+        </div>
+        <div class="personCard">
+          <p> Mattia Milan <a href="mailto:mattia.milan@studenti.unipd.it">mattia.milan@studenti.unipd.it</a></p>
+        </div>
+        <div class="personCard">
+          <p> Margherita Monaco <a href="mailto:margherita.monaco@studenti.unipd.it">margherita.monaco@studenti.unipd.it</a></p>
+        </div>
+        <div class="personCard">
+          <p> Riccardo Pontello <a href="mailto:riccardo.pontello@studenti.unipd.it">riccardo.pontello@studenti.unipd.it</a></p>
+        </div>
+        <div class="personCard">
+          <p> Lorenca Shiroka <a href="mailto:lorenca.shiroka@studenti.unipd.it">lorenca.shiroka@studenti.unipd.it</a></p>
+        </div>
+      </div> 
+      <div class="contatto-principale">
+        <p>Per qualsiasi informazione, puoi contattarci all'indirizzo email: <a href="mailto:byteclubunipd@gmail.com">byteclubunipd@gmail.com</a></p>
+      </div>
+    </section>
+    <section id="about">
+      <h2>About</h2>
+      [ABOUT]
     </section>
   </main>
 </body>

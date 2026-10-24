@@ -3,6 +3,21 @@
   --textColor: #07051C;
   --linkColor: #07051C;
   --visitedLinkColor: #8651FF;
+  --cardBackground: #fafbfc;
+  --borderColor: #eaeaea;
+  --accentBlue: #2877ff;
+  --menuBackground: #e1d4ec;
+}
+body {
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  font-family: sans-serif, Roboto;
+  margin: 0;
+  padding-top: 80px;
+  transition: margin-left 0.3s ease;
+}
+body.menu-aperto {
+  margin-left:260px;
 }
 
 h1 {
@@ -29,4 +44,224 @@ h1 {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+header{
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  display:flex;
+  align-items: center;
+  gap:20px;
+  padding: 10px 20px;
+  background-color: var(--backgroundColor);
+  border-bottom: 1px solid var(--borderColor);
+  z-index:1002;
+}
+
+#logo img {
+  display: block;
+  width: 50px;
+  height: 38.5px; 
+  object-fit: cover;
+  object-position: top;
+}
+
+a {
+  color:var(--linkColor)
+}
+a:visited {
+  color:var(--visitedLinkColor)
+}
+
+#intestazione {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+#bottoneMenu {
+
+  background-color: transparent;
+  color: var(--textColor);
+  border: 2px solid var(--textColor);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-family: inherit;
+  font-size:0.9 rem;
+  font-weight:600;
+  z-index: 1001;
+  cursor:pointer;
+}
+
+#bottoneMenu:hover {
+  background-color: var(--textColor);
+  color: var(--backgroundColor);
+}
+.titolo-menu {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  opacity: 0.6;
+  margin-bottom: 20px;
+}
+#menu {
+ 
+  position: fixed;       
+  top: 0;                
+  left: -900px;        
+  width: 230px;     
+  height: 100vh;         
+  background-color: var(--backgroundColor);
+  border-right: 1px solid var(--borderColor);
+  padding: 90px 20px 20px 20px; 
+  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+  transition: left 0.3s ease; 
+  z-index: 1001; 
+}
+
+#menu.attivo {
+  left:0;
+}
+
+#overlay-sfondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 1000;
+}
+
+#overlay-sfondo.attivo {
+  opacity: 1;
+  visibility: visible;
+}
+
+#menu ul {
+  list-style: none; 
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;              
+}
+
+#menu li a {
+  text-decoration:none;
+  color: var(--textColor);
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 6px;    
+  display:block;         
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#menu li a:hover {
+  background-color: var(--cardBackground);
+  color: var(--accentBlue);
+}
+
+#introduzione {
+  margin: 30px 20px;
+  padding: 24px;
+  background-color: var(--cardBackground);
+  border-radius: 0 12px 12px 0; 
+}
+
+
+#introduzione p:last-child {
+  margin-bottom: 0;
+  font-size: 0.85rem;
+  opacity: 0.7; 
+  font-style: italic;
+}
+
+main section {
+  padding: 40px 20px;
+  border-bottom:1px solid var(--borderColor);
+  max-width:900px;
+  margin: 0 auto;
+}
+
+section h2 {
+  font-size: 1.8rem;
+  color: var(--textColor);
+  border-bottom: 2px solid var(--accentBlue);
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+}
+
+
+.cardTeam {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.personCard {
+  background-color: var(--cardBackground);
+  border: 1px solid var(--borderColor);
+  border-radius: 8px;
+  padding: 16px;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.personCard:hover {
+  border-color: var(--accentBlue);
+  transform: translateY(-2px);
+}
+
+.personCard p {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--textColor);
+}
+
+.personCard a {
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--accentBlue);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.personCard a:hover {
+  text-decoration: underline;
+}
+
+.contatto-principale {
+  background-color: var(--cardBackground);
+  border: 1px solid var(--borderColor);
+  border-left: 4px solid var(--accentBlue);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-top: 20px;
+}
+
+.contatto-principale p {
+  margin: 0;
+  color: var(--textColor);
+}
+
+.contatto-principale a {
+  color: var(--accentBlue);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.contatto-principale a:hover {
+  text-decoration: underline;
 }
