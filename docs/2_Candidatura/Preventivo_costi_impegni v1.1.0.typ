@@ -2,7 +2,7 @@
 
 #show: documento.with(
     titolo: "Preventivo dei costi e impegni orari",
-    versione: "1.0.0",
+    versione: "1.1.0",
     stato: "Da verificare",
     redazione: "Elico Huang",
     verifica: "Riccardo Pontello",
