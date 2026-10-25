@@ -60,6 +60,10 @@ header {
   text-align: left;
 }
 
+#menu li:last-child {
+  margin-top: 16px;
+}
+
 header,
 #intestazione,
 main,

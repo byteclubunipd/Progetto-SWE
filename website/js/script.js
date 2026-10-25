@@ -2,7 +2,20 @@ document.addEventListener("DOMContentLoaded", function() {
   const bottoneMenu = document.getElementById('bottoneMenu');
   const menu = document.getElementById('menu');
   const linksMenu = document.querySelectorAll('#menu a');
+  const temaToggle = document.getElementById('tema-toggle');
   const desktopQuery = window.matchMedia('(min-width: 880px)');
+
+  function aggiornaTema(theme) {
+    const dark = theme === 'dark';
+    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    temaToggle.setAttribute('aria-pressed', String(dark));
+    temaToggle.querySelector('.tema-etichetta').textContent =
+      dark ? 'Tema: Scuro' : 'Tema: Chiaro';
+    temaToggle.setAttribute(
+      'aria-label',
+      dark ? 'Attiva modalità chiara' : 'Attiva modalità scura'
+    );
+  }
 
   function aggiornaVisibilitaMenu() {
     const menuVisibile = desktopQuery.matches || menu.classList.contains('attivo');
@@ -26,6 +39,21 @@ document.addEventListener("DOMContentLoaded", function() {
     bottoneMenu.setAttribute('aria-label', 'Chiudi menu di navigazione');
     aggiornaVisibilitaMenu();
     linksMenu[0]?.focus();
+  }
+
+  if (temaToggle) {
+    const savedTheme = localStorage.getItem('byteclub-theme');
+    const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+    aggiornaTema(savedTheme || preferredTheme);
+    temaToggle.addEventListener('click', function() {
+      const nextTheme = document.documentElement.dataset.theme === 'dark'
+        ? 'light'
+        : 'dark';
+      aggiornaTema(nextTheme);
+      localStorage.setItem('byteclub-theme', nextTheme);
+    });
   }
 
   if (bottoneMenu && menu) {
