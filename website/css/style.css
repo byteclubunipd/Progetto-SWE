@@ -471,6 +471,30 @@ section h2 {
   text-decoration: underline;
 }
 
+#about {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: left;
+}
+
+#about p {
+  margin: 0;
+  color: var(--textColor);
+  line-height: 1.5;
+}
+
+#about a {
+  color: var(--accentBlue);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+#about a:hover {
+  text-decoration: underline;
+}
+
 footer {
   flex-shrink: 0;
   padding: 24px 20px;
