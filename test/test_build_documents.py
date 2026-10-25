@@ -30,7 +30,7 @@ class Links(HTMLParser):
     def handle_starttag(self, tag, attrs):
         attributes = dict(attrs)
         if (tag == "a" and "href" in attributes
-                and not attributes["href"].startswith(("#", "mailto:", "http:"))):
+                and not attributes["href"].startswith(("#", "mailto:", "http:", "https:"))):
             self.references.append(attributes["href"])
         if (tag == "link" and "href" in attributes
                 and not attributes["href"].startswith(("http:", "https:"))):
