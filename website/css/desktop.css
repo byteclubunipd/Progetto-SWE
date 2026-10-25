@@ -1,29 +1,15 @@
-
 body {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  grid-template-rows: 130px 1fr; 
-  margin: 0;
-  padding-top: 0;
-  min-height: 100vh;
+  padding-top: 96px;
 }
 
+:root {
+  --anchorOffset: 132px;
+}
 
 header {
-  grid-column: 1 / -1; 
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 130px; 
-  display: flex;
-  align-items: center;
-  gap: 25px;
+  height: 96px;
+  justify-content: center;
   padding: 0 40px;
-  background-color: var(--backgroundColor);
-  border-bottom: 1px solid var(--borderColor);
-  z-index: 1002;
-  justify-content:center;
 }
 
 #bottoneMenu {
@@ -31,56 +17,72 @@ header {
 }
 
 #logo img {
-  width: 90px;
-  height: 65px;
-  object-fit: cover;
-  object-position: top;
+  width: var(--logoWidth);
+  height: var(--logoHeight);
 }
 
 #intestazione {
-  display: flex;
-  flex-direction: row;
-  align-items:center;
-  justify-content:center;
   gap: 20px;
-  border-bottom: none;
-  padding-bottom: 0;
-  width: auto;
-}
-
-#intestazione h1 {
-  font-size: 2.8rem; 
+  left: calc(260px + (100% - 260px) / 2);
 }
 
 #menu {
-  grid-column: 1;
-  grid-row: 2;
   position: fixed;
-  top: 130px; 
+  top: 0;
   left: 0;
   width: 260px;
-  height: calc(100vh - 130px);
+  height: 100vh;
+  transform: translateX(0);
+  padding: 132px 20px 30px;
   background-color: var(--menuBackground);
   border-right: 1px solid var(--borderColor);
-  border-top: none;
-  padding: 30px 20px;
+  border-bottom: 0;
   box-shadow: none;
   z-index: 1001;
+  transition: none;
+}
+
+.titolo-menu {
+  display: block;
+  text-align: left;
+  margin-bottom: 12px;
 }
 
 #menu ul {
+  flex-direction: column;
   gap: 12px;
+  align-items: stretch;
 }
 
+#menu li a {
+  padding: 12px 14px;
+  font-size: 1.15rem;
+  text-align: left;
+}
 
-#overlay-sfondo {
-  display: none;
+#menu li:last-child {
+  margin-top: 16px;
+}
+
+header,
+#intestazione,
+main,
+footer {
+  transition: none;
+}
+
+main,
+footer {
+  margin-left: 260px;
+  margin-right: 0;
 }
 
 main {
-  grid-column: 2;
-  grid-row: 2;
-  padding: 40px;
-  max-width: 1000px;
-  margin: 0 auto;
+  max-width: none;
+  padding: 20px 40px 40px;
+  width: calc(100% - 260px);
+}
+
+#introduzione {
+  margin-top: 0;
 }

@@ -30,8 +30,7 @@ Inoltre è presente anche un file **Contributing.md**: File che contiene le istr
 
 La pubblicazione su GitHub Pages parte sia da `main` sia da `develop`. I due branch
 aggiornano lo stesso sito: il contenuto online corrisponde all'ultima pubblicazione
-completata. L'ambiente `github-pages` deve consentire entrambi i branch nelle
-impostazioni **Settings > Environments > github-pages > Deployment branches and tags**.
+completata.
 
 ## Componenti del gruppo
 
