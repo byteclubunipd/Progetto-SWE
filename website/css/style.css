@@ -265,3 +265,20 @@ section h2 {
 .contatto-principale a:hover {
   text-decoration: underline;
 }
+
+#about {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#about p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+#about .github-text {
+  font-weight: 600;
+  margin-top: 10px;
+}
+
