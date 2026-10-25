@@ -8,8 +8,8 @@ body {
 
 header {
   height: 96px;
-  justify-content: center;
-  padding: 0 40px;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 0 0 260px;
 }
 
 #bottoneMenu {
@@ -23,7 +23,7 @@ header {
 
 #intestazione {
   gap: 20px;
-  left: calc(260px + (100% - 260px) / 2);
+  grid-column: 1;
 }
 
 #menu {
