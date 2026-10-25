@@ -7,21 +7,35 @@
   --borderColor: #eaeaea;
   --accentBlue: #2877ff;
   --menuBackground: #e1d4ec;
+  --anchorOffset: 110px;
+  --logoWidth: 82px;
+  --logoHeight: 58px;
 }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--backgroundColor);
   color: var(--textColor);
-  font-family: sans-serif, Roboto;
+  font-family: Roboto, sans-serif;
+  font-size: 1.1rem;
+  line-height: 1.5;
   margin: 0;
-  padding-top: 80px;
-  transition: margin-left 0.3s ease;
-}
-body.menu-aperto {
-  margin-left:260px;
+  padding-top: 96px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-h1 {
+.gradientTitle{
   width: fit-content;
+  font-family: "Orbitron", sans-serif;
+  font-size: 2.4rem;
   font-weight: 900;
   text-transform: uppercase;
 
@@ -51,6 +65,7 @@ header{
   top: 0;
   left:0;
   width: 100%;
+  height: 96px;
   display:flex;
   align-items: center;
   gap:20px;
@@ -60,12 +75,16 @@ header{
   z-index:1002;
 }
 
+main section h2 {
+  scroll-margin-top: var(--anchorOffset);
+}
+
 #logo img {
   display: block;
-  width: 50px;
-  height: 38.5px; 
-  object-fit: cover;
-  object-position: top;
+  width: var(--logoWidth);
+  height: var(--logoHeight);
+  object-fit: contain;
+  object-position: center;
 }
 
 a {
@@ -79,70 +98,87 @@ a:visited {
   display: flex;
   align-items: center;
   gap: 12px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 
 #bottoneMenu {
-
   background-color: transparent;
   color: var(--textColor);
   border: 2px solid var(--textColor);
   border-radius: 8px;
-  padding: 10px 16px;
+  width: 44px;
+  height: 44px;
+  padding: 7px;
   font-family: inherit;
-  font-size:0.9 rem;
+  font-size: 0.9rem;
   font-weight:600;
-  z-index: 1001;
+  z-index: 1002;
   cursor:pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
 
-#bottoneMenu:hover {
-  background-color: var(--textColor);
-  color: var(--backgroundColor);
+#bottoneMenu span {
+  display: block;
+  width: 24px;
+  height: 3px;
+  border-radius: 2px;
+  background-color: currentColor;
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
+
+#bottoneMenu[aria-expanded="true"] span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+#bottoneMenu[aria-expanded="true"] span:nth-child(2) {
+  opacity: 0;
+}
+
+#bottoneMenu[aria-expanded="true"] span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+#bottoneMenu:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accentBlue);
+  outline-offset: 3px;
+}
+
 .titolo-menu {
-  font-size: 1rem;
+  display: block;
+  font-size: 1.25rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
   font-weight: 700;
   opacity: 0.6;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
+  text-align: center;
 }
+
 #menu {
- 
-  position: fixed;       
-  top: 0;                
-  left: -900px;        
-  width: 230px;     
-  height: 100vh;         
-  background-color: var(--backgroundColor);
-  border-right: 1px solid var(--borderColor);
-  padding: 90px 20px 20px 20px; 
-  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
-  transition: left 0.3s ease; 
-  z-index: 1001; 
-}
-
-#menu.attivo {
-  left:0;
-}
-
-#overlay-sfondo {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: min(290px, 88vw);
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.4);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 1000;
+  background-color: var(--menuBackground);
+  border-right: 1px solid var(--borderColor);
+  padding: 90px 20px 20px;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.05);
+  z-index: 1001;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
 }
 
-#overlay-sfondo.attivo {
-  opacity: 1;
-  visibility: visible;
+#menu.attivo {
+  transform: translateX(0);
 }
 
 #menu ul {
@@ -151,16 +187,19 @@ a:visited {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;              
+  gap: 16px;
+  align-items: center;
 }
 
 #menu li a {
   text-decoration:none;
   color: var(--textColor);
-  font-weight: 600;
-  padding: 10px 14px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  padding: 13px 20px;
   border-radius: 6px;    
   display:block;         
+  text-align: center;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
@@ -169,17 +208,23 @@ a:visited {
   color: var(--accentBlue);
 }
 
+#menu li a:focus-visible {
+  outline: 3px solid var(--accentBlue);
+  outline-offset: 2px;
+}
+
 #introduzione {
-  margin: 30px 20px;
+  width: min(900px, calc(100% - 40px));
+  margin: 12px auto 30px;
   padding: 24px;
   background-color: var(--cardBackground);
   border-radius: 0 12px 12px 0; 
+  text-align: center;
 }
-
 
 #introduzione p:last-child {
   margin-bottom: 0;
-  font-size: 0.85rem;
+  font-size: 1rem;
   opacity: 0.7; 
   font-style: italic;
 }
@@ -189,10 +234,23 @@ main section {
   border-bottom:1px solid var(--borderColor);
   max-width:900px;
   margin: 0 auto;
+  width: 100%;
+}
+
+main {
+  flex: 1 0 auto;
+  width: 100%;
+  text-align: center;
+}
+
+main section h2,
+main section h3,
+main section .document-list {
+  text-align: left;
 }
 
 section h2 {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   color: var(--textColor);
   border-bottom: 2px solid var(--accentBlue);
   padding-bottom: 8px;
@@ -202,7 +260,7 @@ section h2 {
 
 .cardTeam {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
   gap: 16px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -212,8 +270,42 @@ section h2 {
   background-color: var(--cardBackground);
   border: 1px solid var(--borderColor);
   border-radius: 8px;
-  padding: 16px;
+  padding: 20px;
   transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.document-list {
+  display: grid;
+  gap: 10px;
+  margin-left: 24px;
+  padding-left: 0;
+  list-style: none;
+}
+
+.document-list li {
+  position: relative;
+  padding: 8px 10px 8px 34px;
+}
+
+.document-list li::before {
+  content: "";
+  position: absolute;
+  top: 0.75rem;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  background: url("../assets/favicon.svg") center / contain no-repeat;
+}
+
+.document-list .document-list {
+  margin-top: 10px;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.document-list li strong {
+  display: block;
+  margin-top: 8px;
 }
 
 .personCard:hover {
@@ -232,7 +324,7 @@ section h2 {
 
 .personCard a {
   font-weight: 400;
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: var(--accentBlue);
   text-decoration: none;
   word-break: break-all;
@@ -254,6 +346,7 @@ section h2 {
 .contatto-principale p {
   margin: 0;
   color: var(--textColor);
+  text-align: center;
 }
 
 .contatto-principale a {
@@ -264,4 +357,37 @@ section h2 {
 
 .contatto-principale a:hover {
   text-decoration: underline;
+}
+
+footer {
+  flex-shrink: 0;
+  padding: 24px 20px;
+  background-color: var(--textColor);
+  color: var(--backgroundColor);
+  text-align: center;
+}
+
+footer p {
+  margin: 8px 0 0;
+}
+
+footer a {
+  color: var(--backgroundColor);
+}
+
+.back-to-top {
+  font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms;
+    animation-duration: 0.01ms;
+  }
 }
