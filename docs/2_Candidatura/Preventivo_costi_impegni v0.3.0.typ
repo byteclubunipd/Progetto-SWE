@@ -129,5 +129,5 @@ Di seguito viene effettuata una sintetica analisi delle funzioni e caratteristic
 
 = Preventivo costi e data di consegna
 
-Il costo finale preventivato è di #totaleCosti €, il monte ore totale è #totaleOre h ovvero #totaleOreMembro h per ogni membro del gruppo. \
-La data di consegna finale, concordata tra tutti i membri del gruppo è il 21/03/2027.
+Il costo finale preventivato è di *#totaleCosti €*, il monte ore totale è *#totaleOre h* ovvero *#totaleOreMembro h* per ogni membro del gruppo. \
+La data di consegna finale, concordata tra tutti i membri del gruppo è il *21/03/2027*.
