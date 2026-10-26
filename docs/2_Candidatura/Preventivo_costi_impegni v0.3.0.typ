@@ -2,8 +2,8 @@
 
 #show: documento.with(
     titolo: "Preventivo dei costi e impegni orari",
-    versione: "1.1.0",
-    stato: "Da verificare",
+    versione: "0.3.0",
+    stato: "Da approvare",
     redazione: "Elico Huang",
     verifica: "Riccardo Pontello",
     approvazione: "Mattia Milan",
@@ -15,22 +15,22 @@
     ],
 
     modifiche: (
-        ("1.1.0", "24/10/2026", EH, "Aggiunta sezione di analisi dei ruoli"),
-        ("1.0.0", "23/10/2026", EH, "Prima stesura del documento"),
-        
+        ("0.3.0", "26/10/2026", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi"),
+        ("0.2.0", "24/10/2026", EH, "Aggiunta sezione di analisi dei ruoli"),
+        ("0.1.0", "23/10/2026", EH, "Prima stesura del documento"),
     ),
 )
 
 = Introduzione
 
-Tale documento presenta il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
+Con tale documento, il gruppo Byteclub, intende presentavi il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
 
 = Ripartizione ruoli preventivata
 
-A seguito di una lunga analisi degli impegni personali e di una lunga discussione sulle disponibilità generali del gruppo abbiamo dedotto la seguente tabella, contenente la suddivisione delle ore di lavoro tra i vari ruoli. 
+A seguito di una lunga analisi degli impegni personali e di una lunga discussione sulle disponibilità generali del gruppo abbiamo definito la seguente tabella, contenente il costo orario, le ore totali, il costo totale e le ore per membro del gruppo.
 
 
-#let oreTotali = (48, 54, 84, 120, 126, 120)
+#let oreTotali = (60, 54, 84, 120, 126, 108)
 #let COSTIORARI = (30, 20, 25, 25, 15, 15)
 #let NUMEROMEMBRI = 6
 
@@ -77,15 +77,18 @@ A seguito di una lunga analisi degli impegni personali e di una lunga discussion
   ),
   righe: righeFinali,
 )
-La suddivisione delle ore tra i diversi ruoli è data da un'attenta analisi del capitolato e da un confronto con l'azienda proponente, dal quale è emersa la necessità di bilanciare le ore tra la progettazione e la realizzazione stessa del prodotto, dando sempre priorità a un corretta esecuzione dei valori dell'ingegneria del software. \
+
+La suddivisione delle ore tra i diversi ruoli è data da un'attenta analisi del capitolato e da un confronto con l'azienda proponente, dal quale è emersa la necessità di bilanciare le ore tra la progettazione e la realizzazione stessa del prodotto, poiché saranno le parti più dispendiose del progetto. Il numero elevato di ore dedicate al ruolo di verificatore è dato dalla necessità di utilizzare tecnologie nuove e dalla grande attenzione richiesta dall'azienda nell'ambito della privacy e della tutela dei dati. \
 Ogni membro del team si impegna a dedicare un totale di 92 ore per lo svolgimento del progetto.
 
 == Partizione interna dei ruoli
 
+L'ammontare delle ore per ogni ruolo è stato diviso equamente tra ogni componente del gruppo.
 La rotazione dei ruoli avverrà alla fine di ogni sprint, la cui durata verrà definita in seguito a un consulto con la proponente. La mutazione dei ruoli si effettuerà in modo continuativo fino all'esaurimento delle ore produttive di ciascun ruolo per ogni membro del team.
 
 = Analisi dei ruoli
 
+Nonostante la presenza di diversi ruoli non vi è uno che detenga le competenze per la effettiva costruzione del prodotto, essendo esso un prodotto fisico. Per questo le modalità di coordinamento per fase di progettazione e creazione del contenitore verranno definite a seguire. \
 Di seguito viene effettuata una sintetica analisi delle funzioni e caratteristiche di ciascun ruolo.
 
 ==  Responsabile
@@ -126,5 +129,5 @@ Di seguito viene effettuata una sintetica analisi delle funzioni e caratteristic
 
 = Preventivo costi e data di consegna
 
-Il costo finale preventivato è di 11.310 €.\ 
+Il costo finale preventivato è di #totaleCosti €, il monte ore totale è #totaleOre h ovvero #totaleOreMembro h per ogni membro del gruppo. \
 La data di consegna finale, concordata tra tutti i membri del gruppo è il 21/03/2027.
