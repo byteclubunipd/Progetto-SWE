@@ -82,3 +82,39 @@ Sostituire i percorsi con il documento da generare e con il nome del PDF desider
 ### Template
 
 `base.typ` contiene impostazioni e componenti condivisi, come layout, font, spaziature, eccetera. `verbale.typ`, `diario_di_bordo.typ` e `documento.typ` sono template completi per i rispettivi tipi di documento; i file `*_vuoto.typ` sono versioni minimali da copiare, incollare nella cartella desiderata, modificare con gli elementi da scrivere nel documento e compilare.
+
+## 8. Script Python, build e test
+
+Gli script Python automatizzano la generazione della documentazione e verificano che la
+pipeline funzioni correttamente:
+
+- `.github/scripts/build_documents.py` cerca i sorgenti `.typ`, li compila in PDF con
+  Typst, aggiorna il catalogo del sito e prepara la versione pubblicabile in
+  `website/build/`;
+- `test/test_build_documents.py` contiene i test automatici della pipeline: controlla
+  la compilazione, il catalogo HTML, i link e la gestione degli errori senza dover
+  compilare davvero i documenti Typst.
+
+I comandi seguenti vanno eseguiti dalla cartella principale del progetto.
+
+### Build completa
+
+Per compilare i documenti e generare il sito:
+
+```bash
+python .github/scripts/build_documents.py
+```
+
+Il comando richiede che Typst sia installato e aggiorna i PDF in `docs/6_Output/` e
+il sito generato in `website/build/`.
+
+### Test
+
+Per eseguire i test della pipeline:
+
+```bash
+python -m unittest discover -s test -p "test_build_documents.py" -v
+```
+
+Prima di aprire una pull request è consigliato eseguire prima i test e poi la build,
+così da verificare sia il comportamento automatico sia la generazione degli artefatti.

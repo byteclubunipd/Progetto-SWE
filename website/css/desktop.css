@@ -1,0 +1,88 @@
+body {
+  padding-top: 96px;
+}
+
+:root {
+  --anchorOffset: 132px;
+}
+
+header {
+  height: 96px;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 0 0 0 260px;
+}
+
+#bottoneMenu {
+  display: none;
+}
+
+#logo img {
+  width: var(--logoWidth);
+  height: var(--logoHeight);
+}
+
+#intestazione {
+  gap: 20px;
+  grid-column: 1;
+}
+
+#menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 260px;
+  height: 100vh;
+  transform: translateX(0);
+  padding: 132px 20px 30px;
+  background-color: var(--menuBackground);
+  border-right: 1px solid var(--borderColor);
+  border-bottom: 0;
+  box-shadow: none;
+  z-index: 1001;
+  transition: none;
+}
+
+.titolo-menu {
+  display: block;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+#menu ul {
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+#menu li a {
+  padding: 12px 14px;
+  font-size: 1.15rem;
+  text-align: left;
+}
+
+#menu li:last-child {
+  margin-top: 16px;
+}
+
+header,
+#intestazione,
+main,
+footer {
+  transition: none;
+}
+
+main,
+footer {
+  margin-left: 260px;
+  margin-right: 0;
+}
+
+main {
+  max-width: none;
+  padding: 20px 40px 40px;
+  width: calc(100% - 260px);
+}
+
+#introduzione {
+  margin-top: 0;
+}
