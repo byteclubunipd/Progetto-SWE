@@ -59,11 +59,11 @@ A seguito di una lunga analisi degli impegni personali e di una lunga discussion
 #let totaleOreMembro = orePerMembro.sum()
 
 #let righeFinali = righe + ((
-  "Totale",
+  strong("Totale"),
   "-",
-  str(totaleOre),
-  str(totaleCosti),
-  str(totaleOreMembro),
+  strong(str(totaleOre)),
+  strong(str(totaleCosti)),
+  strong(str(totaleOreMembro)),
 ),)
 
 #tabellaDati(
