@@ -43,9 +43,13 @@
   ),
   criticita: (
     [
-      Le criticità riscontrate in questo primo periodo di progetto sono state:
-      - *Criticità nella comunicazione* \ \
-        *Soluzione*: Suddivisione della comunicazione in piu canali specifici.
+      Le criticità e le decisioni pendenti riscontrate in questo primo periodo di progetto sono state:
+      - *Criticità nella comunicazione e nell'organizzazione* \ 
+        *Soluzione*: Utilizzo ottimizzato dei canali di comunicazione.\ \
+      - *Possibile rivalutazione del terzo capitolato* 
+      \
+      - *Dubbi riguardo la rotazione dei ruoli*
+  
     ],
   ),
 )
