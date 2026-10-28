@@ -1,20 +1,17 @@
 // Lettera di Presentazione — ByteClub
-// NB: la lettera porta SOLO la data (YYYY-MM-DD), niente numero di versione.
-// Prima di compilare: controlla il nome del file template (riga sotto) e i link marcati VERIFICA.
 
 #import "../5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
 #import "../5_Templates/documento.typ": documento
 
 #let gruppo = "ByteClub"
 #let email = "byteclubunipd@gmail.com"
-#let data = "2026-10-28"
+#let data = "2026-10-DD"
 #let codice = "C3"
 #let titolo = "FossDot: smart speaker open source, estensibile e rispettoso della privacy"
 #let proponente = "Uranion EMEA Ltd"
-#let responsabile = "NOME COGNOME" // <- nome del Responsabile che firma
+#let responsabile = "NOME COGNOME"
 
 #let repo = "https://github.com/byteclubunipd/Progetto-SWE"
-// VERIFICA dopo il merge: i PDF sono generati dal bot in docs/6_Output (controlla nomi e sottocartelle)
 #let link-sdf = repo + "/blob/main/docs/6_Output/2_Candidatura/Studio_di_Fattibilita.pdf"
 #let link-val = repo + "/blob/main/docs/6_Output/2_Candidatura/Valutazione_Capitolati-v1.0.0.pdf"
 #let link-prev = repo + "/blob/main/docs/6_Output/2_Candidatura/Preventivo_costi_impegni.pdf"
@@ -28,8 +25,8 @@
 
 #show: documento.with(
   titolo: "Lettera di Presentazione",
-  versione: data, // la lettera riporta solo la data
-  stato: "Approvato",
+  versione: data, 
+  stato: "In Redazione",
   redazione: (LS),
   verifica: BG,
   approvazione: "Tutto il gruppo",
@@ -45,7 +42,8 @@
   indice: true,
 )
 
-Spettabili Prof. Tullio Vardanega e Prof. Riccardo Cardin,
+Egregio Professore Vardanega,
+Egregio Professore Cardin,
 
 con la presente, il gruppo #gruppo comunica formalmente la propria candidatura
 per l'aggiudicazione del capitolato *#codice* "#titolo", proposto dall'azienda
@@ -126,7 +124,5 @@ Il gruppo #gruppo si impegna formalmente a:
 Restiamo a disposizione per eventuali chiarimenti e colloqui.
 
 #v(1em)
-Distinti saluti, \
-#responsabile \
-Responsabile del gruppo #gruppo \
-#link("mailto:" + email)[#email]
+Cordiali saluti, \
+Il gruppo #gruppo
