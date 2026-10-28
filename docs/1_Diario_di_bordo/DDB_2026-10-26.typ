@@ -41,15 +41,18 @@
     ],
     [Tutte le attività sopra elencate devono essere completate nella settimana successiva per permettere all'intero gruppo di candidarsi formalmente per il capitolato d'interesse con la relativa azienda proponente.],
   ),
-  criticita: (
+  difficolta: (
     [
-      Le criticità e le decisioni pendenti riscontrate in questo primo periodo di progetto sono state:
-      - *Criticità nella comunicazione e nell'organizzazione* \ 
-        *Soluzione*: Utilizzo ottimizzato dei canali di comunicazione.\ \
-      - *Possibile rivalutazione del terzo capitolato* 
-      \
-      - *Dubbi riguardo la rotazione dei ruoli*
-  
+    *Criticità nella comunicazione e nell'organizzazione* \ 
+        *Soluzione*: Utilizzo ottimizzato dei canali di comunicazione.
+    ],
+    [   
+    *Possibile rivalutazione del terzo capitolato* 
+    ],
+  ),
+  dubbi: (
+    [
+    *Dubbi riguardo la rotazione dei ruoli*
     ],
   ),
 )

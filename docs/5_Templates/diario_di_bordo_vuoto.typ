@@ -16,8 +16,12 @@
     [Inserire gli obiettivi e le attività del prossimo periodo.],
     [Specificare priorità, responsabilità e scadenze concordate.],
   ),
-  criticita: (
+  difficolta: (
     [Indicare gli ostacoli incontrati e le decisioni ancora da prendere.],
     [Riportare eventuali richieste di chiarimento o supporto.],
+  ),
+  dubbi: (
+    [Indicare i dubbi e le questioni da chiarire per procedere.],
+    [Specificare eventuali decisioni o indicazioni necessarie.],
   ),
 )
