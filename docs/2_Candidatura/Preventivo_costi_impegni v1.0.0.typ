@@ -2,11 +2,11 @@
 
 #show: documento.with(
     titolo: "Preventivo dei costi e impegni orari",
-    versione: "0.3.0",
+    versione: "1.0.0",
     stato: "Da approvare",
     redazione: "Elico Huang",
     verifica: "Riccardo Pontello",
-    approvazione: "Mattia Milan",
+    approvazione: "Tutto il gruppo",
     uso: "Esterno",
     proprietario: "Byte Club",
     destinatari: [
@@ -15,6 +15,7 @@
     ],
 
     modifiche: (
+        ("1.0.0", "28/10/2026", "Tutto il gruppo", "Approvazione del documento"),
         ("0.3.0", "26/10/2026", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi"),
         ("0.2.0", "24/10/2026", EH, "Aggiunta sezione di analisi dei ruoli"),
         ("0.1.0", "23/10/2026", EH, "Prima stesura del documento"),
@@ -79,7 +80,7 @@ A seguito di una lunga analisi degli impegni personali e di una lunga discussion
 )
 
 La suddivisione delle ore tra i diversi ruoli è data da un'attenta analisi del capitolato e da un confronto con l'azienda proponente, dal quale è emersa la necessità di bilanciare le ore tra la progettazione e la realizzazione stessa del prodotto, poiché saranno le parti più dispendiose del progetto. Il numero elevato di ore dedicate al ruolo di verificatore è dato dalla necessità di utilizzare tecnologie nuove e dalla grande attenzione richiesta dall'azienda nell'ambito della privacy e della tutela dei dati. \
-Ogni membro del team si impegna a dedicare un totale di 92 ore per lo svolgimento del progetto.
+Ogni membro del team si impegna a dedicare un totale di *92* ore per lo svolgimento del progetto.
 
 == Partizione interna dei ruoli
 
