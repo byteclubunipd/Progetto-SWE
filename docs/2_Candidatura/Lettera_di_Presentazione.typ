@@ -49,7 +49,6 @@ per l'aggiudicazione del capitolato *#codice* "#titolo", proposto dall'azienda
 
 La documentazione completa è consultabile nel #link(repo)[#underline[repository]]
 pubblico, dove sono disponibili:
-- #link(link-sdf)[#underline[Studio di Fattibilità]];
 - #link(link-val)[#underline[Valutazione dei capitolati]];
 - #link(link-prev)[#underline[Preventivo dei costi e impegno orario]] (totale, individuale e per ruolo);
 - Verbali interni;
