@@ -5,17 +5,17 @@
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
   titolo: "Valutazione Capitolati",
-  versione: "1.0.1",
+  versione: "0.3.5",
   stato: "In redazione",
   redazione: (BG),
   verifica: LS,
-  approvazione: "Nome approvatore",
+  approvazione: "Tutto il gruppo",
   proprietario: "ByteClub",
   uso: "Esterno",
   destinatari: "Prof. Vardanega Tullio \nProf. Cardin Riccardo",
   modifiche: (
-    ("1.0.1", "2026-10-25", BG, "Corretti refusi e piccoli errori di battitura presenti nel documento dopo una prima revisione."),
-    ("1.0.0", "2026-10-22", BG, "Modifiche minori al capitolato C3 dopo meeting con Uranion."),
+    ("0.3.5", "2026-10-25", BG, "Corretti refusi e piccoli errori di battitura presenti nel documento dopo una prima revisione."),
+    ("0.3.4", "2026-10-22", BG, "Modifiche minori al capitolato C3 dopo meeting con Uranion."),
     ("0.3.2", "2026-10-21", BG, "Rimossi numeri indice dato che vengono generati automaticamente attraverso GitHub, corretti errori di battitura."),
     ("0.3.1", "2026-10-20", BG, "Aggiunte sezioni mancanti sul progetto scelto, modificate le conclusioni dei 3 capitolati principali, corretti piccoli errori e ripetizioni."),
     ("0.3.0", "2026-10-19", BG, "Completata sezione 'altri capitolati valutati' con analisi dei capitolati C0, C2, C4, C5, C6, C7 e C9."),
