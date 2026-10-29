@@ -525,6 +525,30 @@ section h2 {
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
+.about-section .personCard {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 56px;
+  gap: 12px;
+  align-items: center;
+}
+
+.about-section .personCard img {
+  display: block;
+  grid-column: 2;
+  grid-row: 1;
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--accentBlue);
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.about-section .personCard p {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+
 .document-list {
   display: grid;
   gap: 10px;
@@ -619,27 +643,27 @@ section h2 {
   text-decoration: underline;
 }
 
-#about {
+.about-section {
   display: flex;
   flex-direction: column;
   gap: 16px;
   text-align: left;
 }
 
-#about p {
+.about-section p {
   margin: 0;
   color: var(--textColor);
   line-height: 1.5;
 }
 
-#about a {
+.about-section a {
   color: var(--accentBlue);
   font-weight: 600;
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
-#about a:hover {
+.about-section a:hover {
   text-decoration: underline;
 }
 
