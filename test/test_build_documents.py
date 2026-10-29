@@ -24,12 +24,19 @@ def fakeCompile(source, target, root):
 class Links(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.hrefs = []
+        self.references = []
 
     # Nome richiesto dal protocollo HTMLParser.
     def handle_starttag(self, tag, attrs):
-        if tag == "a":
-            self.hrefs.extend(value for key, value in attrs if key == "href")
+        attributes = dict(attrs)
+        if (tag == "a" and "href" in attributes
+                and not attributes["href"].startswith(("#", "mailto:", "http:", "https:"))):
+            self.references.append(attributes["href"])
+        if (tag == "link" and "href" in attributes
+                and not attributes["href"].startswith(("http:", "https:"))):
+            self.references.append(attributes["href"])
+        if tag == "script" and "src" in attributes:
+            self.references.append(attributes["src"])
 
 
 class DocumentationBuildTest(unittest.TestCase):
@@ -38,6 +45,10 @@ class DocumentationBuildTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.write(PIPELINE.TEMPLATE, HTML_TEMPLATE)
+        self.write("website/assets/favicon.svg", "<svg></svg>")
+        self.write("website/css/style.css", "body {}")
+        self.write("website/css/desktop.css", "main {}")
+        self.write("website/js/script.js", "/* test */")
 
     def write(self, relative, value):
         path = self.root / relative
@@ -59,6 +70,11 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.runBuild(), [])
         generated = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertEqual(generated.count(PIPELINE.EMPTY), 4)
+        self.assertNotIn("[DATA_AGGIORNAMENTO]", generated)
+        self.assertRegex(
+            generated,
+            r"Ultimo aggiornamento: \d{4}-\d{2}-\d{2}",
+        )
 
     def testRecursiveScopePreservesNamesAndIsIdempotent(self):
         self.write("docs/1_Diario_di_bordo/rtb/DDB_2026-10-17.typ", "Diario")
@@ -223,10 +239,14 @@ class DocumentationBuildTest(unittest.TestCase):
             page = siteRoot / "index.html"
             parser = Links()
             parser.feed(page.read_text(encoding="utf-8"))
-            self.assertTrue(parser.hrefs)
-            for href in parser.hrefs:
+            self.assertTrue(parser.references)
+            for href in parser.references:
                 self.assertTrue((siteRoot / unquote(href)).resolve().is_file(), href)
             self.assertEqual((siteRoot / "assets/logo.png").read_bytes(), b"immagine di prova")
+            self.assertEqual((siteRoot / "assets/favicon.svg").read_text(), "<svg></svg>")
+            self.assertEqual((siteRoot / "css/style.css").read_text(), "body {}")
+            self.assertEqual((siteRoot / "css/desktop.css").read_text(), "main {}")
+            self.assertEqual((siteRoot / "js/script.js").read_text(), "/* test */")
 
     def testCatalogListsOnlyCurrentSectionsAndPreservesOtherOutputs(self):
         documents = [
@@ -250,12 +270,13 @@ class DocumentationBuildTest(unittest.TestCase):
         page = self.root / "website/build/index.html"
         parser = Links()
         parser.feed(page.read_text(encoding="utf-8"))
-        self.assertEqual(len(parser.hrefs), 6)
-        self.assertEqual(len(set(parser.hrefs)), 6)
+        pdfReferences = [href for href in parser.references if href.endswith(".pdf")]
+        self.assertEqual(len(pdfReferences), 6)
+        self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
         for heading in ("3_RTB", "4_PB", "Altri documenti"):
             self.assertNotIn(heading, content)
-        for href in parser.hrefs:
+        for href in pdfReferences:
             self.assertEqual((page.parent / unquote(href)).resolve().read_bytes(),
                              b"%PDF-manuale")
         for name in documents:

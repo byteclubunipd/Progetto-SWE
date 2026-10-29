@@ -78,7 +78,7 @@ jobs:
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore(docs): aggiorna PDF e manifest"
+          git commit -m "Aggiornamento PDF e manifest"
           if ! git push origin "HEAD:refs/heads/$branchName"; then
             git fetch origin "$branchName"
             if [ "$(git rev-parse FETCH_HEAD)" != "$expectedSha" ]; then

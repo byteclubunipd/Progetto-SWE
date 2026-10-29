@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import html
 import json
 import os
@@ -72,12 +73,14 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         if nested != EMPTY:
             items.append(f"<li><strong>{html.escape(folder.name.replace('_', ' '))}"
                          f"</strong>\n{nested}</li>")
-    return "<ul>\n" + "\n".join(items) + "\n</ul>" if items else EMPTY
+    return '<ul class="document-list">\n' + "\n".join(items) + \
+        "\n</ul>" if items else EMPTY
 
 
 def render(template: str, outputRoot: Path, prefix: str) -> str:
     candidature = outputRoot / "2_Candidatura"
     replacements = {
+        "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix),
         "[CANDIDATURA_DOCUMENTI]": catalog(candidature, outputRoot, prefix,
                                           (candidature / "verbali/interni",
@@ -245,12 +248,13 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
         stagedSite = Path(temporary) / "site"
         stagedSite.mkdir()
         (stagedSite / "index.html").write_text(publishedHtml, encoding="utf-8")
-        assets = root / "website/assets"
-        if assets.exists():
-            ensureInside(root, assets)
-            for entry in assets.rglob("*"):
-                ensureInside(root, entry)
-            shutil.copytree(assets, stagedSite / "assets")
+        for directoryName in ("assets", "css", "js"):
+            directory = root / "website" / directoryName
+            if directory.exists():
+                ensureInside(root, directory)
+                for entry in directory.rglob("*"):
+                    ensureInside(root, entry)
+                shutil.copytree(directory, stagedSite / directoryName)
         shutil.copytree(candidate, stagedSite / "docs/6_Output")
 
         for name in generated:

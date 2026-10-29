@@ -12,13 +12,13 @@ La repository è composta dalle cartelle:
 
 - **docs**: Cartella che contiene i file PDF della documentazione e il codice Typst per generarli
     - **1_Diario_di_bordo**: Cartella che contiene i file Typst relativi ai vari diari di bordo dei diversi periodi,
-    - **2_Candidatura**: Cartella che contiene i file Typst riguardanti la candidatura per il progetto [Inserisci progetto] di [Inserisci azienda] e relativi verbali, <!-- - **3_RTB**: Cartella che contiene i file Typst riguardanti la Requirements and Technology Baseline e relativi verbali,- **4_PB**: Cartella che contiene i file Typst riguardanti la Product Baseline e relativi verbali, -->
+    - **2_Candidatura**: Cartella che contiene i file Typst riguardanti la candidatura per il progetto *FossDot* di *Uranion EMEA Ltd.* (Capitolato C3) e relativi verbali, <!-- - **3_RTB**: Cartella che contiene i file Typst riguardanti la Requirements and Technology Baseline e relativi verbali,- **4_PB**: Cartella che contiene i file Typst riguardanti la Product Baseline e relativi verbali, -->
     - **5_Templates**: Cartella che contiene i file Typst relativi ai templates di creazione dei documenti,
     - **6_Output**: Cartella che contiene i file PDF della documentazione organizzati in sottocartelle;
 
 - **src**: Cartella che contiene i file sorgenti del progetto [Inserisci progetto] di [Inserisci azienda];
 
-- **test**: Cartella che contiene i file sorgenti dei test del progetto [Inserisci progetto] di [Inserisci azienda];
+- **test**: Cartella che contiene i file sorgenti dei test della build nel sito web e del progetto [Inserisci progetto] di [Inserisci azienda];
 
 - **website**: Cartella che contiene i file sorgenti del sito web in GitHub Pages.
 
@@ -30,8 +30,7 @@ Inoltre è presente anche un file **Contributing.md**: File che contiene le istr
 
 La pubblicazione su GitHub Pages parte sia da `main` sia da `develop`. I due branch
 aggiornano lo stesso sito: il contenuto online corrisponde all'ultima pubblicazione
-completata. L'ambiente `github-pages` deve consentire entrambi i branch nelle
-impostazioni **Settings > Environments > github-pages > Deployment branches and tags**.
+completata.
 
 ## Componenti del gruppo
 
