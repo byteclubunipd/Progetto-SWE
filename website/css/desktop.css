@@ -33,7 +33,7 @@ header {
   width: 260px;
   height: 100vh;
   transform: translateX(0);
-  padding: 96px 20px 30px;
+  padding: 38px 20px 30px;
   background-color: var(--menuBackground);
   border-right: 1px solid var(--borderColor);
   border-bottom: 0;
