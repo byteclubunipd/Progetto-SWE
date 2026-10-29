@@ -12,7 +12,6 @@
 
 
 #let repo = "https://github.com/byteclubunipd/Progetto-SWE"
-#let link-sdf = repo + "/blob/main/docs/6_Output/2_Candidatura/Studio_di_Fattibilita.pdf"
 #let link-val = repo + "/blob/main/docs/6_Output/2_Candidatura/Valutazione_Capitolati-v1.0.0.pdf"
 #let link-prev = repo + "/blob/main/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
 
@@ -40,36 +39,6 @@
     ("0.1.0", "2026-10-22", LS, "Creazione del documento"),
   ),
   indice: true,
-)
-
-// ---------- Stile del corpo  ----------
-
-#let accento = rgb("#4B3FD1")      
-#let ciano = rgb("#19B5E8")        
-#let chiaro = rgb("#EEF0FD")       
-
-#show heading.where(level: 1): it => block(
-  width: 100%,
-  above: 1.6em,
-  below: 1em,
-  inset: (bottom: 4pt),
-  stroke: (bottom: 1.2pt + ciano),
-  text(fill: accento, it),
-)
-#show link: set text(fill: accento)
-#set list(marker: text(fill: ciano)[•])
-
-// Tabelle della lettera
-#let tabellaColore(colonne: auto, intestazioni: (), righe: ()) = block(
-  above: 0.5cm,
-  table(
-    columns: colonne,
-    inset: 5pt,
-    stroke: 0.5pt + rgb("#C9CDEB"),
-    fill: (x, y) => if y == 0 { accento } else if calc.even(y) { chiaro },
-    table.header(..intestazioni.map(cella => align(center, text(fill: white, strong(cella))))),
-    ..righe.flatten(),
-  ),
 )
 
 Egregi Professori Vardanega e Cardin,
@@ -113,7 +82,7 @@ Il gruppo ha selezionato il capitolato #codice per le seguenti ragioni:
 
 = Preventivo economico
 
-#tabellaColore(
+#tabellaDati(
   colonne: (auto, 1fr),
   intestazioni: ([Voce], [Valore]),
   righe: (
@@ -138,7 +107,7 @@ Il gruppo #gruppo si impegna formalmente a:
 
 = Componenti del gruppo
 
-#tabellaColore(
+#tabellaDati(
   colonne: (1fr, 1fr, auto),
   intestazioni: ([Cognome], [Nome], [Matricola]),
   righe: (
