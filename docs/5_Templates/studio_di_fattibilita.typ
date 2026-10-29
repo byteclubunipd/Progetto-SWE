@@ -3,7 +3,6 @@
 #let studioDiFattibilita(
   titolo: "Studio di Fattibilità",
   data: "",
-  versione: "0.1.0",
   autori: (),
   capitolatiScelti: (),
   capitolatiScartati: (),
@@ -13,7 +12,7 @@
   
   base(
     [
-      #copertina(titolo, data: data, versione: versione, autori: autori)
+      #copertina(titolo, data: data,  autori: autori)
 
       #pagebreak()
       #indiceDocumento()
