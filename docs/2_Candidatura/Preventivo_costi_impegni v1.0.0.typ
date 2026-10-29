@@ -8,7 +8,7 @@
     verifica: "Riccardo Pontello",
     approvazione: "Tutto il gruppo",
     uso: "Esterno",
-    proprietario: "Byte Club",
+    proprietario: "ByteClub",
     destinatari: [
         Prof. Tullio Vardanega \
         Prof. Riccardo Cardin
@@ -24,7 +24,7 @@
 
 = Introduzione
 
-Con tale documento, il gruppo Byteclub, intende presentavi il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
+Con tale documento, il gruppo ByteClub, intende presentavi il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
 
 = Ripartizione ruoli preventivata
 
