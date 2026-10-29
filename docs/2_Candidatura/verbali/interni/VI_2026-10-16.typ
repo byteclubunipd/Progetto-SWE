@@ -4,6 +4,7 @@
   titolo: "Verbale Riunione",
   data: "16 ottobre 2026",
   versione: false,
+  firma: false,
   autori: (EH,),
   tipoRiunione: "Interna",
   luogo: "Discord",
