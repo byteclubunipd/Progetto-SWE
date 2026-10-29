@@ -125,6 +125,66 @@ def compileTypst(source: Path, target: Path, root: Path) -> None:
     )
 
 
+def typstTokens(text: str) -> list[str]:
+    """Read tokens without treating comments, strings or raw text as settings."""
+    pattern = re.compile(r'\s+|//[^\r\n]*|/\*|"(?:\\.|[^"\\])*"|\x60+|[\w-]+|.',
+                         re.DOTALL)
+    tokens = []
+    position = 0
+    while position < len(text):
+        match = pattern.match(text, position)
+        token = match.group()
+        position = match.end()
+        if token.isspace() or token.startswith("//"):
+            continue
+        if token == "/*":
+            depth = 1
+            while depth:
+                comment = re.search(r"/\*|\*/", text[position:])
+                if comment is None:
+                    raise ValueError("Commento Typst non chiuso")
+                depth += 1 if comment.group() == "/*" else -1
+                position += comment.end()
+            continue
+        if token.startswith("`"):
+            end = text.find(token, position)
+            if end == -1:
+                raise ValueError("Blocco raw Typst non chiuso")
+            position = end + len(token)
+            token = "<raw>"
+        tokens.append(token)
+    return tokens
+
+
+def hasSignature(source: Path) -> bool:
+    """Only accept a literal firma argument in the document's verbale show rule."""
+    tokens = typstTokens(source.read_text(encoding="utf-8-sig"))
+    prefix = ["#", "show", ":", "verbale", ".", "with", "("]
+    for start in range(len(tokens) - len(prefix) + 1):
+        if tokens[start:start + len(prefix)] != prefix:
+            continue
+        depth = 1
+        flags = []
+        for index in range(start + len(prefix), len(tokens)):
+            token = tokens[index]
+            if (depth == 1 and tokens[index - 1] in ("(", ",")
+                    and token == "firma" and tokens[index + 1:index + 2] == [":"]):
+                value = tokens[index + 2:index + 4]
+                if (len(value) != 2 or value[0] not in ("true", "false")
+                        or value[1] not in (",", ")")):
+                    raise ValueError(f"Usare firma: true oppure firma: false in {source}")
+                flags.append(value[0] == "true")
+            if token in ("(", "[", "{"):
+                depth += 1
+            elif token in (")", "]", "}"):
+                depth -= 1
+                if depth == 0:
+                    break
+        if len(flags) > 1:
+            raise ValueError(f"Campo firma duplicato in {source}")
+        return flags[0] if flags else False
+    return False
+
 def build(root: Path, *, compiler=compileTypst) -> list[str]:
     root = root.resolve()
     output = root / "docs/6_Output"
@@ -147,6 +207,13 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
     if len({name.casefold() for name in outputs}) != len(outputs):
         raise ValueError("Due sorgenti producono lo stesso nome PDF su Windows")
 
+    signed = {name for source, name in zip(sources, outputs) if hasSignature(source)}
+    for name in signed:
+        existing = output / managedRelative(name)
+        ensureInside(root, existing)
+        if not existing.is_file() or not existing.read_bytes().startswith(b"%PDF-"):
+            raise ValueError(f"firma: true richiede un PDF firmato esistente e valido: {existing}")
+
     # Build a complete candidate tree before touching the existing PDF files.
     with tempfile.TemporaryDirectory(prefix="byteclub-docs-") as temporary:
         candidate = Path(temporary) / "output"
@@ -162,6 +229,9 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
         for obsolete in previous - set(outputs):
             (candidate / managedRelative(obsolete)).unlink(missing_ok=True)
         for source, name in zip(sources, outputs):
+            if name in signed:
+                print(f"PDF firmato conservato: {name}")
+                continue
             target = candidate / managedRelative(name)
             target.parent.mkdir(parents=True, exist_ok=True)
             compiler(source, target, root)
@@ -171,7 +241,9 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
 
         # One self-contained site works both locally and on GitHub Pages.
         publishedHtml = render(template, candidate, "docs/6_Output/")
-        manifest = json.dumps({"schema": 1, "outputs": outputs},
+        # Signed PDFs are maintained manually, so cleanup must no longer own them.
+        generated = [name for name in outputs if name not in signed]
+        manifest = json.dumps({"schema": 1, "outputs": generated},
                               ensure_ascii=False, indent=2) + "\n"
         stagedSite = Path(temporary) / "site"
         stagedSite.mkdir()
@@ -185,7 +257,7 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
                 shutil.copytree(directory, stagedSite / directoryName)
         shutil.copytree(candidate, stagedSite / "docs/6_Output")
 
-        for name in outputs:
+        for name in generated:
             target = output / managedRelative(name)
             atomicWrite(root, target, (candidate / managedRelative(name)).read_bytes())
         for obsolete in previous - set(outputs):
