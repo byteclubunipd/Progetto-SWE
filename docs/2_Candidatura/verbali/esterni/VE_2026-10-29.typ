@@ -4,7 +4,7 @@
   titolo: "Verbale Riunione",
   data: "29 ottobre 2026",
   versione: false,
-  firma: false,
+  firma: true,
   autori: (RP,),
   tipoRiunione: "Esterna con proponente",
   luogo: "Google Meet",
