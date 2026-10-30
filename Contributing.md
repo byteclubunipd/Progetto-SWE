@@ -1,0 +1,120 @@
+# CONTRIBUTING
+
+## 1. Per iniziare
+
+Prima di iniziare assicurarsi di aver installato gli strumenti e i software necessari. <br>
+Clona la repository:
+```
+git clone https://github.com/byteclubunipd/Progetto-SWE.git
+cd Progetto-SWE
+```
+
+## 2. Workflow
+Il Workflow utilizzato per il progetto è il *gitflow workflow*, molto utilizzato in ambito professionale e molto comodo per gestire un numero elevato di branch. Per saperne di più si può vedere la seguente documentazione: [GITFLOW WORKFLOW](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow). <br>
+Si crea un branch separato per ogni cambiamento e per la loro nomenclatura di segue lo standard. <br>
+Esempi: 	
+- feature/add-new-feature
+- fix/fix-bug-description
+- docs/update-documentation <br>
+
+Evitare di fare commit direttamente sul *main* e sul branch *develop*.
+
+## 3. Nomenclatura per i documenti
+I documenti sono stati divisi in due categorie: 
+- Verbali e diari di bordo, per i quali si utilizza la nomenclatura [VE/VI/DDB_YYYY-MM-DD], in cui VI sta per verbale interno, VE per verbale esterno e DDB per diario di bordo. 
+- Documenti tecnici, per i quali si utilizza la nomenclatura ["Nome documento" vx.y.z]. In quest'ultima, x identifica le modifiche sostanziali al contenuto, y le modifiche alla struttura e z le modifiche allo stile. <br>
+
+Esempi:
+- [VI_2005-12-22] è il nome di un verbale interno del 22 Dicembre 2005
+- Analisi_dei_requisiti v8.8.8
+
+## 4. Standard di codifica
+- Per nominare variabili e funzioni usare il camelCase;
+- Usare nomi chiari e descrittivi;
+- Inserire commenti nei casi in cui il codice non sia autoesplicativo;
+- Mantenere il codice pulito e semplice, senza creare funzioni e variabili inutili.
+
+## 5. Testing
+- Prima di fare una commit effettuare una sessione di test;
+- Assicurarsi che dopo le modifiche il processo di build del progetto non dia errori;
+- Assicurarsi che le modifiche non vadano a influenzare il corretto funzionamento dei moduli già esistenti.
+
+## 6. Commits e Pull requests
+- Scrivere messaggi chiari e descrittivi nelle commit;
+- Spiegare il fine delle modifiche nella pull request, possibilmente evidenziando la issue;
+- Descrivere come sono stati testati i cambiamenti;
+- Inserire il verificatore per la verifica della pull request.
+
+## 7. Typst e template
+
+### Installazione
+
+Typst è un sistema di composizione di documenti. Installarlo usando uno dei seguenti comandi:
+
+- **Windows** (Windows Package Manager): `winget install --id Typst.Typst`;
+- **macOS** (Homebrew): `brew install typst`;
+- **Linux**: `sudo apt install typst` (se disponibile nella distribuzione) oppure `cargo install typst-cli`.
+
+Verificare l'installazione con `typst --version` (si consiglia di riavviare VScode). Per altre modalità consultare la [documentazione ufficiale](https://typst.app/docs/).
+
+### Compilazione
+
+Eseguire i comandi dalla cartella principale del progetto. Per compilare un file `.typ` in PDF:
+
+```bash
+typst compile --root . docs/5_Templates/verbale.typ docs/6_Output/verbale.pdf
+```
+
+Per ricompilare automaticamente il documento mentre si modifica un file sorgente (lo fa quando salvi) usare:
+
+```bash
+typst watch --root . docs/5_Templates/verbale.typ docs/6_Output/verbale.pdf
+```
+
+Sostituire i percorsi con il documento da generare e con il nome del PDF desiderato. Gli asset usati dai template devono rimanere nella cartella `docs/5_Templates/assets/`.
+
+### Struttura delle cartelle
+
+- `docs/1_Diario_di_bordo/`, `docs/2_Candidatura/`, `docs/3_RTB/` e `docs/4_PB/` contengono i documenti organizzati per fase; i verbali sono divisi in `interni/` ed `esterni/`.
+- `docs/5_Templates/` contiene i sorgenti Typst riutilizzabili e le immagini nella sottocartella `assets/`.
+- `docs/6_Output/` contiene i PDF generati, con una struttura analoga a quella dei documenti sorgente. I file `.gitkeep` servono a mantenere nel repository le cartelle vuote.
+
+### Template
+
+`base.typ` contiene impostazioni e componenti condivisi, come layout, font, spaziature, eccetera. `verbale.typ`, `diario_di_bordo.typ` e `documento.typ` sono template completi per i rispettivi tipi di documento; i file `*_vuoto.typ` sono versioni minimali da copiare, incollare nella cartella desiderata, modificare con gli elementi da scrivere nel documento e compilare.
+
+## 8. Script Python, build e test
+
+Gli script Python automatizzano la generazione della documentazione e verificano che la
+pipeline funzioni correttamente:
+
+- `.github/scripts/build_documents.py` cerca i sorgenti `.typ`, li compila in PDF con
+  Typst, aggiorna il catalogo del sito e prepara la versione pubblicabile in
+  `website/build/`;
+- `test/test_build_documents.py` contiene i test automatici della pipeline: controlla
+  la compilazione, il catalogo HTML, i link e la gestione degli errori senza dover
+  compilare davvero i documenti Typst.
+
+I comandi seguenti vanno eseguiti dalla cartella principale del progetto.
+
+### Build completa
+
+Per compilare i documenti e generare il sito:
+
+```bash
+python .github/scripts/build_documents.py
+```
+
+Il comando richiede che Typst sia installato e aggiorna i PDF in `docs/6_Output/` e
+il sito generato in `website/build/`.
+
+### Test
+
+Per eseguire i test della pipeline:
+
+```bash
+python -m unittest discover -s test -p "test_build_documents.py" -v
+```
+
+Prima di aprire una pull request è consigliato eseguire prima i test e poi la build,
+così da verificare sia il comportamento automatico sia la generazione degli artefatti.

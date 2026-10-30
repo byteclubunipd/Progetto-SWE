@@ -1,0 +1,114 @@
+name: Documenti Typst e sito
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: documenti-${{ github.event_name }}-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      current: ${{ steps.save.outputs.current }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+      - uses: typst-community/setup-typst@v5
+        with:
+          typst-version: '0.15.1'
+      - name: Verifica generatore
+        run: python -m unittest discover -s test -p test_build_documents.py -v
+      - name: Verifica modelli Typst
+        shell: bash
+        run: |
+          for templatePath in docs/5_Templates/*_vuoto.typ; do
+            typst compile --root . --creation-timestamp 0 "$templatePath" "$RUNNER_TEMP/$(basename "$templatePath" .typ).pdf"
+          done
+      - name: Compila documenti e genera HTML
+        run: python .github/scripts/build_documents.py
+      - name: Conserva anteprima
+        uses: actions/upload-artifact@v7
+        with:
+          name: documentazione
+          path: website/build/
+          retention-days: 14
+          if-no-files-found: error
+      - name: Salva PDF e manifest nel branch di lavoro
+        id: save
+        if: github.event_name != 'pull_request' && startsWith(github.ref, 'refs/heads/')
+        env:
+          branchName: ${{ github.ref_name }}
+          expectedSha: ${{ github.sha }}
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "current=false" >> "$GITHUB_OUTPUT"
+          gh auth setup-git --hostname github.com
+          git fetch origin "$branchName"
+          if [ "$(git rev-parse FETCH_HEAD)" != "$expectedSha" ]; then
+            echo "Il branch contiene un push più recente: risultati non salvati."
+            exit 0
+          fi
+          # Gitflow: main e develop ricevono modifiche soltanto tramite pull request.
+          if [ "$branchName" = "main" ] || [ "$branchName" = "develop" ]; then
+            echo "Branch di integrazione: nessun commit automatico."
+            echo "current=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # Il sito generato in website/build rimane ignorato da Git.
+          git add -- docs/6_Output .github/typst-manifest.json
+          if git diff --cached --quiet; then
+            echo "current=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Aggiornamento PDF e manifest"
+          if ! git push origin "HEAD:refs/heads/$branchName"; then
+            git fetch origin "$branchName"
+            if [ "$(git rev-parse FETCH_HEAD)" != "$expectedSha" ]; then
+              echo "Un nuovo push ha preceduto questo aggiornamento: nessuna sovrascrittura."
+              exit 0
+            fi
+            exit 1
+          fi
+          echo "current=true" >> "$GITHUB_OUTPUT"
+      - name: Prepara pubblicazione Pages
+        if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && steps.save.outputs.current == 'true'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: website/build/
+
+  deploy:
+    needs: build
+    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop') && needs.build.outputs.current == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    concurrency:
+      group: github-pages
+      cancel-in-progress: false
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/configure-pages@v5
+      - name: Pubblica sito
+        id: deployment
+        uses: actions/deploy-pages@v4
