@@ -1,4 +1,4 @@
-// Lettera di Presentazione — ByteClub
+// Lettera di Presentazione - ByteClub
 
 #import "../5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
 #import "../5_Templates/documento.typ": documento
@@ -12,7 +12,7 @@
 
 
 #let repo = "https://github.com/byteclubunipd/Progetto-SWE"
-#let link-val = repo + "/blob/main/docs/6_Output/2_Candidatura/Valutazione_Capitolati-v1.0.0.pdf"
+#let link-val = repo + "/blob/main/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
 #let link-prev = repo + "/blob/main/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
 
 #let costo = "11.490"
@@ -64,10 +64,10 @@ verbale esterno del 2026-10-21. Gli esiti principali sono:
 
 - *Provider AI:* il sistema deve supportare i protocolli standard de facto (OpenAI Responses API, Anthropic Messages) con preset per i servizi più noti, cloud e on-premise (es. OpenRouter, Ollama); alcuni provider hanno free tier sufficienti per un uso sporadico;
 - *Privacy:* il rilevamento della wake word deve avvenire in locale sul dispositivo; solo dopo il suo riconoscimento il buffer del discorso viene inviato al server;
-- *Hardware e firmware:* la lista hardware proposta non è vincolante e ogni combinazione ben motivata è accettata; Rust è una proposta, non un obbligo, ed è ammessa una scheda dotata di sistema operativo Linux, purché il sistema sia immutabile (filesystem in sola lettura) e aggiornabile via OTA;
+- *Hardware e firmware:* la lista hardware proposta non è vincolante e ogni combinazione ben motivata è accettata; Rust è una proposta, non un obbligo, e una scheda dotata di sistema operativo Linux è ammessa;
 - *Skill:* deve esistere uno standard che permetta all'utente di creare nuove skill; per la dimostrazione il gruppo ne realizzerà una o due;
 - *Interconnessione:* il minimo richiesto è che un FossDot invii un messaggio e un altro lo riceva; l'ideale è una chiamata in tempo reale tra i due dispositivi; l'interoperabilità con prodotti terzi è un valore aggiunto;
-- *Contenitore:* sono richieste la valutazione delle dimensioni e le misure di montaggio, con indicazione del posizionamento e delle misure delle viti; il disegno CAD è opzionale.
+- *Contenitore:* per il prototipo CAD servono le misure della scatola progettata e le modalità di montaggio, con indicazione delle dimensioni e del posizionamento delle viti.
 
 = Motivazione della scelta
 
