@@ -41,7 +41,8 @@
   indice: true,
 )
 
-Egregi Professori Vardanega e Cardin,
+Egregio Professore Vardanega, \
+Egregio Professore Cardin,
 
 con la presente, il gruppo #gruppo comunica formalmente la propria candidatura
 per l'aggiudicazione del capitolato *#codice* "#titolo", proposto dall'azienda
