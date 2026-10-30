@@ -11,9 +11,9 @@
 #let proponente = "Uranion EMEA Ltd"
 
 
-#let repo = "https://github.com/byteclubunipd/Progetto-SWE"
-#let link-val = repo + "/blob/main/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
-#let link-prev = repo + "/blob/main/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
+#let repo = "https://byteclubunipd.github.io/Progetto-SWE/"
+#let link-val = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
+#let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
 
 #let costo = "11.490"
 #let ore = "552"
