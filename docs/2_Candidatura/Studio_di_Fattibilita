@@ -1,116 +1,157 @@
+#import "/docs/5_Templates/documento.typ": *
+
+// Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
+// Documento interno, stessa struttura di lettera e valutazione capitolati.
+// Verifica e approvazione verranno aggiunte dopo la revisione.
+
+#show: documento.with(
+  titolo: "Studio di Fattibilità",
+  versione: "1.0.0",
+  stato: "In redazione",
+  redazione: (LS),
+  verifica: "",
+  approvazione: "",
+  proprietario: "ByteClub",
+  uso: "Interno",
+  destinatari: "Gruppo ByteClub",
+  modifiche: (
+    ("1.0.0", "2026-10-30", LS, "Prima stesura dello Studio di Fattibilità."),
+  ),
+  indice: true,
+)
+
+= Introduzione
+== Scopo del documento
+Il presente documento, ad uso interno del gruppo ByteClub, raccoglie l'analisi di fattibilità dei capitolati esaminati e motiva la scelta del capitolato *C3 - FossDot*. Per il capitolato scelto vengono riportati le motivazioni, le strategie di mitigazione dei rischi, il piano di formazione preliminare e l'impegno orario stimato. Per i capitolati scartati vengono riportati descrizione, vincoli, aspetti positivi, fattibilità, valutazione economica e motivi di scarto.
+== Capitolati analizzati
+Il gruppo ha analizzato in dettaglio tre capitolati, in ordine di preferenza:
++ *C3 - FossDot* (Uranion EMEA Ltd), capitolato scelto;
++ *C8 - Sonar* (Halue S.r.l. Società Benefit), scartato;
++ *C1 - AURA* (Vimar S.p.A.), scartato.
+
+Gli altri capitolati proposti (C0, C2, C4, C5, C6, C7 e C9) sono stati esaminati in modo più sintetico e sono descritti nel documento esterno _Valutazione Capitolati_.
 
 = Capitolato scelto: C3 - FossDot
-
 == Motivazioni della scelta
+*Proponente:* Uranion EMEA Ltd.
 
-Il gruppo ByteClub ha selezionato il capitolato *C3 - FossDot*, proposto da Uranion EMEA Ltd., dopo aver confrontato le opportunità formative, la complessità tecnica e la fattibilità delle proposte esaminate. La scelta è motivata dai seguenti aspetti.
+*Descrizione.* FossDot prevede la realizzazione di uno smart speaker open source, estensibile e rispettoso della privacy, alternativo ai dispositivi commerciali chiusi come Amazon Echo Dot e Google Nest. L'ecosistema comprende hardware di riferimento, firmware embedded, un servizio di bridging verso provider AI configurabili (pipeline Speech-to-Text, LLM, Text-to-Speech), l'integrazione di servizi esterni tramite Model Context Protocol (MCP), Skills e Agents, e un'interfaccia web per registrare e gestire più dispositivi. L'obiettivo è offrire una piattaforma vocale domestica aperta, in cui il proprietario sceglie il provider AI, ispeziona ciò che viene inviato ai servizi remoti e fa cooperare più dispositivi.
 
-- *Allineamento con le competenze disponibili:* il gruppo possiede una buona base nella programmazione orientata agli oggetti, nell'utilizzo di Git e nella configurazione di ambienti Linux. È inoltre presente una certa familiarità con i modelli linguistici eseguibili localmente tramite Ollama. Queste competenze costituiscono un punto di partenza per affrontare lo sviluppo del backend e l'integrazione dei servizi AI, pur rendendo necessario un approfondimento degli aspetti embedded e della gestione dell'audio.
+*Tecnologie e vincoli.* Uranion non impone uno stack: la scelta spetta al gruppo, che deve motivarla. Come riferimenti non prescrittivi il capitolato cita Rust embedded ed Embassy, Raspberry Pi, Seeed ReSpeaker, openWakeWord, Silero VAD, faster-whisper, Piper, MCP, Ollama, Axum e Tokio. Il firmware in Rust è una preferenza e un valore aggiunto, non un vincolo. Sono obbligatori la licenza open source permissiva (MIT o Apache 2.0), un collaudo end-to-end su dispositivo fisico (wake word, domanda, risposta vocale), il rispetto del GDPR sui flussi audio e, per bridging e interfaccia di gestione, una copertura dei test di riferimento ≥ 80%; per il firmware il livello è concordato con la proponente. Il gruppo può fermarsi all'MVP o procedere alla consegna completa.
 
-- *Interesse tecnico e professionale:* FossDot permette di lavorare con tecnologie attuali, tra cui modelli linguistici, riconoscimento e sintesi vocale, Model Context Protocol (MCP) e sistemi embedded. Il progetto offre quindi l'opportunità di approfondire l'intelligenza artificiale applicata, la progettazione di sistemi distribuiti e l'integrazione tra componenti software e hardware.
+*Motivazioni della scelta.* Il gruppo ByteClub ha selezionato FossDot dopo aver confrontato opportunità formative, complessità tecnica e fattibilità delle proposte esaminate:
 
-- *Realizzazione di un prodotto completo:* il capitolato comprende hardware, firmware, servizi backend e interfaccia di gestione. Questa articolazione consente di affrontare diverse fasi del ciclo di sviluppo del software e di comprendere come componenti distinti possano collaborare all'interno di un unico sistema. La possibilità di realizzare e collaudare un dispositivo fisico funzionante rappresenta inoltre un risultato concreto e verificabile.
+- *Allineamento con le competenze disponibili:* il gruppo ha una buona base nella programmazione orientata agli oggetti, nell'utilizzo di Git e nella configurazione di ambienti Linux, oltre a una certa familiarità con i modelli linguistici in locale tramite Ollama. Queste competenze sono un punto di partenza per il backend e l'integrazione dei servizi AI, mentre gli aspetti embedded e la gestione dell'audio richiedono un approfondimento.
 
-- *Libertà progettuale e modularità:* la possibilità di motivare le scelte relative alle tecnologie e ai componenti hardware offre al gruppo margine per individuare soluzioni adeguate alle proprie competenze e ai vincoli temporali. La separazione tra firmware, backend, provider AI e interfaccia di gestione favorisce inoltre una suddivisione del lavoro in componenti e responsabilità distinte. La licenza open source permissiva prevista dal capitolato è un ulteriore elemento positivo.
+- *Interesse tecnico e professionale:* FossDot permette di lavorare con modelli linguistici, riconoscimento e sintesi vocale, MCP e sistemi embedded, approfondendo l'intelligenza artificiale applicata, i sistemi distribuiti e l'integrazione tra software e hardware.
 
-- *Rapporto con il proponente:* il confronto esplorativo con Uranion ha permesso di chiarire aspetti rilevanti del progetto, tra cui la configurabilità dei provider AI, il funzionamento della pipeline audio, la gestione degli aggiornamenti del dispositivo e le funzionalità minime richieste per la comunicazione tra più smart speaker. Il proponente ha inoltre manifestato disponibilità a fornire supporto tecnico, incontri di approfondimento e sessioni formative, contribuendo a ridurre l'incertezza iniziale.
+- *Rapporto tra complessità e fattibilità:* il perimetro è delimitato da una consegna minima (MVP) e da una completa, e il gruppo può fermarsi all'MVP. Esistono molti progetti open source di riferimento che riducono il rischio tecnologico, e il collaudo su un dispositivo fisico è un risultato concreto e verificabile.
 
-Nel complesso, il gruppo ritiene che FossDot presenti un rapporto equilibrato tra complessità, possibilità di apprendimento e libertà progettuale. Le competenze da acquisire rappresentano una sfida significativa, ma affrontabile mediante una pianificazione progressiva e una suddivisione chiara delle attività.
+- *Libertà progettuale e modularità:* poter motivare le scelte su tecnologie e componenti hardware permette di adattarle alle competenze e ai tempi del gruppo. La separazione tra firmware, backend, provider AI e interfaccia favorisce la suddivisione del lavoro. La licenza permissiva consente di pubblicare il lavoro e citarlo nel curriculum.
 
+- *Rapporto con il proponente:* il confronto esplorativo con Uranion (Appendice B) ha chiarito la configurabilità dei provider AI, la pipeline audio, la gestione degli aggiornamenti e le funzionalità minime per la comunicazione tra più smart speaker. Uranion ha manifestato disponibilità a fornire supporto tecnico, sessioni formative e incontri di approfondimento, con comunicazione via Mattermost, e-mail e videochiamata.
+
+*Criticità riscontrate.* L'integrazione tra hardware e software può allungare i tempi di setup e testing; l'esperienza del gruppo con i componenti hardware è limitata; l'apprendimento di Rust, se scelto, può pesare sui tempi; la progettazione CAD di un eventuale contenitore non è obbligatoria ma è apprezzata e richiede competenze specifiche. Il capitolato non indica chi sostiene il costo dei componenti hardware e il testing del firmware è più oneroso di quello software. Infine FossDot ha capienza di un solo gruppo nel primo lotto, quindi l'assegnazione non è garantita.
+
+Nel complesso FossDot presenta un rapporto equilibrato tra complessità, possibilità di apprendimento e libertà progettuale. Le competenze da acquisire sono una sfida significativa, ma affrontabile con una pianificazione progressiva.
 == Strategie di mitigazione dei rischi
+L'analisi di fattibilità ha evidenziato rischi tecnologici, di personale, sui requisiti e sulle tempistiche. Il gruppo intende adottare le seguenti strategie:
 
-L'analisi di fattibilità ha evidenziato alcuni rischi tecnici e organizzativi che potrebbero incidere sulle tempistiche e sulla qualità del prodotto. Per limitarne gli effetti, il gruppo intende adottare le seguenti strategie.
+- *Capienza del capitolato:* FossDot può essere assegnato a un solo gruppo nel primo lotto. Il gruppo ha dichiarato le preferenze nel foglio condiviso e ha analizzato C8 e C1 come alternative (sezione dei capitolati scartati), per poter ripartire senza perdere il lavoro svolto.
 
-- *Integrazione tra hardware e software:* prima di sviluppare l'intero sistema, verranno configurati e verificati i componenti hardware selezionati, controllando progressivamente l'acquisizione audio, la riproduzione del suono e il funzionamento del dispositivo. Le prove iniziali consentiranno di individuare tempestivamente eventuali problemi di compatibilità o configurazione.
+- *Costo e disponibilità dell'hardware:* verrà chiesto a Uranion chi sostiene l'acquisto dei componenti e se può fornirne parte. La scelta cadrà su componenti diffusi e ben documentati, con una distinta base chiara.
 
-- *Apprendimento delle tecnologie embedded e di sistema:* lo studio delle tecnologie necessarie sarà avviato nelle prime fasi del progetto. La scelta del linguaggio e degli strumenti sarà effettuata considerando i requisiti del capitolato, le competenze disponibili e il tempo necessario per acquisire familiarità con essi. L'eventuale utilizzo di Rust sarà valutato attentamente, evitando di introdurre complessità non necessarie.
+- *Integrazione tra hardware e software:* prima di sviluppare l'intero sistema verranno configurati e verificati i componenti selezionati, controllando progressivamente acquisizione audio, riproduzione e funzionamento del dispositivo.
 
-- *Complessità della pipeline audio:* il flusso di elaborazione vocale verrà implementato e verificato per fasi, distinguendo il rilevamento locale della wake word, la trascrizione del parlato, l'elaborazione della richiesta e la riproduzione della risposta. In caso di difficoltà nell'integrazione completa, i singoli componenti saranno testati separatamente e collegati progressivamente.
+- *Apprendimento delle tecnologie embedded:* lo studio partirà nelle prime fasi. L'MVP potrà essere sviluppato su una scheda con Linux e un linguaggio già noto; il firmware in Rust, preferenza e non vincolo, sarà valutato in un secondo momento.
 
-- *Dipendenza da servizi e provider esterni:* l'accesso ai modelli AI e ai servizi di trascrizione sarà isolato dietro interfacce dedicate, così da facilitare la sostituzione di un provider in caso di indisponibilità, incompatibilità o limiti di utilizzo. Le prove saranno pianificate considerando anche i vincoli dei servizi selezionati e le risorse messe a disposizione dal proponente.
+- *Complessità della pipeline audio:* il flusso verrà implementato e verificato per fasi (wake word locale, trascrizione, elaborazione della richiesta, risposta), con test separati dei componenti. Sarà prevista anche l'attivazione manuale (push-to-talk), ammessa dal capitolato.
 
-- *Privacy e protezione dei dati:* il sistema dovrà rispettare i requisiti di riservatezza previsti dal capitolato e la normativa applicabile. Il rilevamento della wake word avverrà localmente sul dispositivo; l'invio dell'audio ai servizi di trascrizione sarà gestito in modo coerente con il comportamento previsto e con le scelte architetturali documentate. Saranno valutate attentamente le informazioni trasmesse ai provider esterni.
+- *Dipendenza da provider esterni:* l'accesso ai modelli AI e ai servizi di trascrizione sarà isolato dietro interfacce dedicate, per sostituire un provider in caso di indisponibilità o limiti. Per sviluppo e test si potranno usare modelli locali con Ollama.
 
-- *Aggiornamenti e affidabilità del dispositivo:* saranno considerate soluzioni che riducano il rischio di corruzione del sistema in caso di spegnimento improvviso e che consentano aggiornamenti controllati. Le scelte implementative saranno verificate rispetto ai vincoli hardware e alle indicazioni del proponente.
+- *Privacy e protezione dei dati:* la wake word sarà rilevata localmente; l'invio dell'audio ai servizi di trascrizione sarà coerente con le scelte architetturali documentate. STT e TTS interamente locali, previsti come evoluzione, saranno valutati dopo l'MVP. Particolare attenzione a segreti e chiavi API.
 
-- *Rischi relativi a tempi e requisiti:* lo sviluppo sarà suddiviso in incrementi verificabili, dando priorità alle funzionalità minime richieste. Le funzionalità aggiuntive, come le integrazioni con prodotti di terze parti o le estensioni più avanzate, saranno pianificate solo dopo aver consolidato il funzionamento del nucleo essenziale del sistema.
+- *Aggiornamenti e affidabilità del dispositivo:* saranno considerate soluzioni che riducano il rischio di corruzione del sistema in caso di spegnimento improvviso e che consentano aggiornamenti controllati.
 
-- *Difficoltà di coordinamento e integrazione:* i componenti saranno sviluppati con interfacce concordate e responsabilità definite. Il gruppo utilizzerà il versionamento del codice e test progressivi per individuare tempestivamente regressioni e incompatibilità. In caso di ritardi, le funzionalità non essenziali potranno essere rinviate, preservando gli obiettivi minimi del capitolato.
+- *Test del firmware:* il livello di copertura sarà concordato con Uranion; per le componenti software il riferimento è ≥ 80% con report.
 
+- *Tempi e requisiti:* sviluppo per incrementi verificabili con priorità all'MVP; integrazioni MCP, Skills e Agents e funzioni multi-dispositivo avanzate saranno pianificate dopo aver consolidato il nucleo.
+
+- *Disponibilità dei componenti del gruppo:* calendario condiviso, rotazione dei ruoli e margine di sicurezza nel preventivo per i periodi di esami.
+
+- *Coordinamento e integrazione:* interfacce concordate, responsabilità definite, versionamento e test progressivi; in caso di ritardi le funzionalità non essenziali saranno rinviate.
 == Piano di formazione preliminare
+*Competenze disponibili:* buona base nei linguaggi orientati agli oggetti, conoscenza di sistemi Linux, utilizzo di Git e familiarità con i modelli linguistici in locale tramite Ollama.
 
-La formazione iniziale sarà orientata a colmare le lacune individuate nell'analisi di fattibilità, consolidando al contempo le competenze già disponibili. Le attività saranno organizzate in modo progressivo, in parallelo con la configurazione dell'ambiente di sviluppo e con i primi prototipi.
+*Competenze da acquisire:* programmazione embedded e system-level, streaming audio asincrono e protocolli di rete in tempo reale, configurazione dell'hardware e, se scelto, Rust.
 
-- *Studio dell'hardware e dei sistemi embedded:* analisi della documentazione dei componenti selezionati, configurazione dell'ambiente di esecuzione e approfondimento delle modalità di comunicazione con microfoni, altoparlanti e componenti di feedback luminoso.
+*Piano di formazione.* La formazione procederà in parallelo con la configurazione dell'ambiente e i primi prototipi:
 
-- *Elaborazione audio:* studio dei meccanismi necessari per la gestione dello streaming audio asincrono, del rilevamento della wake word e dell'integrazione tra Speech-to-Text e Text-to-Speech. L'obiettivo iniziale sarà realizzare una pipeline minima funzionante e verificabile.
+- *Hardware e sistemi embedded:* documentazione della scheda e dei componenti scelti (ad esempio Raspberry Pi e array di microfoni Seeed ReSpeaker come riferimenti del capitolato). Se si valuta Rust, Rust Embedded Book ed Embassy.
+- *Elaborazione audio:* streaming asincrono, wake word (ad esempio openWakeWord), voice activity detection (ad esempio Silero VAD), STT (ad esempio faster-whisper) e TTS (ad esempio Piper), con l'obiettivo di una pipeline minima verificabile.
+- *Backend e comunicazione:* framework asincroni e protocolli di rete per il servizio di bridging (ad esempio Axum e Tokio, se si sceglie Rust) e scoperta dei dispositivi in rete.
+- *Integrazione dei modelli AI:* API dei provider, configurabilità, gestione degli errori, modelli locali con Ollama, MCP, Skills e Agents.
+- *Prior art:* Willow e Rhasspy / Home Assistant, indicati dal capitolato come ispirazione.
+- *Affidabilità, test e aggiornamenti:* verifica dei singoli componenti, gestione degli errori e protezione da interruzioni e aggiornamenti non riusciti.
 
-- *Backend e comunicazione tra componenti:* approfondimento dei framework asincroni e dei protocolli di rete necessari per implementare il servizio di bridging e gestire le comunicazioni tra dispositivo, backend e servizi esterni.
-
-- *Integrazione dei modelli AI:* studio delle API e dei formati di comunicazione supportati dai provider selezionati, con particolare attenzione alla configurabilità dei modelli e alla gestione degli errori. Saranno inoltre approfondite le modalità di integrazione di MCP e delle relative Skills e Agents, in funzione delle priorità concordate.
-
-- *Affidabilità, test e aggiornamenti:* studio delle tecniche di verifica dei singoli componenti, della gestione degli errori e delle soluzioni utili a proteggere il dispositivo da interruzioni impreviste e aggiornamenti non riusciti.
-
-Il piano prevede una prima fase di circa due settimane dedicata allo studio della documentazione hardware, alla configurazione della pipeline audio e all'approfondimento dei framework asincroni necessari al servizio di bridging. Potrà essere necessaria un'ulteriore settimana per acquisire familiarità con i sistemi embedded selezionati. Queste stime costituiscono una previsione iniziale e saranno aggiornate sulla base dei risultati ottenuti.
-
-Il gruppo intende inoltre sfruttare gli incontri di approfondimento e le sessioni formative offerte da Uranion, utilizzandoli per chiarire i dubbi tecnici emersi durante lo sviluppo e verificare la correttezza delle scelte architetturali.
-
+*Stima dei tempi.* Circa due settimane per studiare la documentazione hardware, configurare la pipeline audio e approfondire i framework asincroni del servizio di bridging, più una settimana per familiarizzare con i sistemi embedded selezionati. È una stima iniziale, da aggiornare in base ai risultati. Il gruppo userà anche gli incontri di approfondimento e le sessioni formative di Uranion.
 == Impegno orario stimato
+L'impegno è quello definito nel preventivo dei costi e degli impegni orari del gruppo ByteClub: *552 ore produttive*, pari a *92 ore per ciascuno dei sei componenti*, per un costo preventivato di *11.490 €* e una scadenza ultima di consegna prevista al *2027-03-21*.
 
-L'impegno previsto per la realizzazione del progetto è quello definito nel preventivo dei costi e degli impegni orari del gruppo ByteClub. La pianificazione considera un totale di *552 ore produttive*, corrispondenti a *92 ore per ciascuno dei sei componenti del gruppo*.
+Le ore saranno distribuite tra responsabilità e coordinamento, amministrazione, analisi, progettazione, programmazione e verifica, secondo la ripartizione del preventivo, e coprono analisi dei requisiti, formazione, progettazione, implementazione, integrazione hardware-software, verifica e collaudo.
 
-Le ore saranno distribuite tra le attività di responsabilità e coordinamento, amministrazione, analisi, progettazione, programmazione e verifica, secondo la ripartizione riportata nel preventivo dedicato.
-
-L'impegno sarà articolato lungo l'intero ciclo di sviluppo: analisi e chiarimento dei requisiti, formazione preliminare, progettazione architetturale, implementazione dei componenti, integrazione hardware-software, verifica e collaudo finale. La ripartizione delle ore sarà monitorata durante il progetto e potrà essere aggiornata in funzione dell'avanzamento e delle criticità riscontrate, mantenendo gli obiettivi concordati e i vincoli del preventivo.
-
+*Valutazione economica.* Il monte ore è adeguato all'MVP, che richiede un solo provider AI configurabile, un flusso end-to-end su dispositivo fisico e un'interfaccia minima. La consegna completa è più impegnativa, quindi si darà priorità all'MVP e si tratteranno le estensioni in base all'avanzamento. Le incognite principali sono costo e tempi di approvvigionamento dell'hardware e il tempo di integrazione tra firmware e servizio. Come piano alternativo, se l'integrazione embedded si rivelasse troppo onerosa, l'MVP può essere realizzato su una scheda con Linux e un linguaggio già noto, rinviando Rust. La ripartizione sarà monitorata e ricalibrata nel rispetto del preventivo.
 
 = Capitolati scartati
+== Capitolato C8 - Sonar
+*Proponente:* Halue S.r.l. Società Benefit.
 
-== Capitolato C8 - Sonar: motivi dello scarto
+*Descrizione.* Sonar è una piattaforma web che si collega a uno store Shopify, ne acquisisce configurazioni e codice dei temi tramite le Admin API e ricostruisce un grafo di dipendenze tra entità (app, webhook, campi personalizzati, file di tema). Un motore di regole estensibile segnala orfani e codice morto, e il sistema produce documentazione consultabile ed esportabile, con confronto tra snapshot successivi.
 
-*Proponente:* Halue S.r.l.
+*Tecnologie e vincoli.* Lo stack è vincolante: Next.js su Vercel, Vercel Workflows e Cron Jobs, Supabase (PostgreSQL con Row Level Security), autenticazione solo Google, TypeScript strict e Shopify Admin GraphQL API. I requisiti obbligatori sono trentaquattro (venti funzionali, sette di qualità e sicurezza, sette non funzionali), con copertura dei test ≥ 70%, almeno il 95% di casi di test superati e falsi positivi ≤ 10% sulle segnalazioni ad alta severità. Una riduzione dell'ambito è possibile solo con accordo scritto con Halue.
 
-Il capitolato C8 - Sonar propone la realizzazione di una piattaforma web per l'analisi delle configurazioni di uno store Shopify e la generazione automatica di documentazione tecnica aggiornata. Il sistema dovrà raccogliere informazioni relative alle applicazioni installate, ai webhook, alle automazioni, ai campi personalizzati e al codice dei temi, ricostruendo le dipendenze tra i diversi componenti e individuando configurazioni obsolete o potenziali criticità.
+*Aspetti positivi.* Problema reale, requisiti e criteri di accettazione molto chiari, architettura modulare, tecnologie web diffuse e spendibili, incontri quindicinali con la proponente e competenze su Shopify Plus.
 
-La proposta è stata valutata positivamente per diversi aspetti:
+*Fattibilità.* Il gruppo ha conoscenze di base di sviluppo web e di database relazionali; sarebbero da apprendere Vercel Workflows, Supabase con Row Level Security, il modello a punti del rate limiting di Shopify, il parsing di file Liquid e gli strumenti di test (Vitest, Playwright, MSW), con circa due settimane di studio iniziale.
 
-- *Applicazione concreta:* affronta un problema reale legato alla manutenzione e alla documentazione degli store e-commerce.
-- *Tecnologie spendibili:* prevede l'utilizzo di strumenti moderni, tra cui Next.js, TypeScript, PostgreSQL e servizi per la distribuzione e l'esecuzione dei processi.
-- *Qualità del software:* attribuisce importanza ai test automatici, alla gestione degli errori e all'affidabilità delle analisi.
-- *Requisiti strutturati e supporto aziendale:* la descrizione delle funzionalità e dei criteri di accettazione agevola la pianificazione, mentre il confronto con il proponente può favorire la validazione delle scelte progettuali.
+*Valutazione economica.* Con 552 ore il perimetro obbligatorio è molto ampio rispetto al budget e il rapporto tra ore e complessità è sfavorevole, soprattutto per la costruzione dello store di test e per le soglie di accettazione. La riduzione dell'ambito richiede un accordo scritto con Halue con anticipo.
 
-Nonostante questi elementi, il gruppo ha individuato alcune criticità che hanno contribuito alla decisione di non selezionare il capitolato:
-
-- *Dipendenza dall'ecosistema Shopify:* lo sviluppo richiede una conoscenza approfondita delle API, delle strutture dati e delle limitazioni della piattaforma.
-- *Complessità dell'analisi delle dipendenze:* la ricostruzione delle relazioni tra componenti eterogenei e l'individuazione di elementi realmente inutilizzati richiedono un lavoro accurato, soprattutto per limitare i falsi positivi.
-- *Vincoli tecnologici:* l'adozione dello stack previsto dal capitolato riduce la libertà di scelta del gruppo e richiede un periodo iniziale di apprendimento degli strumenti indicati.
-- *Ampiezza delle funzionalità:* la necessità di integrare acquisizione dei dati, analisi, documentazione, scansioni affidabili e test può rendere impegnativa la realizzazione del prodotto completo nei tempi disponibili.
-- *Preparazione dell'ambiente di test:* il gruppo dovrà predisporre autonomamente uno store Shopify di sviluppo e popolarlo con configurazioni e anomalie rappresentative, non essendo previsto uno store già configurato con dati proprietari.
-
-Il gruppo riconosce il valore applicativo e formativo di Sonar, in particolare per quanto riguarda la progettazione di applicazioni web e l'analisi statica delle dipendenze. Tuttavia, rispetto a questa proposta, FossDot è stato ritenuto maggiormente in linea con gli interessi del gruppo, grazie alla possibilità di realizzare un prodotto fisico completo, sperimentare l'integrazione hardware-software e disporre di maggiore libertà nelle scelte progettuali.
-
-== Capitolato C1 - AURA: motivi dello scarto
-
+*Motivi di scarto.* Sonar è stata la seconda preferenza del gruppo, ma è stato scartato per questi motivi:
+- *Stack vincolante:* Vercel, Supabase, autenticazione Google e TypeScript strict; una deroga va richiesta entro l'analisi dei requisiti. È l'opposto della libertà tecnologica di FossDot.
+- *Dominio specifico:* servono conoscenze di Shopify (GraphQL, metafield, temi Liquid, rate limiting), poco riusabili al di fuori della piattaforma.
+- *Ampiezza dei requisiti:* trentaquattro requisiti obbligatori con soglie di accettazione severe.
+- *Lavoro preliminare:* costruzione e documentazione di uno store Shopify di test a carico del gruppo.
+- *Limiti dei piani gratuiti e supporto:* Supabase e Vercel hanno soglie basse da monitorare a ogni incontro; non c'è un canale di messaggistica condiviso (solo una casella di posta dedicata) né incontri in presenza.
+- *Interesse tecnico:* inferiore rispetto a FossDot, che copre l'intera catena da hardware a servizi.
+== Capitolato C1 - AURA
 *Proponente:* Vimar S.p.A.
 
-Il capitolato C1 - AURA prevede lo sviluppo di un sistema per integrare impianti domotici residenziali e servizi di intelligenza artificiale generativa. Attraverso MCP, API KNX IoT e modelli linguistici esterni, la soluzione dovrà consentire agli utenti di monitorare e controllare dispositivi domestici, come luci, termostati e tapparelle, mediante richieste in linguaggio naturale.
+*Descrizione.* AURA prevede un server e un client MCP che espongono le API KNX IoT 3rd-party di Vimar a servizi AI commerciali (ad esempio Claude, ChatGPT, Gemini), per monitorare e controllare in linguaggio naturale luci, termostati, tapparelle e altri dispositivi di un impianto domotico residenziale, con un'infrastruttura cloud-ready.
 
-Il gruppo ha riconosciuto diversi punti di forza nella proposta:
+*Tecnologie e vincoli.* Sono obbligatori Docker Compose come Infrastructure as Code, compatibilità con AWS, MCP, API KNX IoT con OAuth2 e notifiche in push tramite Subscription (il polling non è ammesso). Il server MCP deve supportare le API Authorization, Datapoint, Function, Information, Location, Subscription e Timeseries. La copertura dei test deve essere ≥ 75% (unità e integrazione) e ≥ 80% (end-to-end).
 
-- *Tecnologie innovative:* l'integrazione tra intelligenza artificiale, MCP e sistemi IoT offre un'importante opportunità di apprendimento.
-- *Applicazione concreta:* il progetto permette di verificare il funzionamento della soluzione su dispositivi fisici.
-- *Architettura modulare:* la suddivisione in componenti distinti favorisce la separazione delle responsabilità e la manutenibilità.
-- *Supporto del proponente:* la disponibilità di un kit domotico View Wireless consente di effettuare prove su dispositivi reali.
+*Aspetti positivi.* Tecnologie innovative (MCP, LLM, IoT); applicazione concreta su un kit domotico View Wireless fornito da Vimar; sede a Padova con almeno due incontri in presenza, stati di avanzamento bisettimanali e spazio su AWS se richiesto; casi d'uso già elencati (17 base e 21 avanzati); tecnologia MCP in comune con FossDot.
 
-La valutazione ha tuttavia evidenziato alcune criticità:
+*Fattibilità.* Le competenze generali del gruppo su Git, Linux e modelli linguistici sono applicabili; sarebbero da apprendere MCP, API KNX IoT con OAuth2, Docker Compose come Infrastructure as Code e servizi AWS, con circa due settimane di studio iniziale (stima preliminare).
 
-- *Complessità dell'integrazione:* il coordinamento tra modelli AI, componenti MCP, API KNX IoT e dispositivi domotici richiede competenze eterogenee e un'attenta attività di debugging.
-- *Dipendenza da servizi esterni:* il funzionamento dipende dall'interazione con modelli linguistici, servizi cloud e dispositivi, con possibili difficoltà nelle attività di testing e nella gestione delle indisponibilità.
-- *Affidabilità e sicurezza:* l'utilizzo di modelli linguistici per generare comandi destinati a dispositivi fisici richiede controlli adeguati per evitare operazioni errate o comportamenti indesiderati.
-- *Ampiezza delle competenze richieste:* il progetto coinvolge infrastrutture cloud, protocolli di comunicazione, AI e IoT, rendendo necessario un investimento iniziale significativo nella formazione.
+*Valutazione economica.* Il perimetro obbligatorio è ben definito e confrontabile con il monte ore di 552 ore, ma le soglie di test elevate e l'infrastruttura come codice assorbirebbero una quota significativa delle ore di verifica. Il rapporto tra ore e complessità è accettabile.
 
-AURA rappresenta quindi una proposta di elevato interesse tecnologico, ma la combinazione di sistemi differenti e la necessità di garantire interazioni affidabili con dispositivi domotici sono state considerate criticità rilevanti rispetto alle tempistiche e alle competenze da acquisire.
+*Motivi di scarto.*
+- *Elevata concorrenza:* numerosi gruppi hanno indicato C1 tra le proprie preferenze. Con una capienza di due gruppi nel primo lotto, la probabilità di assegnazione sarebbe più bassa; il gruppo ha preferito proposte con maggiori probabilità di essere ottenute.
+- *Ecosistema proprietario:* l'accesso alla documentazione KNX IoT richiede registrazione sul sito Vimar e la firma di un documento d'uso, e la soluzione ha senso solo con impianti Vimar.
+- *Componente AI esterna:* l'agente è un servizio commerciale già esistente; il lavoro si concentra sull'adattatore MCP, senza pipeline audio, AI configurabile né firmware.
+- *Requisiti rigidi e test elevati:* Infrastructure as Code, OAuth2, supporto alle API richieste e soglie di copertura ≥ 75% e ≥ 80%.
+- *Complessità dell'integrazione:* il coordinamento tra modelli AI, MCP, API KNX IoT e dispositivi fisici rende più complessi sviluppo, debugging e testing, e l'uso di modelli linguistici per comandare dispositivi reali richiede controlli per evitare operazioni errate.
+- *Overhead di processo:* gli stati di avanzamento richiedono agenda inviata in anticipo e relatore a turno.
 
-Il gruppo ha preferito FossDot perché consente di concentrarsi sulla progettazione di un dispositivo autonomo e di un ecosistema software open source, mantenendo una maggiore libertà nelle scelte tecnologiche e affrontando comunque sfide significative nell'integrazione tra hardware, firmware e servizi AI.
+AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema, la libertà tecnologica e la maggiore probabilità di assegnazione.
 
-La decisione non deriva da una valutazione negativa del valore tecnico di AURA, bensì dalla maggiore aderenza di FossDot agli interessi del gruppo e dal rapporto ritenuto più equilibrato tra complessità, possibilità di apprendimento e libertà progettuale.
+#pagebreak()
+= Appendice A - Contatti aziende
+- *Uranion EMEA Ltd (C3):* Andrea Dorigo, andrea.dorigo\@uranion.ai. Va sempre messo in copia anche info\@uranion.ai.
+- *Halue S.r.l. Società Benefit (C8):* Valentino Baraldo, valentino.baraldo\@halue.io; casella dedicata al progetto sonar\@halue.io.
+- *Vimar S.p.A. (C1):* Mariano Sciacco, mariano.sciacco\@vimar.com; Domenico Bevilacqua, domenico.bevilacqua\@vimar.com; Alberto Pomella, alberto.pomella\@vimar.com (solo in copia).
+
+#pagebreak()
+= Appendice B - Verbali dei colloqui esplorativi
+#todo("elenco dei verbali esterni con Uranion e Halue (data, partecipanti, link al documento). La guida chiede colloqui con almeno 2-3 aziende, quindi, se è avvenuto, aggiungere anche Vimar.")
