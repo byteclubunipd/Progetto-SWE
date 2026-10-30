@@ -3,28 +3,28 @@
 #show: documento.with(
     titolo: "Preventivo dei costi e impegni orari",
     versione: "1.0.0",
-    stato: "Da approvare",
+    stato: "Approvato",
     redazione: "Elico Huang",
     verifica: "Riccardo Pontello",
     approvazione: "Tutto il gruppo",
     uso: "Esterno",
-    proprietario: "Byte Club",
+    proprietario: "ByteClub",
     destinatari: [
         Prof. Tullio Vardanega \
         Prof. Riccardo Cardin
     ],
 
     modifiche: (
-        ("1.0.0", "28/10/2026", "Tutto il gruppo", "Approvazione del documento"),
-        ("0.3.0", "26/10/2026", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi"),
-        ("0.2.0", "24/10/2026", EH, "Aggiunta sezione di analisi dei ruoli"),
-        ("0.1.0", "23/10/2026", EH, "Prima stesura del documento"),
+        ("1.0.0", "2026-10-28", "Tutto il gruppo", "Approvazione del documento."),
+        ("0.3.0", "2026-10-26", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi."),
+        ("0.2.0", "2026-10-24", EH, "Aggiunta sezione di analisi dei ruoli."),
+        ("0.1.0", "2026-10-23", EH, "Prima stesura del documento."),
     ),
 )
 
 = Introduzione
 
-Con tale documento, il gruppo Byteclub, intende presentavi il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
+Con tale documento, il gruppo ByteClub, intende presentavi il preventivo economico e temporale dei costi per il completamento del progetto didattivo relativo al capitolato C3, calcolati sulla base delle ore produttive dei vari ruoli e dei relativi costi. Inoltre viene anche riportata la modalità di rotazione dei ruoli, il totale delle ore produttive per ciascun membro appartenente al gruppo e la data di consegna finale prevista.
 
 = Ripartizione ruoli preventivata
 
