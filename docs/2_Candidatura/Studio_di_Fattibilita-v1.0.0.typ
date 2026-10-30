@@ -1,11 +1,10 @@
 #import "/docs/5_Templates/documento.typ": *
 
-// Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
 
 #show: documento.with(
   titolo: "Studio di Fattibilità",
   versione: "1.0.0",
-  stato: "In redazione",
+  stato: "Approvato",
   redazione: (LS),
   verifica: "",
   approvazione: "Tutto il gruppo",
@@ -13,7 +12,7 @@
   uso: "Interno",
   destinatari: "Gruppo ByteClub",
   modifiche: (
-    ("1.0.0", "2026-10-29", LS, "Prima stesura dello Studio di Fattibilità."),
+    ("1.0.0", "2026-10-30", LS, "Prima stesura dello Studio di Fattibilità."),
   ),
   indice: true,
 )
@@ -47,9 +46,9 @@ Gli altri capitolati proposti (C0, C2, C4, C5, C6, C7 e C9) sono stati esaminati
 
 - *Libertà progettuale e modularità:* poter motivare le scelte su tecnologie e componenti hardware permette di adattarle alle competenze e ai tempi del gruppo. La separazione tra firmware, backend, provider AI e interfaccia favorisce la suddivisione del lavoro. La licenza permissiva consente di pubblicare il lavoro e citarlo nel curriculum.
 
-- *Rapporto con il proponente:* il confronto esplorativo con Uranion (Appendice B) ha chiarito la configurabilità dei provider AI, la pipeline audio, la gestione degli aggiornamenti e le funzionalità minime per la comunicazione tra più smart speaker. Uranion ha manifestato disponibilità a fornire supporto tecnico, sessioni formative e incontri di approfondimento, con comunicazione via Mattermost, e-mail e videochiamata.
+- *Rapporto con il proponente:* l'incontro esplorativo del 2026-10-21 con Giacomo Cariello e Niccolò Campana di Uranion (Appendice B) ha chiarito punti rilevanti. I provider AI vanno supportati tramite i protocolli standard de facto (OpenAI Responses API e Anthropic Messages, con preset per servizi come OpenRouter e Ollama); la wake word deve essere rilevata in locale e solo dopo il rilevamento il buffer audio viene inviato; la lista hardware proposta non è vincolante e il firmware non deve essere interamente in Rust (è accettabile anche solo l'applicativo su un sistema come Linux). Per l'interconnessione il minimo richiesto è che un dispositivo invii un messaggio e l'altro lo riceva, con la chiamata in tempo reale come obiettivo ideale. Uranion ha manifestato disponibilità a fornire supporto tecnico, sessioni formative e incontri di approfondimento, anche in presenza negli spazi dell'università.
 
-*Criticità riscontrate.* L'integrazione tra hardware e software può allungare i tempi di setup e testing; l'esperienza del gruppo con i componenti hardware è limitata; l'apprendimento di Rust, se scelto, può pesare sui tempi; la progettazione CAD di un eventuale contenitore non è obbligatoria ma è apprezzata e richiede competenze specifiche. Il capitolato non indica chi sostiene il costo dei componenti hardware e il testing del firmware è più oneroso di quello software. Infine FossDot ha capienza di un solo gruppo nel primo lotto, quindi l'assegnazione non è garantita.
+*Criticità riscontrate.* L'integrazione tra hardware e software può allungare i tempi di setup e testing; l'esperienza del gruppo con i componenti hardware è limitata; l'apprendimento di Rust, se scelto, può pesare sui tempi; per il contenitore Uranion ha indicato che servono almeno le dimensioni e le modalità di montaggio dell'hardware (viti comprese), e la progettazione CAD richiede competenze specifiche. Il capitolato non indica chi sostiene il costo dei componenti hardware e il testing del firmware è più oneroso di quello software. Infine FossDot ha capienza di un solo gruppo nel primo lotto, quindi l'assegnazione non è garantita.
 
 Nel complesso FossDot presenta un rapporto equilibrato tra complessità, possibilità di apprendimento e libertà progettuale. Le competenze da acquisire sono una sfida significativa, ma affrontabile con una pianificazione progressiva.
 == Strategie di mitigazione dei rischi
@@ -61,7 +60,7 @@ L'analisi di fattibilità ha evidenziato rischi tecnologici, di personale, sui r
 
 - *Integrazione tra hardware e software:* prima di sviluppare l'intero sistema verranno configurati e verificati i componenti selezionati, controllando progressivamente acquisizione audio, riproduzione e funzionamento del dispositivo.
 
-- *Apprendimento delle tecnologie embedded:* lo studio partirà nelle prime fasi. L'MVP potrà essere sviluppato su una scheda con Linux e un linguaggio già noto; il firmware in Rust, preferenza e non vincolo, sarà valutato in un secondo momento.
+- *Apprendimento delle tecnologie embedded:* lo studio partirà nelle prime fasi. L'MVP potrà essere sviluppato su una scheda con Linux e un linguaggio già noto; il firmware in Rust, preferenza e non vincolo, sarà valutato in un secondo momento. Uranion ha confermato il 2026-10-21 che un sistema come Linux è accettabile e che Rust non è obbligatorio per l'intero sistema.
 
 - *Complessità della pipeline audio:* il flusso verrà implementato e verificato per fasi (wake word locale, trascrizione, elaborazione della richiesta, risposta), con test separati dei componenti. Sarà prevista anche l'attivazione manuale (push-to-talk), ammessa dal capitolato.
 
@@ -110,6 +109,8 @@ Le ore saranno distribuite tra responsabilità e coordinamento, amministrazione,
 
 *Aspetti positivi.* Problema reale, requisiti e criteri di accettazione molto chiari, architettura modulare, tecnologie web diffuse e spendibili, incontri quindicinali con la proponente e competenze su Shopify Plus.
 
+*Incontro esplorativo.* Nell'incontro del 2026-10-29 con Valentino Baraldo di Halue (Appendice B) è emerso che alcuni requisiti possono essere ammorbiditi quando i dati non sono ottenibili via API, che per le soglie di confidenza non esistono regole (il software fornisce i meccanismi e il gruppo definisce le politiche) e che conviene usare la nuova procedura Shopify con Dev Dashboard per le custom app, perché i metodi vengono deprecati rapidamente. Halue ha confermato che lo store di test va creato e popolato dal gruppo (anche con strumenti basati su MCP) e che non esistono documenti di architettura già pronti, ma può fornire materiali e spiegazioni.
+
 *Fattibilità.* Il gruppo ha conoscenze di base di sviluppo web e di database relazionali; sarebbero da apprendere Vercel Workflows, Supabase con Row Level Security, il modello a punti del rate limiting di Shopify, il parsing di file Liquid e gli strumenti di test (Vitest, Playwright, MSW), con circa due settimane di studio iniziale.
 
 *Valutazione economica.* Con 552 ore il perimetro obbligatorio è molto ampio rispetto al budget e il rapporto tra ore e complessità è sfavorevole, soprattutto per la costruzione dello store di test e per le soglie di accettazione. La riduzione dell'ambito richiede un accordo scritto con Halue con anticipo.
@@ -123,6 +124,8 @@ Le ore saranno distribuite tra responsabilità e coordinamento, amministrazione,
 - *Interesse tecnico:* inferiore rispetto a FossDot, che copre l'intera catena da hardware a servizi.
 == Capitolato C1 - AURA
 *Proponente:* Vimar S.p.A.
+
+Con Vimar non è stato svolto alcun incontro esplorativo: l'analisi si basa sul solo capitolato.
 
 *Descrizione.* AURA prevede un server e un client MCP che espongono le API KNX IoT 3rd-party di Vimar a servizi AI commerciali (ad esempio Claude, ChatGPT, Gemini), per monitorare e controllare in linguaggio naturale luci, termostati, tapparelle e altri dispositivi di un impianto domotico residenziale, con un'infrastruttura cloud-ready.
 
@@ -142,12 +145,15 @@ Le ore saranno distribuite tra responsabilità e coordinamento, amministrazione,
 - *Complessità dell'integrazione:* il coordinamento tra modelli AI, MCP, API KNX IoT e dispositivi fisici rende più complessi sviluppo, debugging e testing, e l'uso di modelli linguistici per comandare dispositivi reali richiede controlli per evitare operazioni errate.
 - *Overhead di processo:* gli stati di avanzamento richiedono agenda inviata in anticipo e relatore a turno.
 
-AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema e la libertà tecnologica.
+AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema, la libertà tecnologica e la maggiore probabilità di assegnazione.
 
 #pagebreak()
 = Appendice A - Contatti aziende
+- *Uranion EMEA Ltd (C3):* Giacomo Cariello e Niccolò Campana, incontrati il 2026-10-21. Referente del progetto indicato nel capitolato: Andrea Dorigo, andrea.dorigo\@uranion.ai; va sempre messo in copia anche info\@uranion.ai.
+- *Halue S.r.l. Società Benefit (C8):* Valentino Baraldo, incontrato il 2026-10-29, valentino.baraldo\@halue.io; casella dedicata al progetto sonar\@halue.io.
+- *Vimar S.p.A. (C1):* nessun contatto diretto con la proponente.
 
-
-#pagebreak()
 = Appendice B - Verbali dei colloqui esplorativi
+- 2026-10-21, Uranion (C3): Verbale riunione esterna VE_2026-10-21.
+- 2026-10-29, Halue (C8): Verbale riunione esterna VE_2026-10-29.
 
