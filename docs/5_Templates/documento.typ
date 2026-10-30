@@ -2,6 +2,8 @@
 
 #let documento(
   titolo: "Documento",
+  mostraVersione: true,
+  mostraRegistro: true,
   versione: "",
   stato: "",
   redazione: (),
@@ -17,7 +19,7 @@
   set document(title: titolo, author: redazione)
   base([
     #copertina(titolo, informazioni: (
-      ("Versione", versione),
+      if mostraVersione {("Versione", versione)},
       ("Stato", stato),
       ("Redazione", redazione),
       ("Verifica", verifica),
@@ -27,13 +29,15 @@
       ("Destinatari", destinatari),
     ))
 
-    #pagebreak()
-    #heading(numbering: none, outlined: false)[Registro delle modifiche]
-    #tabellaDati(
-      colonne: (auto, auto, auto, 1fr),
-      intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
-      righe: modifiche,
-    )
+    #if mostraRegistro [
+      #pagebreak()
+      #heading(numbering: none, outlined: false)[Registro delle modifiche]
+      #tabellaDati(
+        colonne: (auto, auto, auto, 1fr),
+        intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
+        righe: modifiche,
+      )
+    ]
 
     #pagebreak()
     #if indice [

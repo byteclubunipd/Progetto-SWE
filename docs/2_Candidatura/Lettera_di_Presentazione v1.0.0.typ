@@ -23,7 +23,8 @@
 
 #show: documento.with(
   titolo: "Lettera di Presentazione",
-  versione: "1.0.0",
+  mostraVersione: false,
+  mostraRegistro: false,
   stato: "Approvato",
   redazione: (LS),
   verifica: BG,
@@ -31,14 +32,6 @@
   proprietario: gruppo,
   uso: "Esterno",
   destinatari: "Prof. Vardanega Tullio \nProf. Cardin Riccardo",
-  modifiche: (
-    ("1.0.0", "2026-10-29", "Tutto il gruppo", "Approvazione del documento"),
-    ("0.2.0", "2026-10-29", BG, "Verifica del documento"),
-    ("0.1.5", "2026-10-28", LS, "Aggiornamento del costo e stile"),
-    ("0.1.2", "2026-10-24", LS, "Scrittura introduzione"),
-    ("0.1.1", "2026-10-23", LS, "Stesura motivazioni della scelta e conclusione"),
-    ("0.1.0", "2026-10-22", LS, "Creazione del documento"),
-  ),
   indice: true,
 )
 
