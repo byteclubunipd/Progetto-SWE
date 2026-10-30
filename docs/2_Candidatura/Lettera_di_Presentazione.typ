@@ -23,7 +23,7 @@
 
 #show: documento.with(
   titolo: "Lettera di Presentazione",
-  versione: "1.0.0",
+  data: "2026-10-30",
   stato: "Approvato",
   redazione: (LS),
   verifica: BG,
