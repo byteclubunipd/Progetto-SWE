@@ -5,8 +5,8 @@
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
   titolo: "Valutazione Capitolati",
-  versione: "0.3.5",
-  stato: "In redazione",
+  versione: "1.0.0",
+  stato: "Approvato",
   redazione: (BG),
   verifica: LS,
   approvazione: "Tutto il gruppo",
@@ -14,6 +14,7 @@
   uso: "Esterno",
   destinatari: "Prof. Vardanega Tullio \nProf. Cardin Riccardo",
   modifiche: (
+    ("1.0.0", "2026-10-30", "Tutto il gruppo", "Approvazione del documento."),
     ("0.3.5", "2026-10-25", BG, "Corretti refusi e piccoli errori di battitura presenti nel documento dopo una prima revisione."),
     ("0.3.4", "2026-10-22", BG, "Modifiche minori al capitolato C3 dopo meeting con Uranion."),
     ("0.3.2", "2026-10-21", BG, "Rimossi numeri indice dato che vengono generati automaticamente attraverso GitHub, corretti errori di battitura."),
