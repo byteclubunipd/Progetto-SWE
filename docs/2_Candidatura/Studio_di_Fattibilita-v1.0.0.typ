@@ -1,7 +1,6 @@
 #import "/docs/5_Templates/documento.typ": *
 
 // Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
-// Documento interno, stessa struttura di lettera e valutazione capitolati.
 
 #show: documento.with(
   titolo: "Studio di Fattibilità",
@@ -154,9 +153,9 @@ AURA è di elevato interesse tecnologico e coerente con FossDot per tema (MCP e 
 
 #pagebreak()
 = Appendice A - Contatti aziende
-- *Uranion EMEA Ltd (C3):* Giacomo Cariello e Niccolò Campana, incontrati il 2026-10-21. Referente del progetto indicato nel capitolato: Andrea Dorigo, andrea.dorigo\@uranion.ai; va sempre messo in copia anche info\@uranion.ai.
-- *Halue S.r.l. Società Benefit (C8):* Valentino Baraldo, incontrato il 2026-10-29, valentino.baraldo\@halue.io; casella dedicata al progetto sonar\@halue.io.
-- *Vimar S.p.A. (C1):* nessun contatto diretto con la proponente.
+- *Uranion EMEA Ltd (C3):* Giacomo Cariello giacomo.cariello\@uranion.ai e Niccolò Campana niccolo.campana\@uranion.ai. Referente del progetto indicato nel capitolato: Andrea Dorigo, andrea.dorigo\@uranion.ai; info\@uranion.ai
+- *Halue S.r.l. Società Benefit (C8):* Valentino Baraldo, valentino.baraldo\@halue.io; casella dedicata al progetto sonar\@halue.io.
+- *Vimar S.p.A. (C1):* Mariano Sciacco mariano.sciacco\@vimar.com; Domenico Bevilacqua domenico.bevilacqua\@vimar.com; Alberto Pomella alberto.pomella\@vimar.com
 
 = Appendice B - Verbali dei colloqui esplorativi
 - 2026-10-21, Uranion (C3): Verbale riunione esterna VE_2026-10-21.
