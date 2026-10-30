@@ -1,25 +1,30 @@
 #import "/docs/5_Templates/documento.typ": *
 
+// Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
+// Documento interno, stessa struttura di lettera e valutazione capitolati.
 
 #show: documento.with(
   titolo: "Studio di Fattibilità",
   versione: "1.0.0",
   stato: "Approvato",
   redazione: (LS),
-  verifica: "",
+  verifica: MMI,
   approvazione: "Tutto il gruppo",
   proprietario: "ByteClub",
   uso: "Interno",
   destinatari: "Gruppo ByteClub",
   modifiche: (
-    ("1.0.0", "2026-10-30", LS, "Prima stesura dello Studio di Fattibilità."),
+    ("1.0.0", "2026-10-30", "Tutto il gruppo", "Approvazione del documento."),
+    ("0.2.0", "2026-10-30", MMI, "Verifica del documento."),
+    ("0.1.1", "2026-10-30", LS, "Integrazione dei verbali con Uranion e Halue e aggiunta delle appendici."),
+    ("0.1.0", "2026-10-28", LS, "Prima stesura: analisi dei capitolati C3, C8 e C1, motivazioni della scelta e dei capitolati scartati."),
   ),
   indice: true,
 )
 
 = Introduzione
 == Scopo del documento
-Il presente documento, ad uso interno del gruppo ByteClub, raccoglie l'analisi di fattibilità dei capitolati esaminati e motiva la scelta del capitolato *C3 - FossDot*. Per il capitolato scelto vengono riportati le motivazioni, le strategie di mitigazione dei rischi, il piano di formazione preliminare e l'impegno orario stimato. Per i capitolati scartati vengono riportati descrizione, vincoli, aspetti positivi, fattibilità, valutazione economica e motivi di scarto.
+Il presente documento, ad uso interno del gruppo ByteClub, raccoglie l'analisi di fattibilità dei capitolati esaminati e motiva la scelta del capitolato *C3 - FossDot*. Per il capitolato scelto si riportano motivazioni, strategie di mitigazione dei rischi, piano di formazione preliminare e impegno orario stimato. Per i capitolati scartati si riportano descrizione, vincoli, aspetti positivi, fattibilità, valutazione economica e motivi di scarto.
 == Capitolati analizzati
 Il gruppo ha analizzato in dettaglio tre capitolati, in ordine di preferenza:
 + *C3 - FossDot* (Uranion EMEA Ltd), capitolato scelto;
@@ -36,7 +41,7 @@ Gli altri capitolati proposti (C0, C2, C4, C5, C6, C7 e C9) sono stati esaminati
 
 *Tecnologie e vincoli.* Uranion non impone uno stack: la scelta spetta al gruppo, che deve motivarla. Come riferimenti non prescrittivi il capitolato cita Rust embedded ed Embassy, Raspberry Pi, Seeed ReSpeaker, openWakeWord, Silero VAD, faster-whisper, Piper, MCP, Ollama, Axum e Tokio. Il firmware in Rust è una preferenza e un valore aggiunto, non un vincolo. Sono obbligatori la licenza open source permissiva (MIT o Apache 2.0), un collaudo end-to-end su dispositivo fisico (wake word, domanda, risposta vocale), il rispetto del GDPR sui flussi audio e, per bridging e interfaccia di gestione, una copertura dei test di riferimento ≥ 80%; per il firmware il livello è concordato con la proponente. Il gruppo può fermarsi all'MVP o procedere alla consegna completa.
 
-*Motivazioni della scelta.* Il gruppo ByteClub ha selezionato FossDot dopo aver confrontato opportunità formative, complessità tecnica e fattibilità delle proposte esaminate:
+*Perché FossDot.* Il gruppo ByteClub ha selezionato FossDot dopo aver confrontato opportunità formative, complessità tecnica e fattibilità delle proposte esaminate:
 
 - *Allineamento con le competenze disponibili:* il gruppo ha una buona base nella programmazione orientata agli oggetti, nell'utilizzo di Git e nella configurazione di ambienti Linux, oltre a una certa familiarità con i modelli linguistici in locale tramite Ollama. Queste competenze sono un punto di partenza per il backend e l'integrazione dei servizi AI, mentre gli aspetti embedded e la gestione dell'audio richiedono un approfondimento.
 
@@ -56,7 +61,7 @@ L'analisi di fattibilità ha evidenziato rischi tecnologici, di personale, sui r
 
 - *Capienza del capitolato:* FossDot può essere assegnato a un solo gruppo nel primo lotto. Il gruppo ha dichiarato le preferenze nel foglio condiviso e ha analizzato C8 e C1 come alternative (sezione dei capitolati scartati), per poter ripartire senza perdere il lavoro svolto.
 
-- *Costo e disponibilità dell'hardware:* verrà chiesto a Uranion chi sostiene l'acquisto dei componenti e se può fornirne parte. La scelta cadrà su componenti diffusi e ben documentati, con una distinta base chiara.
+- *Costo e disponibilità dell'hardware:* la scelta cadrà su componenti diffusi e ben documentati, con una distinta base chiara, per contenere costi e tempi di approvvigionamento.
 
 - *Integrazione tra hardware e software:* prima di sviluppare l'intero sistema verranno configurati e verificati i componenti selezionati, controllando progressivamente acquisizione audio, riproduzione e funzionamento del dispositivo.
 
@@ -66,7 +71,7 @@ L'analisi di fattibilità ha evidenziato rischi tecnologici, di personale, sui r
 
 - *Dipendenza da provider esterni:* l'accesso ai modelli AI e ai servizi di trascrizione sarà isolato dietro interfacce dedicate, per sostituire un provider in caso di indisponibilità o limiti. Per sviluppo e test si potranno usare modelli locali con Ollama.
 
-- *Privacy e protezione dei dati:* la wake word sarà rilevata localmente; l'invio dell'audio ai servizi di trascrizione sarà coerente con le scelte architetturali documentate. STT e TTS interamente locali, previsti come evoluzione, saranno valutati dopo l'MVP. Particolare attenzione a segreti e chiavi API.
+- *Privacy e protezione dei dati:* la wake word sarà rilevata localmente e solo dopo il rilevamento il buffer audio verrà inviato, come indicato da Uranion; l'invio dell'audio ai servizi di trascrizione sarà coerente con le scelte architetturali documentate. STT e TTS interamente locali, previsti come evoluzione, saranno valutati dopo l'MVP. Particolare attenzione a segreti e chiavi API.
 
 - *Aggiornamenti e affidabilità del dispositivo:* saranno considerate soluzioni che riducano il rischio di corruzione del sistema in caso di spegnimento improvviso e che consentano aggiornamenti controllati.
 
@@ -137,15 +142,15 @@ Con Vimar non è stato svolto alcun incontro esplorativo: l'analisi si basa sul 
 
 *Valutazione economica.* Il perimetro obbligatorio è ben definito e confrontabile con il monte ore di 552 ore, ma le soglie di test elevate e l'infrastruttura come codice assorbirebbero una quota significativa delle ore di verifica. Il rapporto tra ore e complessità è accettabile.
 
-*Motivi di scarto.*
-- *Elevata concorrenza:* numerosi gruppi hanno indicato C1 tra le proprie preferenze. Con una capienza di due gruppi nel primo lotto, la probabilità di assegnazione sarebbe più bassa; il gruppo ha preferito proposte con maggiori probabilità di essere ottenute.
-- *Ecosistema proprietario:* l'accesso alla documentazione KNX IoT richiede registrazione sul sito Vimar e la firma di un documento d'uso, e la soluzione ha senso solo con impianti Vimar.
-- *Componente AI esterna:* l'agente è un servizio commerciale già esistente; il lavoro si concentra sull'adattatore MCP, senza pipeline audio, AI configurabile né firmware.
-- *Requisiti rigidi e test elevati:* Infrastructure as Code, OAuth2, supporto alle API richieste e soglie di copertura ≥ 75% e ≥ 80%.
+*Motivi di scarto.* Il gruppo ha trovato FossDot più coinvolgente e più adatto ai propri obiettivi formativi:
+- *Ecosistema proprietario:* l'accesso alla documentazione KNX IoT richiede registrazione e la firma di un documento d'uso, e la soluzione ha senso solo con impianti Vimar; FossDot è invece un progetto open source e indipendente da un singolo fornitore.
+- *Requisiti rigidi e test elevati:* supporto alle API richieste e soglie di copertura ≥ 75% (unità e integrazione) e ≥ 80% (end-to-end).
 - *Complessità dell'integrazione:* il coordinamento tra modelli AI, MCP, API KNX IoT e dispositivi fisici rende più complessi sviluppo, debugging e testing, e l'uso di modelli linguistici per comandare dispositivi reali richiede controlli per evitare operazioni errate.
 - *Overhead di processo:* gli stati di avanzamento richiedono agenda inviata in anticipo e relatore a turno.
+- *Elevata concorrenza:* numerosi gruppi hanno indicato C1 tra le proprie preferenze. Con una capienza di due gruppi nel primo lotto, la probabilità di assegnazione sarebbe più bassa; il gruppo ha preferito proposte con maggiori probabilità di essere ottenute.
+- *Componente AI esterna:* l'agente è un servizio commerciale già esistente; il lavoro si concentra sull'adattatore MCP, senza pipeline audio, AI configurabile né firmware.
 
-AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema, la libertà tecnologica e la maggiore probabilità di assegnazione.
+AURA è di elevato interesse tecnologico e coerente con FossDot per tema (MCP e smart home), ma il gruppo ha preferito FossDot per la completezza dell'ecosistema, la libertà tecnologica e il maggiore interesse per la progettazione di un dispositivo autonomo.
 
 #pagebreak()
 = Appendice A - Contatti aziende
@@ -156,4 +161,5 @@ AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il 
 = Appendice B - Verbali dei colloqui esplorativi
 - 2026-10-21, Uranion (C3): Verbale riunione esterna VE_2026-10-21.
 - 2026-10-29, Halue (C8): Verbale riunione esterna VE_2026-10-29.
+
 
