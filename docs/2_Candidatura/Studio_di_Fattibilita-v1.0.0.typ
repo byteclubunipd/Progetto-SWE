@@ -148,10 +148,8 @@ AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il 
 
 #pagebreak()
 = Appendice A - Contatti aziende
-- *Uranion EMEA Ltd (C3):* Andrea Dorigo, andrea.dorigo\@uranion.ai. Va sempre messo in copia anche info\@uranion.ai.
-- *Halue S.r.l. Società Benefit (C8):* Valentino Baraldo, valentino.baraldo\@halue.io; casella dedicata al progetto sonar\@halue.io.
-- *Vimar S.p.A. (C1):* Mariano Sciacco, mariano.sciacco\@vimar.com; Domenico Bevilacqua, domenico.bevilacqua\@vimar.com; Alberto Pomella, alberto.pomella\@vimar.com (solo in copia).
+
 
 #pagebreak()
 = Appendice B - Verbali dei colloqui esplorativi
-#todo("elenco dei verbali esterni con Uranion e Halue (data, partecipanti, link al documento). La guida chiede colloqui con almeno 2-3 aziende, quindi, se è avvenuto, aggiungere anche Vimar.")
+
