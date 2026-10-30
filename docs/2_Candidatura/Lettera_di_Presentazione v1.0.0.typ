@@ -11,7 +11,8 @@
 #let proponente = "Uranion EMEA Ltd"
 
 
-#let repo = "https://byteclubunipd.github.io/Progetto-SWE/"
+#let repo = "https://github.com/byteclubunipd/Progetto-SWE"
+#let sito = "https://byteclubunipd.github.io/Progetto-SWE/"
 #let link-val = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
 #let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
 
@@ -48,8 +49,7 @@ con la presente, il gruppo #gruppo comunica formalmente la propria candidatura
 per l'aggiudicazione del capitolato *#codice* "#titolo", proposto dall'azienda
 #proponente.
 
-La documentazione completa è consultabile nel #link(repo)[#underline[repository]]
-pubblico, dove sono disponibili:
+La documentazione completa è consultabile nel #link(repo)[#underline[repository]] pubblico e nel #link(sito)[#underline[sito web]] del gruppo, dove sono disponibili:
 - #link(link-val)[#underline[Valutazione dei capitolati]];
 - #link(link-prev)[#underline[Preventivo dei costi e impegno orario]] (totale, individuale e per ruolo);
 - Verbali interni;
