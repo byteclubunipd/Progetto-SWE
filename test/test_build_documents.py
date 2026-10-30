@@ -123,6 +123,101 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertIn("Nuovo%20v0.1.0.pdf", page)
         self.assertIn("Firmato.pdf", page)
 
+    def testSignedPdfIsReusedWithoutCompilationAndPublishedUnchanged(self):
+        name = "2_Candidatura/verbali/esterni/VE_2026-10-29"
+        self.write(f"docs/{name}.typ", '#show: verbale.with(firma: true)')
+        signedBytes = b"%PDF-1.7\nPDF firmato dall'azienda\n%%EOF"
+        signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
+        modified = signed.stat().st_mtime_ns
+        self.write("docs/2_Candidatura/Normale.typ", "Documento da compilare")
+        compiled = []
+
+        def recordCompile(source, target, root):
+            compiled.append(source.stem)
+            fakeCompile(source, target, root)
+
+        outputs = PIPELINE.build(self.root, compiler=recordCompile)
+        self.assertIn(name + ".pdf", outputs)
+        self.assertEqual(compiled, ["Normale"])
+        self.assertEqual(signed.read_bytes(), signedBytes)
+        self.assertEqual(signed.stat().st_mtime_ns, modified)
+        published = self.root / "website/build/docs/6_Output" / (name + ".pdf")
+        self.assertEqual(published.read_bytes(), signedBytes)
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn(name + ".pdf", page)
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], ["2_Candidatura/Normale.pdf"])
+        before = self.snapshot()
+        PIPELINE.build(self.root, compiler=recordCompile)
+        self.assertEqual(self.snapshot(), before)
+
+    def testMissingOrInvalidSignedPdfKeepsAllExistingOutputs(self):
+        self.write("docs/2_Candidatura/Normale.typ", "Versione precedente")
+        self.runBuild()
+        self.write("docs/2_Candidatura/Normale.typ", "Versione nuova")
+        self.write("docs/2_Candidatura/verbali/esterni/Firmato.typ",
+                   '#show: verbale.with(firma: true)')
+        for content in (None, b"", b"Questo non e un PDF"):
+            with self.subTest(content=content):
+                if content is not None:
+                    self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf", content)
+                before = self.snapshot()
+                with self.assertRaisesRegex(ValueError, "firma: true richiede un PDF"):
+                    self.runBuild()
+                self.assertEqual(self.snapshot(), before)
+
+    def testSigningReleasesGeneratedPdfFromCleanupAndCanBeReversed(self):
+        name = "2_Candidatura/verbali/esterni/Verbale"
+        source = self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
+        self.runBuild()
+        signedBytes = b"%PDF-1.7\nFirmato"
+        signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
+        source.write_text('#show: verbale.with(firma: true)', encoding="utf-8")
+        self.runBuild()
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], [])
+        source.unlink()
+        self.runBuild()
+        self.assertEqual(signed.read_bytes(), signedBytes)
+        self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
+        self.runBuild()
+        self.assertNotEqual(signed.read_bytes(), signedBytes)
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], [name + ".pdf"])
+
+    def testSignatureFlagIgnoresCommentsStringsRawTextAndNestedArguments(self):
+        cases = [
+            ('#show: verbale.with()', False),
+            ('#show: verbale.with(firma: false,)', False),
+            ('#show: verbale.with(firma: true,)', True),
+            ('#show: verbale.with(firma: /* commento */ true)', True),
+            ('// #show: verbale.with(firma: true)\n#show: verbale.with()', False),
+            ('/* esterno /* firma: true */ fine */ #show: verbale.with()', False),
+            ('#show: verbale.with(titolo: "firma: true",)', False),
+            ('#show: verbale.with(diario: ([firma: true],),)', False),
+            ('#show: verbale.with(diario: (```firma: true```,),)', False),
+            ('`#show: verbale.with(firma: true)`', False),
+            ('"#show: verbale.with(firma: true)"', False),
+            ('#show: altro.with(firma: true)', False),
+            ('#show: verbale.with(\n firma: true,\n titolo: "Test",\n)', True),
+        ]
+        for text, expected in cases:
+            with self.subTest(text=text):
+                source = self.write("docs/2_Candidatura/Verbale.typ", text)
+                self.assertEqual(PIPELINE.hasSignature(source), expected)
+
+    def testSignatureFlagRejectsAmbiguousValuesBeforeReplacingOutputs(self):
+        self.write("docs/2_Candidatura/Verbale.typ", '#show: verbale.with()')
+        self.runBuild()
+        for flag in ('"true"', '1', 'abilitata', 'true or false', 'true, firma: false'):
+            with self.subTest(flag=flag):
+                self.write("docs/2_Candidatura/Verbale.typ",
+                           f'#show: verbale.with(firma: {flag})')
+                before = self.snapshot()
+                with self.assertRaisesRegex(ValueError, "firma"):
+                    self.runBuild()
+                self.assertEqual(self.snapshot(), before)
+
     def testUnicodeSpacesHtmlCharactersAndKeywordLikeNames(self):
         self.write("docs/2_Candidatura/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
         self.runBuild()
