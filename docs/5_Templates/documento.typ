@@ -2,7 +2,6 @@
 
 #let documento(
   titolo: "Documento",
-  mostraVersione: true,
   mostraRegistro: true,
   versione: "",
   stato: "",
@@ -19,7 +18,7 @@
   set document(title: titolo, author: redazione)
   base([
     #copertina(titolo, informazioni: (
-      if mostraVersione {("Versione", versione)},
+      ("Versione", versione),
       ("Stato", stato),
       ("Redazione", redazione),
       ("Verifica", verifica),
