@@ -15,10 +15,10 @@
     ],
 
     modifiche: (
-        ("1.0.0", "28/10/2026", "Tutto il gruppo", "Approvazione del documento"),
-        ("0.3.0", "26/10/2026", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi"),
-        ("0.2.0", "24/10/2026", EH, "Aggiunta sezione di analisi dei ruoli"),
-        ("0.1.0", "23/10/2026", EH, "Prima stesura del documento"),
+        ("1.0.0", "2026-10-28", "Tutto il gruppo", "Approvazione del documento."),
+        ("0.3.0", "2026-10-26", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi."),
+        ("0.2.0", "2026-10-24", EH, "Aggiunta sezione di analisi dei ruoli."),
+        ("0.1.0", "2026-10-23", EH, "Prima stesura del documento."),
     ),
 )
 
