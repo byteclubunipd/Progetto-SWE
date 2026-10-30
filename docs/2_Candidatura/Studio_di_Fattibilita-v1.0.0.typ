@@ -1,8 +1,6 @@
 #import "/docs/5_Templates/documento.typ": *
 
 // Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
-// Documento interno, stessa struttura di lettera e valutazione capitolati.
-// Verifica e approvazione verranno aggiunte dopo la revisione.
 
 #show: documento.with(
   titolo: "Studio di Fattibilità",
@@ -10,12 +8,12 @@
   stato: "In redazione",
   redazione: (LS),
   verifica: "",
-  approvazione: "",
+  approvazione: "Tutto il gruppo",
   proprietario: "ByteClub",
   uso: "Interno",
   destinatari: "Gruppo ByteClub",
   modifiche: (
-    ("1.0.0", "2026-10-30", LS, "Prima stesura dello Studio di Fattibilità."),
+    ("1.0.0", "2026-10-29", LS, "Prima stesura dello Studio di Fattibilità."),
   ),
   indice: true,
 )
@@ -144,7 +142,7 @@ Le ore saranno distribuite tra responsabilità e coordinamento, amministrazione,
 - *Complessità dell'integrazione:* il coordinamento tra modelli AI, MCP, API KNX IoT e dispositivi fisici rende più complessi sviluppo, debugging e testing, e l'uso di modelli linguistici per comandare dispositivi reali richiede controlli per evitare operazioni errate.
 - *Overhead di processo:* gli stati di avanzamento richiedono agenda inviata in anticipo e relatore a turno.
 
-AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema, la libertà tecnologica e la maggiore probabilità di assegnazione.
+AURA è di elevato interesse tecnologico e coerente con FossDot per tema, ma il gruppo ha preferito FossDot per la completezza dell'ecosistema e la libertà tecnologica.
 
 #pagebreak()
 = Appendice A - Contatti aziende
