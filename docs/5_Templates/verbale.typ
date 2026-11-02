@@ -4,6 +4,7 @@
   titolo: "Verbale Riunione",
   data: "",
   versione: "0.1.0",
+  firma: false,
   autori: (),
   tipoRiunione: "",
   luogo: "",

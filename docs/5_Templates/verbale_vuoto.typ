@@ -7,6 +7,8 @@
   titolo: "Verbale Riunione",
   data: "YYYY-MM-DD",
   versione: "0.1.0",
+  // Attivare solo dopo aver salvato il PDF firmato nel percorso corrispondente di docs/6_Output.
+  firma: false,
   autori: ("Nome Cognome",),
   tipoRiunione: "Interna o esterna",
   luogo: "Luogo o piattaforma della riunione",

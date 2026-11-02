@@ -2,6 +2,7 @@
 
 #let documento(
   titolo: "Documento",
+  mostraRegistro: true,
   versione: "",
   stato: "",
   redazione: (),
@@ -27,13 +28,15 @@
       ("Destinatari", destinatari),
     ))
 
-    #pagebreak()
-    #heading(numbering: none, outlined: false)[Registro delle modifiche]
-    #tabellaDati(
-      colonne: (auto, auto, auto, 1fr),
-      intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
-      righe: modifiche,
-    )
+    #if mostraRegistro [
+      #pagebreak()
+      #heading(numbering: none, outlined: false)[Registro delle modifiche]
+      #tabellaDati(
+        colonne: (auto, auto, auto, 1fr),
+        intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
+        righe: modifiche,
+      )
+    ]
 
     #pagebreak()
     #if indice [
