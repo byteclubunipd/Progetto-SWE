@@ -82,9 +82,9 @@ def render(template: str, outputRoot: Path, prefix: str) -> str:
     replacements = {
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix),
-        "[CANDIDATURA_DOCUMENTI]": catalog(candidature, outputRoot, prefix,
-                                          (candidature / "Verbali/Interni",
-                                           candidature / "Verbali/Esterni")),
+        "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix),
+        "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix),
+        "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix),
         "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix),
         "[VERBALI_ESTERNI]": catalog(candidature / "Verbali/Esterni", outputRoot, prefix),
     }

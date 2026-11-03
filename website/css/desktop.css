@@ -83,6 +83,11 @@ main {
   width: calc(100% - 260px);
 }
 
+.document-pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
 #introduzione {
   margin-top: 0;
 }

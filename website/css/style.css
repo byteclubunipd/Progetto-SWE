@@ -340,6 +340,19 @@ main section {
   width: 100%;
 }
 
+.document-pair {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.document-pair > section {
+  width: auto;
+  max-width: none;
+  min-width: 0;
+  margin: 0;
+}
+
 main {
   flex: 1 0 auto;
   width: 100%;

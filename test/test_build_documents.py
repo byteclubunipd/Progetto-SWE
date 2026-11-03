@@ -69,7 +69,7 @@ class DocumentationBuildTest(unittest.TestCase):
     def testEmptySectionsHaveTheRequestedMessage(self):
         self.assertEqual(self.runBuild(), [])
         generated = (self.root / "website/build/index.html").read_text(encoding="utf-8")
-        self.assertEqual(generated.count(PIPELINE.EMPTY), 4)
+        self.assertEqual(generated.count(PIPELINE.EMPTY), 6)
         self.assertNotIn("[DATA_AGGIORNAMENTO]", generated)
         self.assertRegex(
             generated,
@@ -109,14 +109,14 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testRenameRemovesOnlyOwnedOutputsAndKeepsSignedPdf(self):
-        source = self.write("docs/2_Candidatura/Vecchio v0.1.0.typ", "Versione")
+        source = self.write("docs/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.typ", "Versione")
         signed = self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf",
                             b"%PDF-manuale")
         self.runBuild()
         source.unlink()
-        self.write("docs/2_Candidatura/Nuovo v0.1.0.typ", "Versione aggiornata")
+        self.write("docs/2_Candidatura/Documenti_esterni/Nuovo v0.1.0.typ", "Versione aggiornata")
         self.runBuild()
-        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Vecchio v0.1.0.pdf").exists())
+        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.pdf").exists())
         self.assertEqual(signed.read_bytes(), b"%PDF-manuale")
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertNotIn("Vecchio%20v0.1.0.pdf", page)
@@ -219,7 +219,7 @@ class DocumentationBuildTest(unittest.TestCase):
                 self.assertEqual(self.snapshot(), before)
 
     def testUnicodeSpacesHtmlCharactersAndKeywordLikeNames(self):
-        self.write("docs/2_Candidatura/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
+        self.write("docs/2_Candidatura/Documenti_esterni/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
         self.runBuild()
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertIn("&amp;", page)
@@ -251,11 +251,9 @@ class DocumentationBuildTest(unittest.TestCase):
     def testCatalogListsOnlyCurrentSectionsAndPreservesOtherOutputs(self):
         documents = [
             "1_Diario_di_bordo/rtb/DDB.pdf",
-            "2_Candidatura/Lettera.pdf",
+            "2_Candidatura/Lettera_di_presentazione/Lettera.pdf",
             "2_Candidatura/Verbali/Interni/VI.pdf",
             "2_Candidatura/Verbali/Esterni/VE.pdf",
-            "2_Candidatura/Verbali/Altro.pdf",
-            "2_Candidatura/Verbali/archivio/Storico.pdf",
             "2_Candidatura/Documenti_esterni/Piano.pdf",
             "2_Candidatura/Documenti_interni/Studio.pdf",
             "5_Templates/Esempio.pdf",
@@ -268,11 +266,13 @@ class DocumentationBuildTest(unittest.TestCase):
         parser = Links()
         parser.feed(page.read_text(encoding="utf-8"))
         pdfReferences = [href for href in parser.references if href.endswith(".pdf")]
-        self.assertEqual(len(pdfReferences), 8)
-        self.assertEqual(len(set(pdfReferences)), 8)
+        self.assertEqual(len(pdfReferences), 6)
+        self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
         for heading in ("5_Templates", "Altri documenti"):
             self.assertNotIn(heading, content)
+        for heading in ("Documenti esterni", "Documenti interni", "Verbali esterni", "Verbali interni"):
+            self.assertIn(heading, content)
         for href in pdfReferences:
             self.assertEqual((page.parent / unquote(href)).resolve().read_bytes(),
                              b"%PDF-manuale")
