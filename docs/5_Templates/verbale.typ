@@ -1,71 +1,66 @@
-#import "base.typ": base, copertina, indiceDocumento, tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
 
-#let verbale(
-  titolo: "Verbale Riunione",
-  data: "",
+#import "../../../5_Templates/verbale.typ": verbale
+#import "../../../5_Templates/base.typ": tutti, BG, EH, MMI, MMO, RP, LS
+
+#show: doc => verbale(
+  titolo: "Verbale di riunione interna",
+  data: "2026-11-03",
   versione: "0.1.0",
-  firma: false,
-  autori: (),
-  tipoRiunione: "",
-  luogo: "",
-  oraInizio: "",
-  oraFine: "",
-  responsabile: "",
-  scriba: "",
-  partecipanti: (),
-  ordineDelGiorno: (),
-  diario: (),
-  todo: (),
-  body,
-) = {
-  set document(title: titolo, author: autori)
-  base(
-    [
+  autori: (EH,),
 
-      #copertina(titolo, data: data, versione: versione, autori: autori)
+  redattore: EH,
+  verificatore: RP,
+  uso: "Interno",
 
-      #pagebreak()
-      #indiceDocumento()
+  tipoRiunione: "Riunione interna",
+  luogo: "Discord",
+  oraInizio: "14:30",
+  oraFine: "15:30",
+  responsabile: RP,
+  scriba: EH,
+  partecipanti: tutti,
+  assenti: (),
 
-      #pagebreak()
-      = Informazioni generali
-      #list(
-        [*Tipo di riunione:* #tipoRiunione],
-        [*Luogo:* #luogo],
-        [*Data:* #data],
-        [*Ora inizio:* #oraInizio],
-        [*Ora fine:* #oraFine],
-        [*Responsabile:* #responsabile],
-        [*Scriba:* #scriba],
-        [
-          *Partecipanti:*
-          #list(
-            ..partecipanti.map(partecipante => [#partecipante]),
-            marker: [–],
-            spacing: 0.5em,
-          )
-        ],
-      )
+  ordineDelGiorno: (
+    [Aggiornamento sullo stato del progetto.],
+    [Discussione delle attività da completare.],
+    [Pianificazione dei prossimi incontri.],
+  ),
 
-      #pagebreak()
-      = Ordine del giorno
-      #list(..ordineDelGiorno)
+  registroModifiche: (
+    (
+      [0.1.0],
+      [2026-11-03],
+      [Stesura del verbale],
+      [Elico Huang],
+      [Riccardo Pontello],
+    ),
+  ),
 
-      #pagebreak()
-      = Diario della riunione
-      #list(..diario)
+  discussione: (
+    (
+      id: 1,
+      titolo: "Stato del progetto",
+      descrizione: [
+        Il gruppo si aggiorna sullo stato
+        delle attività attualmente in corso.
+      ],
+      decisione: [
+        Il gruppo concorda di proseguire
+        secondo la pianificazione stabilita.
+      ],
+    ),
+  ),
 
-      #pagebreak()
-      = TODO
-      Durante la riunione sono emerse le seguenti attività da svolgere:
+  azioni: (
+    (
+      [A1],
+      [Completare la revisione dei documenti],
+      [Bruno Grimaldi],
+      [2026-11-05],
+      [D1],
+    ),
+  ),
 
-      #tabellaDati(
-        colonne: (2fr, 3fr),
-        intestazioni: ([Assegnatario], [Attività TODO]),
-        righe: todo,
-      )
-
-      #body
-    ],
-  )
-}
+  body: doc,
+)
