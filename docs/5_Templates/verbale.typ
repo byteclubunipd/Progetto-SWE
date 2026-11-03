@@ -164,6 +164,7 @@
           [Azione],
           [Incaricato],
           [Scadenza],
+          [Decisione],
         ),
         righe: azioni,
       )
