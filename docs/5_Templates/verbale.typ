@@ -32,7 +32,7 @@
   azioni: (),
 
   // Eventuale contenuto aggiuntivo
-  body: [],
+  body,
 ) = {
   set document(title: titolo, author: autori)
 
