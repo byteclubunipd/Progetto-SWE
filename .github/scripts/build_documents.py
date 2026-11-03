@@ -83,10 +83,10 @@ def render(template: str, outputRoot: Path, prefix: str) -> str:
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix),
         "[CANDIDATURA_DOCUMENTI]": catalog(candidature, outputRoot, prefix,
-                                          (candidature / "verbali/interni",
-                                           candidature / "verbali/esterni")),
-        "[VERBALI_INTERNI]": catalog(candidature / "verbali/interni", outputRoot, prefix),
-        "[VERBALI_ESTERNI]": catalog(candidature / "verbali/esterni", outputRoot, prefix),
+                                          (candidature / "Verbali/Interni",
+                                           candidature / "Verbali/Esterni")),
+        "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix),
+        "[VERBALI_ESTERNI]": catalog(candidature / "Verbali/Esterni", outputRoot, prefix),
     }
     for keyword in replacements:
         if template.count(keyword) != 1:

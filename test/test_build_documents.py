@@ -78,10 +78,10 @@ class DocumentationBuildTest(unittest.TestCase):
 
     def testRecursiveScopePreservesNamesAndIsIdempotent(self):
         self.write("docs/1_Diario_di_bordo/rtb/DDB_2026-10-17.typ", "Diario")
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Verbale")
-        self.write("docs/2_Candidatura/Lettera v0.1.0.TYP", "Lettera")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Verbale")
+        self.write("docs/2_Candidatura/Lettera_di_presentazione/Lettera v0.1.0.TYP", "Lettera")
         self.write("docs/5_Templates/base.typ", "Non compilare")
-        self.write("docs/3_RTB/Analisi v0.1.0.typ", "Non compilare")
+        self.write("docs/5_Templates/Analisi v0.1.0.typ", "Non compilare")
         outputs = self.runBuild()
         self.assertEqual(len(outputs), 3)
         for name in outputs:
@@ -110,7 +110,7 @@ class DocumentationBuildTest(unittest.TestCase):
 
     def testRenameRemovesOnlyOwnedOutputsAndKeepsSignedPdf(self):
         source = self.write("docs/2_Candidatura/Vecchio v0.1.0.typ", "Versione")
-        signed = self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf",
+        signed = self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf",
                             b"%PDF-manuale")
         self.runBuild()
         source.unlink()
@@ -124,7 +124,7 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertIn("Firmato.pdf", page)
 
     def testSignedPdfIsReusedWithoutCompilationAndPublishedUnchanged(self):
-        name = "2_Candidatura/verbali/esterni/VE_2026-10-29"
+        name = "2_Candidatura/Verbali/Esterni/VE_2026-10-29"
         self.write(f"docs/{name}.typ", '#show: verbale.with(firma: true)')
         signedBytes = b"%PDF-1.7\nPDF firmato dall'azienda\n%%EOF"
         signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
@@ -155,19 +155,19 @@ class DocumentationBuildTest(unittest.TestCase):
         self.write("docs/2_Candidatura/Normale.typ", "Versione precedente")
         self.runBuild()
         self.write("docs/2_Candidatura/Normale.typ", "Versione nuova")
-        self.write("docs/2_Candidatura/verbali/esterni/Firmato.typ",
+        self.write("docs/2_Candidatura/Verbali/Esterni/Firmato.typ",
                    '#show: verbale.with(firma: true)')
         for content in (None, b"", b"Questo non e un PDF"):
             with self.subTest(content=content):
                 if content is not None:
-                    self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf", content)
+                    self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf", content)
                 before = self.snapshot()
                 with self.assertRaisesRegex(ValueError, "firma: true richiede un PDF"):
                     self.runBuild()
                 self.assertEqual(self.snapshot(), before)
 
     def testSigningReleasesGeneratedPdfFromCleanupAndCanBeReversed(self):
-        name = "2_Candidatura/verbali/esterni/Verbale"
+        name = "2_Candidatura/Verbali/Esterni/Verbale"
         source = self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
         self.runBuild()
         signedBytes = b"%PDF-1.7\nFirmato"
@@ -229,7 +229,7 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertIn("[VERBALI_INTERNI]", page)
 
     def testLinksResolveInLocalBuildAndPublishedSite(self):
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Test")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Test")
         self.write("website/assets/logo.png", b"immagine di prova")
         self.runBuild()
         buildRoot = self.root / PIPELINE.SITE_BUILD
@@ -252,16 +252,13 @@ class DocumentationBuildTest(unittest.TestCase):
         documents = [
             "1_Diario_di_bordo/rtb/DDB.pdf",
             "2_Candidatura/Lettera.pdf",
-            "2_Candidatura/verbali/interni/VI.pdf",
-            "2_Candidatura/verbali/esterni/VE.pdf",
-            "2_Candidatura/verbali/Altro.pdf",
-            "2_Candidatura/verbali/archivio/Storico.pdf",
-            "3_RTB/Analisi.pdf",
-            "3_RTB/verbali/interni/VI_RTB.pdf",
-            "4_PB/sottocartella/Manuale.pdf",
-            "0_Verbale/Verbale.pdf",
+            "2_Candidatura/Verbali/Interni/VI.pdf",
+            "2_Candidatura/Verbali/Esterni/VE.pdf",
+            "2_Candidatura/Verbali/Altro.pdf",
+            "2_Candidatura/Verbali/archivio/Storico.pdf",
+            "2_Candidatura/Documenti_esterni/Piano.pdf",
+            "2_Candidatura/Documenti_interni/Studio.pdf",
             "5_Templates/Esempio.pdf",
-            "7_Futura/Nuovo v0.1.0.pdf",
             "Documento_radice.pdf",
         ]
         for name in documents:
@@ -271,10 +268,10 @@ class DocumentationBuildTest(unittest.TestCase):
         parser = Links()
         parser.feed(page.read_text(encoding="utf-8"))
         pdfReferences = [href for href in parser.references if href.endswith(".pdf")]
-        self.assertEqual(len(pdfReferences), 6)
-        self.assertEqual(len(set(pdfReferences)), 6)
+        self.assertEqual(len(pdfReferences), 8)
+        self.assertEqual(len(set(pdfReferences)), 8)
         content = page.read_text(encoding="utf-8")
-        for heading in ("3_RTB", "4_PB", "Altri documenti"):
+        for heading in ("5_Templates", "Altri documenti"):
             self.assertNotIn(heading, content)
         for href in pdfReferences:
             self.assertEqual((page.parent / unquote(href)).resolve().read_bytes(),
@@ -296,9 +293,9 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testManifestCannotDeleteAPathOutsideManagedDirectories(self):
-        protected = self.write("docs/6_Output/3_RTB/Protetto.pdf", b"%PDF-protetto")
+        protected = self.write("docs/6_Output/5_Templates/Protetto.pdf", b"%PDF-protetto")
         self.write(PIPELINE.MANIFEST, json.dumps({
-            "schema": 1, "outputs": ["3_RTB/Protetto.pdf"]}))
+            "schema": 1, "outputs": ["5_Templates/Protetto.pdf"]}))
         before = self.snapshot()
         with self.assertRaises(ValueError):
             self.runBuild()

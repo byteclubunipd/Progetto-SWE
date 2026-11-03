@@ -1,7 +1,7 @@
 // Lettera di Presentazione - ByteClub
 
-#import "../5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
-#import "../5_Templates/documento.typ": documento
+#import "/docs/5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
+#import "/docs/5_Templates/documento.typ": documento
 
 #let gruppo = "ByteClub"
 #let email = "byteclubunipd@gmail.com"
