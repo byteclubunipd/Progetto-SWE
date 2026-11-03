@@ -1,11 +1,18 @@
-#import "base.typ": base, copertina, indiceDocumento, tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
+#import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS
 
 #let verbale(
-  titolo: "Verbale Riunione",
+  titolo: "Verbale di riunione",
   data: "",
   versione: "0.1.0",
   firma: false,
   autori: (),
+
+  // Informazioni sul documento
+  redattore: "",
+  verificatore: "",
+  uso: "Interno",
+
+  // Informazioni sulla riunione
   tipoRiunione: "",
   luogo: "",
   oraInizio: "",
@@ -13,58 +20,155 @@
   responsabile: "",
   scriba: "",
   partecipanti: (),
+  assenti: (),
+
+  // Contenuto della riunione
   ordineDelGiorno: (),
-  diario: (),
-  todo: (),
-  body,
+  discussione: (),
+
+  // Tabelle aggiuntive
+  registroModifiche: (),
+  statoAzioni: (),
+  azioni: (),
+
+  // Eventuale contenuto aggiuntivo
+  body: [],
 ) = {
   set document(title: titolo, author: autori)
+
+  let elencoPartecipanti = if partecipanti.len() > 0 {
+    list(..partecipanti)
+  } else {
+    [Nessuno]
+  }
+
+  let elencoAssenti = if assenti.len() > 0 {
+    list(..assenti)
+  } else {
+    [Nessuno]
+  }
+
   base(
+    tipo: "Verbale " + uso,
+    data: data,
+    intestazione: intestazione(
+      "Verbale " + uso + " · " + data
+    ),
     [
 
-      #copertina(titolo, data: data, versione: versione, autori: autori)
+      // COPERTINA
+      #copertina(
+        titolo,
+        data: data,
+        versione: versione,
+        autori: autori,
+      )
 
+      // INFORMAZIONI SUL DOCUMENTO
+      #v(1em)
+      #text(weight: "bold", size: 14pt)[Informazioni sul documento]
+
+      #tabellaDati(
+        colonne: (1fr, 2fr),
+        intestazioni: ([Campo], [Valore]),
+        righe: (
+          ([Versione], [#versione]),
+          ([Redattore], [#redattore]),
+          ([Verificatore], [#verificatore]),
+          ([Uso], [#uso]),
+        ),
+      )
+
+      // REGISTRO DELLE MODIFICHE
+      #v(1em)
+      #text(weight: "bold", size: 14pt)[Registro delle modifiche]
+
+      #tabellaDati(
+        colonne: (1fr, 1.5fr, 3fr, 2fr, 2fr),
+        intestazioni: (
+          [Versione],
+          [Data],
+          [Descrizione],
+          [Autore],
+          [Verificatore],
+        ),
+        righe: registroModifiche,
+      )
+
+      // INDICE
       #pagebreak()
       #indiceDocumento()
 
+      // 1. DETTAGLI DELLA RIUNIONE
       #pagebreak()
-      = Informazioni generali
+      = Dettagli della riunione
+
       #list(
-        [*Tipo di riunione:* #tipoRiunione],
-        [*Luogo:* #luogo],
+        [*Tipo:* #tipoRiunione],
         [*Data:* #data],
-        [*Ora inizio:* #oraInizio],
-        [*Ora fine:* #oraFine],
-        [*Responsabile:* #responsabile],
-        [*Scriba:* #scriba],
-        [
-          *Partecipanti:*
-          #list(
-            ..partecipanti.map(partecipante => [#partecipante]),
-            marker: [–],
-            spacing: 0.5em,
-          )
-        ],
+        [*Orario:* #oraInizio – #oraFine],
+        [*Luogo:* #luogo],
+        [*Responsabile della riunione:* #responsabile],
+        [*Segretario:* #scriba],
+        [*Partecipanti:* #elencoPartecipanti],
+        [*Assenti:* #elencoAssenti],
       )
 
-      #pagebreak()
+      // 2. ORDINE DEL GIORNO
+      #v(1em)
       = Ordine del giorno
-      #list(..ordineDelGiorno)
 
-      #pagebreak()
-      = Diario della riunione
-      #list(..diario)
+      #enum(..ordineDelGiorno)
 
+      // 3. DISCUSSIONE E DECISIONI
       #pagebreak()
-      = TODO
-      Durante la riunione sono emerse le seguenti attività da svolgere:
+      = Discussione e decisioni
+
+      #for punto in discussione [
+        == #punto.titolo
+
+        #punto.descrizione
+
+        #if punto.decisione != none [
+          *Decisione D#punto.id:* #punto.decisione
+        ]
+
+        #v(0.5em)
+      ]
+
+      // STATO DELLE AZIONI PRECEDENTI
+      #if statoAzioni.len() > 0 [
+        == Stato delle azioni precedenti
+
+        #tabellaDati(
+          colonne: (1fr, 2fr, 3fr),
+          intestazioni: (
+            [Azione],
+            [Stato],
+            [Note],
+          ),
+          righe: statoAzioni,
+        )
+      ]
+
+      // 4. AZIONI DA SVOLGERE
+      #pagebreak()
+      = Azioni da svolgere
+
+      Le seguenti attività sono state concordate durante la riunione:
 
       #tabellaDati(
-        colonne: (2fr, 3fr),
-        intestazioni: ([Assegnatario], [Attività TODO]),
-        righe: todo,
+        colonne: (0.7fr, 3fr, 1.7fr, 1.5fr, 1fr),
+        intestazioni: (
+          [ID],
+          [Azione],
+          [Incaricato],
+          [Scadenza],
+        ),
+        righe: azioni,
       )
 
+      // CONTENUTO AGGIUNTIVO
       #body
     ],
   )
