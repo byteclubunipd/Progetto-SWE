@@ -2,20 +2,20 @@
 
 #show: documento.with(
     titolo: "Preventivo dei costi e impegni orari",
-    versione: "1.0.0",
-    stato: "Approvato",
-    redazione: "Elico Huang",
-    verifica: "Riccardo Pontello",
-    approvazione: "Tutto il gruppo",
+    mostraRegistro: true,
+    versione: "1.1.0",
+    redazione: RP,
+    verifica: BG,
     uso: "Esterno",
-    proprietario: "ByteClub",
+
     destinatari: [
         Prof. Tullio Vardanega \
         Prof. Riccardo Cardin
     ],
 
     modifiche: (
-        ("1.0.0", "2026-10-28", "Tutto il gruppo", "Approvazione del documento."),
+        ("1.1.0", "2026-11-04", RP, "Aggiornamento del documento a seguito della correzione della candidatura."),
+        ("1.0.0", "2026-10-28", LS, "Approvazione del documento."),
         ("0.3.0", "2026-10-26", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi."),
         ("0.2.0", "2026-10-24", EH, "Aggiunta sezione di analisi dei ruoli."),
         ("0.1.0", "2026-10-23", EH, "Prima stesura del documento."),

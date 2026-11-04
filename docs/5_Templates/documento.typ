@@ -54,13 +54,12 @@
       #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
       #tabellaDati(
-        colonne: (auto, auto, 3fr, auto, auto),
+        colonne: (auto, auto, auto, 1fr),
         intestazioni: (
           [Versione],
           [Data],
-          [Descrizione],
           [Autore],
-          [Verificatore],
+          [Descrizione],
         ),
         righe: modifiche,
       )
