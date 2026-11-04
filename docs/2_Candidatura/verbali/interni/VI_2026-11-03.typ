@@ -9,8 +9,9 @@
   autori: (EH,),
 
   redattore: EH,
-  verificatore: RP,
-  uso: "interno",
+  verificatore: BG,
+  uso: "Interno",
+  stato: "Da verificare",
 
   tipoRiunione: "Riunione interna",
   luogo: "canale vocale Discord",
@@ -150,14 +151,14 @@
     (
       [\#5],
       [Aggiornare la vista web],
-      RP,
-      [2026-11-08],
+      MMI,
+      [2026-11-07],
       [D4],
     ),
     (
       [\#6],
       [Riredigere preventivo costi e impegni],
-      MMI,
+      RP,
       [2026-11-07],
       [D6]
     ),

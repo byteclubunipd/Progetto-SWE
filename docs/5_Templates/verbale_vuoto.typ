@@ -20,6 +20,7 @@
   redattore: "Nome Cognome",
   verificatore: "Nome Cognome",
   uso: "Interno",
+  stato: "Da redigere",
 
   // DETTAGLI DELLA RIUNIONE
   tipoRiunione: "Interna o esterna",

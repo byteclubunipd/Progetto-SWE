@@ -11,7 +11,7 @@
   proprietario: "",
   uso: "",
   destinatari: "",
-  modifiche: (),
+  registroModifiche: (),
   indice: true,
   body,
 ) = {
@@ -29,11 +29,19 @@
     ))
 
     #if mostraRegistro [
-      #heading(numbering: none, outlined: false)[Registro delle modifiche]
+      #v(1em)
+      #text(weight: "bold", size: 14pt)[Registro delle modifiche]
+
       #tabellaDati(
-        colonne: (auto, auto, auto, 1fr),
-        intestazioni: ([Vers.], [Data], [Autore], [Descrizione]),
-        righe: modifiche,
+        colonne: (1.25fr, 1.75fr, 3fr, 1.75fr, 1.75fr),
+        intestazioni: (
+          [Versione],
+          [Data],
+          [Descrizione],
+          [Autore],
+          [Verificatore],
+        ),
+        righe: registroModifiche,
       )
     ]
 

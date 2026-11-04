@@ -11,6 +11,7 @@
   redattore: "",
   verificatore: "",
   uso: "Interno",
+  stato: "",
 
   // Informazioni sulla riunione
   tipoRiunione: "",
@@ -76,6 +77,7 @@
           ([Redattore], [#redattore]),
           ([Verificatore], [#verificatore]),
           ([Uso], [#uso]),
+          ([Stato], [#stato]),
         ),
       )
 
