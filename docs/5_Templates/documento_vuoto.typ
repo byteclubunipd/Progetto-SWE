@@ -11,8 +11,8 @@
   verifica: "Nome verificatore",
   uso: "Interno o esterno",
   destinatari: "Destinatari del documento",
-  modifiche: (
-    ("0.1.0", "YYYY-MM-DD", "Nome Cognome", "Descrizione della modifica"),
+  registroModifiche: (
+    ("0.1.0", "YYYY-MM-DD", "Descrizione della modifica", "Nome Cognome", "Nome verificatore"),
   ),
   indice: true,
 )

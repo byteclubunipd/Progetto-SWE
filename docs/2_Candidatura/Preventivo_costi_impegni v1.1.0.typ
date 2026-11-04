@@ -4,8 +4,11 @@
     titolo: "Preventivo dei costi e impegni orari",
     mostraRegistro: true,
     versione: "1.1.0",
+    stato: "Non approvato",
     redazione: RP,
     verifica: BG,
+    approvazione: LS,
+    proprietario: "ByteClub",
     uso: "Esterno",
 
     destinatari: [
@@ -13,12 +16,12 @@
         Prof. Riccardo Cardin
     ],
 
-    modifiche: (
-        ("1.1.0", "2026-11-04", RP, "Aggiornamento del documento a seguito della correzione della candidatura."),
-        ("1.0.0", "2026-10-28", LS, "Approvazione del documento."),
-        ("0.3.0", "2026-10-26", EH, "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi."),
-        ("0.2.0", "2026-10-24", EH, "Aggiunta sezione di analisi dei ruoli."),
-        ("0.1.0", "2026-10-23", EH, "Prima stesura del documento."),
+    registroModifiche: (
+        ("1.1.0", "2026-11-04", "Aggiornamento del documento a seguito della correzione della candidatura.", RP, BG),
+        ("1.0.0", "2026-10-28", "Approvazione del documento.", LS, "-"),
+        ("0.3.0", "2026-10-26", "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi.", EH, RP),
+        ("0.2.0", "2026-10-24", "Aggiunta sezione di analisi dei ruoli.", EH, RP),
+        ("0.1.0", "2026-10-23", "Prima stesura del documento.", EH, RP),
     ),
 )
 

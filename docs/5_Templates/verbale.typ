@@ -11,6 +11,7 @@
   redattore: "",
   verificatore: "",
   uso: "Interno",
+  stato: "",
 
   // Informazioni sulla riunione
   tipoRiunione: "",
@@ -32,7 +33,7 @@
   azioni: (),
 
   // Eventuale contenuto aggiuntivo
-  body: [],
+  body,
 ) = {
   set document(title: titolo, author: autori)
 
@@ -76,6 +77,7 @@
           ([Redattore], [#redattore]),
           ([Verificatore], [#verificatore]),
           ([Uso], [#uso]),
+          ([Stato], [#stato]),
         ),
       )
 
@@ -84,7 +86,7 @@
       #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
       #tabellaDati(
-        colonne: (1fr, 1.5fr, 3fr, 2fr, 2fr),
+        colonne: (auto, auto, 1fr, auto, auto),
         intestazioni: (
           [Versione],
           [Data],
@@ -164,6 +166,7 @@
           [Azione],
           [Incaricato],
           [Scadenza],
+          [Decisione],
         ),
         righe: azioni,
       )
