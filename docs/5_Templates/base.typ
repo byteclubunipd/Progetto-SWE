@@ -147,6 +147,7 @@
 // L'indice definisce solo la propria resa; il template decide dove inserirlo.
 #let indiceDocumento() = {
   show outline.entry: set block(above: 0.75em, below: 0.75em)
+  show outline.entry.where(level: 1): set text(weight: "bold")
   set outline.entry(fill: repeat[.])
   outline(title: [Indice], indent: 1em, depth: profonditaDocumento)
 }
