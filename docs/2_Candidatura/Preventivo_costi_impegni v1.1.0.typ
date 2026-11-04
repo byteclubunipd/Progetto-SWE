@@ -25,7 +25,7 @@
   ],
 
   registroModifiche: (
-    ("1.1.0", "2026-11-04", "Correzione linguistica e completamento di riferimenti, composizione, calendario, rischi, tracciabilità e impegni.", RP, MMO),
+    ("1.1.0", "2026-11-04", "Aggiornamento struttura del documento a seguito della correzione della candidatura.", RP, MMO),
     ("1.0.0", "2026-10-28", "Approvazione del documento.", LS, "-"),
     ("0.3.0", "2026-10-26", "Verifica, correzione e aggiornamento riguardo i nuovi elementi emersi.", EH, RP),
     ("0.2.0", "2026-10-24", "Aggiunta della sezione di analisi dei ruoli.", EH, RP),
