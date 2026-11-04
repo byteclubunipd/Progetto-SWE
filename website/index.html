@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="css/desktop.css" media="screen and (min-width: 880px)">
 
   <script src="js/script.js" defer></script>
+  <meta name="description" content="Documentazione del gruppo ByteClub per il corso di Ingegneria del Software">
   <title>ByteClub — Documentazione</title>
 </head>
 <body id="top">
@@ -21,10 +22,11 @@
       <nav id="menu" aria-label="Navigazione principale" aria-hidden="true">
         <span class="titolo-menu">Menù</span>
         <ul>
+          <li><a href="#lettera-presentazione">Lettera di presentazione</a></li>
           <li><a href="#candidatura"> Candidatura </a></li>
           <li><a href="#diario"> Diario di bordo</a></li>
           <li><a href="#contatti"> Contatti </a></li>
-          <li><a href="#about"> About </a></li>
+          <li><a href="#about"> Chi siamo </a></li>
           <li>
             <button id="tema-toggle" type="button" aria-pressed="false"
               aria-label="Attiva modalità scura">
@@ -45,49 +47,75 @@
    
   </header>
   <main>
-    <section id="introduzione">
-      <p>Sito di documentazione del progetto del corso di Ingegneria del Software del gruppo 10.  </p>
-      <p>Università degli studi di Padova, Corso di laurea in Informatica, A.A. 2026/27 </p>
-      <p id="data-aggiornamento" class="data-aggiornamento">Ultimo aggiornamento: [DATA_AGGIORNAMENTO]</p>
+    <section id="introduzione" class="hero">
+      <div class="hero-copy">
+        <h2>Progetto di Ingegneria del Software</h2>
+        <p>La raccolta ufficiale dei documenti, dei verbali e delle attività del gruppo ByteClub per il corso di laurea in Informatica dell'Università degli Studi di Padova.</p>
+      </div>
+      <div class="project-meta" aria-label="Stato del progetto"
+        data-github-milestones-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/milestones?state=all&per_page=20">
+        <div class="project-status">
+          <span>Stato attuale</span>
+          <strong id="milestone-name">Candidatura</strong>
+          <div class="progress-track" role="progressbar" aria-label="Avanzamento milestone"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+            <span id="milestone-progress" style="width: 100%"></span>
+          </div>
+          <span id="milestone-summary">22 completate · 0 aperte</span>
+        </div>
+        <div class="academic-year">
+          <span>Anno accademico</span>
+          <strong>2026/27</strong>
+        </div>
+        <p id="data-aggiornamento" class="data-aggiornamento">Ultimo aggiornamento: [DATA_AGGIORNAMENTO]</p>
+      </div>
     </section>
-    <section>
-      <h2 id="candidatura">Candidatura</h2>
-      <section>
-        <h3>Lettera di presentazione</h3>
+    <section id="lettera-presentazione" class="resource-feature">
+      <h2>Lettera di presentazione</h2>
+      <p class="resource-description">Il documento principale della candidatura del gruppo ByteClub.</p>
+      <div class="featured-document">
         [LETTERA]
-      </section>
-      <div class="document-pair">
-        <section>
+      </div>
+    </section>
+    <section id="candidatura">
+      <h2>Candidatura</h2>
+      <p class="section-description">La documentazione della prima milestone, distinta tra materiali di progetto e verbali degli incontri.</p>
+      <div class="resource-grid">
+        <section class="resource-card">
           <h3>Documenti esterni</h3>
+          <p>Materiali preparati per la valutazione e il confronto con l'esterno.</p>
           [DOCUMENTI_ESTERNI]
         </section>
-        <section>
+        <section class="resource-card">
           <h3>Documenti interni</h3>
+          <p>Analisi e materiali di lavoro del gruppo.</p>
           [DOCUMENTI_INTERNI]
         </section>
-      </div>
-      <div class="document-pair">
-        <section>
+        <section class="resource-card">
           <h3>Verbali esterni</h3>
+          <p>Resoconti degli incontri con i referenti esterni.</p>
           [VERBALI_ESTERNI]
         </section>
-        <section>
+        <section class="resource-card">
           <h3>Verbali interni</h3>
+          <p>Decisioni e attività discusse dal gruppo.</p>
           [VERBALI_INTERNI]
         </section>
       </div>
     </section>
-    <section>
-      <h2 id="diario">Diario di bordo</h2>
+    <section id="diario" class="resource-section">
+      <h2>Diario di bordo</h2>
+      <p class="section-description">La cronologia del lavoro svolto e degli aggiornamenti del gruppo.</p>
       [DIARI_DI_BORDO]
     </section>
     <section>
       <h2 id="contatti">Contatti</h2>
+      <p class="section-description">Per comunicare con il gruppo o consultare il codice e la documentazione del progetto.</p>
       <div class="contatto-principale">
         <p>Per qualsiasi informazione, puoi contattarci all'indirizzo email: <a href="mailto:byteclubunipd@gmail.com">byteclubunipd@gmail.com</a></p>
       </div>
       <div class="contatto-principale" >
-        <p>La repository del progetto è disponibile su <a href="https://github.com/byteclubunipd/Progetto-SWE.git" target="_blank">github.com/byteclubunipd/Progetto-SWE</a></p>
+        <p>La repository del progetto è disponibile su <a href="https://github.com/byteclubunipd/Progetto-SWE.git" target="_blank" rel="noopener noreferrer">github.com/byteclubunipd/Progetto-SWE</a></p>
       </div>
       <h3>Membri del team</h3>
       <p id="membri-team-descrizione" class="sr-only">Tabella dei membri del team con nome, cognome, matricola e indirizzo email.</p>
@@ -143,7 +171,7 @@
       </div>
     </section>
     <section class="about-section">
-      <h2 id="about">About</h2>
+      <h2 id="about">Chi siamo</h2>
         <p>Il gruppo ByteClub è composto da studenti dell'Università di Padova, nato per svolgere il progetto didattico del corso di Ingegneria del Software.</p>
         <p>I nostri profili GitHub:</p>
         <div class="cardTeam">

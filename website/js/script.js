@@ -3,7 +3,50 @@ document.addEventListener("DOMContentLoaded", function() {
   const menu = document.getElementById('menu');
   const linksMenu = document.querySelectorAll('#menu a');
   const temaToggle = document.getElementById('tema-toggle');
+  const projectMeta = document.querySelector('.project-meta');
+  const milestoneName = document.getElementById('milestone-name');
+  const milestoneProgress = document.getElementById('milestone-progress');
+  const milestoneSummary = document.getElementById('milestone-summary');
   const desktopQuery = window.matchMedia('(min-width: 880px)');
+
+  async function aggiornaMilestone() {
+    if (!projectMeta || !milestoneName || !milestoneProgress || !milestoneSummary) {
+      return;
+    }
+
+    const url = projectMeta.dataset.githubMilestonesUrl;
+    if (!url) {
+      return;
+    }
+
+    try {
+      const response = await fetch(url, {
+        headers: { Accept: 'application/vnd.github+json' }
+      });
+      if (!response.ok) {
+        throw new Error(`GitHub API: ${response.status}`);
+      }
+      const milestones = await response.json();
+      const current = milestones
+        .filter(milestone => milestone.state === 'open')
+        .sort((left, right) => right.number - left.number)[0]
+        || milestones.sort((left, right) => right.number - left.number)[0];
+
+      if (!current) {
+        throw new Error('Nessuna milestone disponibile');
+      }
+
+      const total = current.open_issues + current.closed_issues;
+      const progress = total ? Math.round((current.closed_issues / total) * 100) : 0;
+      milestoneName.textContent = current.title;
+      milestoneProgress.style.width = `${progress}%`;
+      milestoneProgress.parentElement.setAttribute('aria-valuenow', String(progress));
+      milestoneSummary.textContent =
+        `${current.closed_issues} completate · ${current.open_issues} aperte`;
+    } catch (error) {
+      console.error('Impossibile aggiornare la milestone GitHub.', error);
+    }
+  }
 
   function aggiornaTema(theme) {
     const dark = theme === 'dark';
@@ -55,6 +98,8 @@ document.addEventListener("DOMContentLoaded", function() {
       localStorage.setItem('byteclub-theme', nextTheme);
     });
   }
+
+  aggiornaMilestone();
 
   if (bottoneMenu && menu) {
     aggiornaVisibilitaMenu();

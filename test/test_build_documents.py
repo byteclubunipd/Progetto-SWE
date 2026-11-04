@@ -25,6 +25,7 @@ class Links(HTMLParser):
     def __init__(self):
         super().__init__()
         self.references = []
+        self.document_links = []
 
     # Nome richiesto dal protocollo HTMLParser.
     def handle_starttag(self, tag, attrs):
@@ -32,6 +33,8 @@ class Links(HTMLParser):
         if (tag == "a" and "href" in attributes
                 and not attributes["href"].startswith(("#", "mailto:", "http:", "https:"))):
             self.references.append(attributes["href"])
+            if attributes["href"].lower().endswith(".pdf"):
+                self.document_links.append(attributes)
         if (tag == "link" and "href" in attributes
                 and not attributes["href"].startswith(("http:", "https:"))):
             self.references.append(attributes["href"])
@@ -226,7 +229,7 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertIn("%20", page)
         self.assertIn("%26", page)
         self.assertIn("%C3%A8", page)
-        self.assertIn("[VERBALI_INTERNI]", page)
+        self.assertIn("%5BVERBALI_INTERNI%5D", page)
 
     def testLinksResolveInLocalBuildAndPublishedSite(self):
         self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Test")
@@ -269,6 +272,17 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(len(pdfReferences), 6)
         self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
+        self.assertIn('id="lettera-presentazione"', content)
+        self.assertLess(content.index('id="lettera-presentazione"'),
+                        content.index('id="candidatura"'))
+        self.assertNotIn('class="quick-links"', content)
+        self.assertNotIn("Portale della documentazione", content)
+        self.assertIn("milestone-name", content)
+        self.assertIn("milestone-progress", content)
+        self.assertEqual(len(parser.document_links), 6)
+        for attributes in parser.document_links:
+            self.assertEqual(attributes.get("target"), "_blank")
+            self.assertEqual(attributes.get("rel"), "noopener noreferrer")
         for heading in ("5_Templates", "Altri documenti"):
             self.assertNotIn(heading, content)
         for heading in ("Documenti esterni", "Documenti interni", "Verbali esterni", "Verbali interni"):
@@ -281,6 +295,25 @@ class DocumentationBuildTest(unittest.TestCase):
                 self.assertEqual((base / "docs/6_Output" / name).read_bytes(), b"%PDF-manuale")
         manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
         self.assertEqual(manifest["outputs"], [])
+
+    def testCatalogUsesTypstDocumentMetadata(self):
+        self.write(
+            "docs/2_Candidatura/Documenti_esterni/Valutazione v1.0.0.typ",
+            '#show: documento.with(titolo: "Valutazione Capitolati", '
+            'versione: "1.0.0", stato: "Approvato")')
+        self.write(
+            "docs/2_Candidatura/Verbali/Esterni/VE_2026-11-04.typ",
+            '#show: verbale.with(titolo: "Verbale Riunione", '
+            'data: "4 novembre 2026", firma: true)')
+        self.write(
+            "docs/6_Output/2_Candidatura/Verbali/Esterni/VE_2026-11-04.pdf",
+            b"%PDF-firmato")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn("Valutazione Capitolati", page)
+        self.assertIn("Versione 1.0.0 · Approvato", page)
+        self.assertIn("Verbale Riunione", page)
+        self.assertIn("4 novembre 2026 · Firmato", page)
 
     def testBadKeywordDoesNotReplaceExistingOutputs(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Prima")
