@@ -26,8 +26,8 @@
   // DETTAGLI DELLA RIUNIONE
   tipoRiunione: "Esterna",
   luogo: "Google meet",
-  oraInizio: "16.00",
-  oraFine: "16.30",
+  oraInizio: "14.00",
+  oraFine: "14.30",
   responsabile: LS,
   scriba: EH,
   partecipanti: (
