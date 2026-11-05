@@ -13,7 +13,8 @@
   titolo: "Verbale Riunione",
   data: "2026-11-04",
   versione: "0.1.0",
-  firma: true,
+  firma: false,
+  daFirmare: true,
 
   // INFORMAZIONI SUL DOCUMENTO
   autori: (EH,),
@@ -139,7 +140,7 @@
   registroModifiche: (
     (
       [0.1.0],
-      [2026-11-04],
+      [2026-11-05],
       [Prima stesura del verbale],
       EH,
       MMO,

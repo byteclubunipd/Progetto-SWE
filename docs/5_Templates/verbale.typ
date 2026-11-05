@@ -4,6 +4,7 @@
   titolo: "Verbale di riunione",
   data: "",
   versione: "0.1.0",
+  daFirmare: false,
   firma: false,
   autori: (),
 
@@ -182,7 +183,7 @@
       #body
       
       // FIRMA DELLA PROPONENTE
-      #if firma [
+      #if daFirmare [
         = Firma della proponente
 
         Il presente verbale viene sottoposto alla proponente
