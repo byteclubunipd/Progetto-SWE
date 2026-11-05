@@ -173,10 +173,10 @@ Il lavoro è organizzato nei due periodi di riferimento RTB e PB. Le ore sono ob
   intestazioni: ([Evento], [Data obiettivo], [Nota]),
   righe: (
     ([Inizio dei lavori — Sprint 1], [#dataInizioLavori], [Avvio della formazione e raccolta dei requisiti]),
-    ([PoC — Sprint 1–2], [Entro dicembre 2026], [Validazione delle tecnologie più rischiose]),
-    ([RTB — Sprint 1–5], [Entro gennaio 2027], [Riesame dei requisiti e dell'architettura]),
+    ([PoC — Sprint 1-2], [Entro dicembre 2026], [Validazione delle tecnologie più rischiose]),
+    ([RTB — Sprint 3–5], [Entro gennaio 2027], [Riesame dei requisiti e dell'architettura]),
     ([PB e sviluppo dell'MVP — Sprint 6–9], [Febbraio–marzo 2027], [Implementazione incrementale e integrazione]),
-    ([Product Baseline e consegna — Sprint 10], [Entro #dataConsegna], [Verifica finale, documentazione e rilascio]),
+    ([Finalizzazione dei lavori e consegna — Sprint 10], [Entro #dataConsegna], [Verifica finale, documentazione e rilascio]),
   ),
 )
 
