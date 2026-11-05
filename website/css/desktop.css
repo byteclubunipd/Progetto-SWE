@@ -31,7 +31,6 @@ header {
   top: 0;
   left: 0;
   width: 260px;
-  height: 100vh;
   transform: translateX(0);
   padding: 38px 20px 30px;
   background-color: var(--menuBackground);

@@ -49,36 +49,36 @@
   <main>
     <section id="introduzione" class="hero">
       <div class="hero-copy">
-        <h2>Progetto di Ingegneria del Software</h2>
+        <h2>Progetto di Ingegneria del Software A.A. 2026/27</h2>
         <p>La raccolta ufficiale dei documenti, dei verbali e delle attività del gruppo ByteClub per il corso di laurea in Informatica dell'Università degli Studi di Padova.</p>
       </div>
-      <div class="project-meta" aria-label="Stato del progetto"
-        data-github-milestones-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/milestones?state=all&per_page=20">
+      <!-- Modificato da Claude: pannello a tutta larghezza con l'elenco delle issue. -->
+      <div class="project-meta" role="group" aria-label="Stato del progetto"
+        data-github-milestones-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/milestones?state=all&per_page=20"
+        data-github-issues-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/issues">
         <div class="project-status">
           <span>Stato attuale</span>
-          <strong id="milestone-name">Candidatura</strong>
+          <strong id="milestone-name">Caricamento...</strong>
+          <!-- aria-valuenow assente di proposito: lo imposta script.js quando arrivano i dati. -->
           <div class="progress-track" role="progressbar" aria-label="Avanzamento milestone"
-            aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-            <span id="milestone-progress" style="width: 100%"></span>
+            aria-valuemin="0" aria-valuemax="100" aria-valuetext="Caricamento in corso">
+            <span id="milestone-progress"></span>
           </div>
-          <span id="milestone-summary">22 completate · 0 aperte</span>
-        </div>
-        <div class="academic-year">
-          <span>Anno accademico</span>
-          <strong>2026/27</strong>
+          <span id="milestone-summary">Recupero dei dati da GitHub</span>
+          <ul id="milestone-issues" class="issue-list" aria-label="Issue della milestone" hidden></ul>
         </div>
         <p id="data-aggiornamento" class="data-aggiornamento">Ultimo aggiornamento: [DATA_AGGIORNAMENTO]</p>
       </div>
     </section>
-    <section id="lettera-presentazione" class="resource-feature">
-      <h2>Lettera di presentazione</h2>
+    <section class="resource-feature">
+      <h2 id="lettera-presentazione">Lettera di presentazione</h2>
       <p class="resource-description">Il documento principale della candidatura del gruppo ByteClub.</p>
       <div class="featured-document">
         [LETTERA]
       </div>
     </section>
-    <section id="candidatura">
-      <h2>Candidatura</h2>
+    <section>
+      <h2 id="candidatura">Candidatura</h2>
       <p class="section-description">La documentazione della prima milestone, distinta tra materiali di progetto e verbali degli incontri.</p>
       <div class="resource-grid">
         <section class="resource-card">
@@ -103,8 +103,8 @@
         </section>
       </div>
     </section>
-    <section id="diario" class="resource-section">
-      <h2>Diario di bordo</h2>
+    <section class="resource-section">
+      <h2 id="diario">Diario di bordo</h2>
       <p class="section-description">La cronologia del lavoro svolto e degli aggiornamenti del gruppo.</p>
       [DIARI_DI_BORDO]
     </section>
@@ -146,7 +146,7 @@
               <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Mattia</span></th>
               <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Milan</span></td>
               <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2137968</span></td>
-              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:mattia.milan@studenti.unipd.it">mattia.milan@studenti.unipd.it</a></span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:mattia.milan.4@studenti.unipd.it">mattia.milan.4@studenti.unipd.it</a></span></td>
             </tr>
             <tr>
               <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Margherita</span></th>
