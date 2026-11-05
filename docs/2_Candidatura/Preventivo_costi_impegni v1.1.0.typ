@@ -3,13 +3,13 @@
 #let gruppo = "ByteClub"
 #let capitolato = "C7 - SmartDashboard"
 #let proponente = "Ergon Informatica S.r.l."
-#let dataConsegna = "8/04/2027"
-#let dataInizioLavori = "2026-11-04"
+#let dataConsegna = "2027-04-16"
+#let dataInizioLavori = "2026-11-09"
 #let dataAggiornamentoPreventivo = "2026-11-07"
 #let numeroComponenti = 6
 
 #let oreRTB = (30, 30, 60, 36, 48, 48)
-#let orePB = (30, 24, 24, 84, 78, 60)
+#let orePB = (18, 24, 24, 78, 84, 60)
 #let costiOrari = (30, 20, 25, 25, 15, 15)
 #let oreTotali = oreRTB.zip(orePB).map(((orePeriodoRTB, orePeriodoPB)) => orePeriodoRTB + orePeriodoPB)
 #let costiTotali = oreTotali.zip(costiOrari).map(((ore, costo)) => ore * costo)
@@ -27,7 +27,7 @@
 #show: documento.with(
   titolo: "Dichiarazione degli impegni e preventivo dei costi",
   mostraRegistro: true,
-  versione: "1.2.0",
+  versione: "2.0.0",
   stato: "Da approvare",
   redazione: RP,
   verifica: MMO,
@@ -41,6 +41,7 @@
   ],
 
   registroModifiche: (
+    ("2.0.0", "2026-11-05", "Approvazione del documento.", LS, "-"),
     ("1.2.0", "2026-11-05", "Aggiornamento contenuto del documento per allinearlo al capitolato C7.", RP, MMO),
     ("1.1.0", "2026-11-04", "Aggiornamento struttura del documento a seguito della correzione della candidatura.", RP, MMO),
     ("1.0.0", "2026-10-28", "Approvazione del documento.", LS, "-"),
@@ -60,7 +61,7 @@ Le ore e i costi riportati costituiscono una stima iniziale. Le quantità per ru
 
 - Regolamento del progetto didattico di Ingegneria del Software, anno accademico 2026/2027. #footnote[#link("https://www.math.unipd.it/~tullio/IS-1/2026/Dispense/PD1.pdf")[Link al regolamento del progetto didattico]]
 - Capitolato #capitolato e documentazione tecnica fornita da #proponente. #footnote[#link("https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C7-SD.pdf")[Link alla documentazione del capitolato C7]]
-- Aggiudicazione dei capitolti I lotto, per la valutazione della precedente candidatura. #footnote[#link("https://stem.elearning.unipd.it/pluginfile.php/1458150/mod_resource/content/20/IS%202026-2027%20-%20Aggiudicazione%20Appalti%20-%20I%20Lotto.pdf")[Link al documento di aggiudicazione dei capitolati I lotto]]
+- Aggiudicazione dei capitolti I lotto, nello specifico la valutazione della precedente candidatura. #footnote[#link("https://stem.elearning.unipd.it/pluginfile.php/1458150/mod_resource/content/20/IS%202026-2027%20-%20Aggiudicazione%20Appalti%20-%20I%20Lotto.pdf")[Link al documento di aggiudicazione dei capitolati I lotto]]
 - Lettera di presentazione del gruppo ByteClub. #footnote[#link("https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Lettera_di_Presentazione v2.0.0.pdf")[Link alla lettera di presentazione]]
 - Valutazione dei capitolati del gruppo ByteClub. #footnote[#link("https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Lettera_di_Presentazione.pdf")[Link alla valutazione dei capitolati]]
 - Verbali interni ed esterni della candidatura del gruppo ByteClub, con particolare riferimento agli incontri del 2026-10-30 #footnote[#link("https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/verbali/interni/VI_2026-10-30.pdf")[Link al verbale interno 2026-10-30]], 2026-11-03 #footnote[#link("https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/verbali/interni/VI_2026-11-03.pdf")[Link al verbale interno 2026-11-03]] e 2026-11-04 #footnote[#link("https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/verbali/esterni/VE_2026-11-04.pdf")[Link al verbale esterno 2026-11-04]].
@@ -127,7 +128,7 @@ Il costo totale preventivato è di *#totaleCosti €* per *#totaleOre ore produt
 
 == Ore per componente, ruolo e periodo
 
-La tabella mostra la ripartizione delle ore assegnate a ciascun componente nei periodi RTB e PB. Nel periodo RTB il carico è maggiore per i ruoli di Amministratore e Analista, coerentemente con le attività di studio dei requisiti, definizione dell’architettura e validazione del PoC#footnote[Proof of Concept]. Nel periodo PB, parte del carico si sposta verso i ruoli di Progettista, Programmatore e Verificatore, in coerenza con l’implementazione, l’integrazione e la verifica della piattaforma BI#footnote[Business Intelligence] e delle funzionalità AI.
+La tabella mostra la ripartizione delle ore assegnate a ciascun componente nei periodi RTB e PB. Nel periodo RTB il carico è maggiore per i ruoli di Responsabile, Amministratore e Analista, coerentemente con le attività di studio dei requisiti, definizione dell’architettura e validazione del PoC#footnote[Proof of Concept]. Nel periodo PB, parte del carico si sposta verso i ruoli di Progettista, Programmatore e Verificatore, in coerenza con l’implementazione, l’integrazione e la verifica della piattaforma BI#footnote[Business Intelligence] e delle funzionalità AI.
 
 #tabellaDati(
   colonne: (auto, auto, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 1.1fr, 0.8fr),
@@ -171,15 +172,15 @@ Il lavoro è organizzato nei due periodi di riferimento RTB e PB. Le ore sono ob
   colonne: (2fr, 1.4fr, 2.8fr),
   intestazioni: ([Evento], [Data obiettivo], [Nota]),
   righe: (
-    ([Inizio dei lavori], [#dataInizioLavori], [Avvio della formazione e raccolta dei requisiti]),
-    ([PoC iniziale], [Entro la terza settimana], [Validazione delle tecnologie più rischiose]),
-    ([Requirements and Technology Baseline], [Entro gennaio 2027], [Riesame dei requisiti e dell'architettura]),
-    ([Sviluppo del MVP], [Gennaio–marzo 2027], [Implementazione incrementale e integrazione]),
-    ([Product Baseline e consegna], [Entro #dataConsegna], [Verifica finale e rilascio]),
+    ([Inizio dei lavori — Sprint 1], [#dataInizioLavori], [Avvio della formazione e raccolta dei requisiti]),
+    ([PoC — Sprint 1–2], [Entro dicembre 2026], [Validazione delle tecnologie più rischiose]),
+    ([RTB — Sprint 1–5], [Entro gennaio 2027], [Riesame dei requisiti e dell'architettura]),
+    ([PB e sviluppo dell'MVP — Sprint 6–9], [Febbraio–marzo 2027], [Implementazione incrementale e integrazione]),
+    ([Product Baseline e consegna — Sprint 10], [Entro #dataConsegna], [Verifica finale, documentazione e rilascio]),
   ),
 )
 
-La durata obiettivo di ciascuno sprint è di due settimane, così da mantenere un ritmo di lavoro compatibile con gli allineamenti quindicinali proposti dalla proponente. La durata potrà essere modificata per esigenze di calendario, indisponibilità dei componenti o vincoli tecnici; ogni modifica dovrà essere deliberata, motivata e registrata. Il calendario terrà conto delle vacanze invernali, della sessione d’esami e della disponibilità della proponente per gli incontri SAL e gli approfondimenti tecnici, sia online sia in presenza.
+La pianificazione iniziale prevede 10 sprint di due settimane, compatibili con gli allineamenti quindicinali con la proponente; durata, numero e distribuzione degli sprint possono essere modificati per esigenze di calendario, indisponibilità o vincoli tecnici, purché ogni modifica sia deliberata, motivata, verbalizzata e recepita nel preventivo quando incide su ore, costi o scadenze. Il calendario di massima tiene conto gli incontri SAL#footnote[Stato Avanzamento Lavori] e gli approfondimenti tecnici della proponente, online o in presenza, e delle vacanze natalizie e pasquali, della sessione d'esami e della disponibilità dei componenti.
 
 = Rotazione e gestione dei ruoli
 
