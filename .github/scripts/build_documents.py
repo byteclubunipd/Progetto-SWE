@@ -52,7 +52,29 @@ def naturalKey(value: str) -> tuple:
                  for part in re.split(r"(\d+)", value))
 
 
+def documentMetadata(source: Path) -> dict[str, str]:
+    content = source.read_text(encoding="utf-8")
+    values = {}
+    for field in ("titolo", "versione", "stato", "data", "tipoRiunione"):
+        match = re.search(rf'\b{field}\s*:\s*"([^"]*)"', content)
+        if match:
+            values[field] = match.group(1).strip()
+    signature = re.search(r"\bfirma\s*:\s*(true|false)", content)
+    if signature:
+        values["firma"] = signature.group(1)
+    return values
+
+
+def collectMetadata(root: Path, sources: list[Path]) -> dict[str, dict[str, str]]:
+    metadata = {}
+    for source in sources:
+        relative = source.relative_to(root / "docs").with_suffix(".pdf").as_posix()
+        metadata[relative] = documentMetadata(source)
+    return metadata
+
+
 def catalog(directory: Path, outputRoot: Path, prefix: str,
+            metadata: dict[str, dict[str, str]],
             excluded: tuple[Path, ...] = ()) -> str:
     """Render the directory tree; retain full filenames and URL-encode every path."""
     if not directory.exists():
@@ -66,10 +88,27 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
     items = []
     for file in files:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
-        items.append(f'<li><a href="{html.escape(url, quote=True)}">'
-                     f'{html.escape(file.stem)}</a></li>')
+        document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
+        title = document.get("titolo", file.stem.replace("_", " "))
+        details = []
+        if document.get("versione") and document["versione"].lower() != "false":
+            details.append(f'Versione {document["versione"]}')
+        if document.get("stato"):
+            details.append(document["stato"])
+        if document.get("data"):
+            details.append(document["data"])
+        if document.get("firma") == "true":
+            details.append("Firmato")
+        detailMarkup = ""
+        if details:
+            detailMarkup = '<span class="document-meta">' + " · ".join(
+                html.escape(value) for value in details) + "</span>"
+        items.append(f'<li><a href="{html.escape(url, quote=True)}" '
+                     'target="_blank" rel="noopener noreferrer">'
+                     f'<span class="document-title">{html.escape(title)}</span>'
+                     f'{detailMarkup}</a></li>')
     for folder in folders:
-        nested = catalog(folder, outputRoot, prefix, excluded)
+        nested = catalog(folder, outputRoot, prefix, metadata, excluded)
         if nested != EMPTY:
             items.append(f"<li><strong>{html.escape(folder.name.replace('_', ' '))}"
                          f"</strong>\n{nested}</li>")
@@ -77,16 +116,18 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         "\n</ul>" if items else EMPTY
 
 
-def render(template: str, outputRoot: Path, prefix: str) -> str:
+def render(template: str, outputRoot: Path, prefix: str,
+           metadata: dict[str, dict[str, str]] | None = None) -> str:
+    metadata = metadata or {}
     candidature = outputRoot / "2_Candidatura"
     replacements = {
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
-        "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix),
-        "[CANDIDATURA_DOCUMENTI]": catalog(candidature, outputRoot, prefix,
-                                          (candidature / "verbali/interni",
-                                           candidature / "verbali/esterni")),
-        "[VERBALI_INTERNI]": catalog(candidature / "verbali/interni", outputRoot, prefix),
-        "[VERBALI_ESTERNI]": catalog(candidature / "verbali/esterni", outputRoot, prefix),
+        "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
+        "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix, metadata),
+        "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix, metadata),
+        "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
+        "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
+        "[VERBALI_ESTERNI]": catalog(candidature / "Verbali/Esterni", outputRoot, prefix, metadata),
     }
     for keyword in replacements:
         if template.count(keyword) != 1:
@@ -240,7 +281,8 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
             print(f"Compilato: {source.relative_to(root).as_posix()}")
 
         # One self-contained site works both locally and on GitHub Pages.
-        publishedHtml = render(template, candidate, "docs/6_Output/")
+        publishedHtml = render(template, candidate, "docs/6_Output/",
+                               collectMetadata(root, sources))
         # Signed PDFs are maintained manually, so cleanup must no longer own them.
         generated = [name for name in outputs if name not in signed]
         manifest = json.dumps({"schema": 1, "outputs": generated},
