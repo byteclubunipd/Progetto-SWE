@@ -86,18 +86,18 @@
         #v(1em)
         #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
-        #tabellaDati(
-          colonne: (1fr, 1.5fr, 3fr, 2fr, 2fr),
-          intestazioni: (
-            [Versione],
-            [Data],
-            [Descrizione],
-            [Autore],
-            [Verificatore],
-          ),
-          righe: registroModifiche,
-        )
-      ]
+      #tabellaDati(
+        colonne: (auto, auto, 1fr, auto, auto),
+        intestazioni: (
+          [Versione],
+          [Data],
+          [Descrizione],
+          [Autore],
+          [Verificatore],
+        ),
+        righe: registroModifiche,
+      )
+
       // INDICE
       #pagebreak()
       #indiceDocumento()

@@ -12,11 +12,11 @@
   proprietario: "ByteClub",
   uso: "Interno",
   destinatari: "Gruppo ByteClub",
-  modifiche: (
-    ("1.0.0", "2026-10-30", "Tutto il gruppo", "Approvazione del documento."),
-    ("0.2.0", "2026-10-30", MMI, "Verifica del documento."),
-    ("0.1.1", "2026-10-30", LS, "Integrazione dei verbali con Uranion e Halue e aggiunta delle appendici."),
-    ("0.1.0", "2026-10-28", LS, "Prima stesura: analisi dei capitolati C3, C8 e C1, motivazioni della scelta e dei capitolati scartati."),
+  registroModifiche: (
+    ("1.0.0", "2026-10-30", "Approvazione del documento.", "Tutto il gruppo", "-"),
+    ("0.2.0", "2026-10-30", "Verifica del documento.", MMI, "-"),
+    ("0.1.1", "2026-10-30", "Integrazione dei verbali con Uranion e Halue e aggiunta delle appendici.", LS, MMI),
+    ("0.1.0", "2026-10-28", "Prima stesura: analisi dei capitolati C3, C8 e C1, motivazioni della scelta e dei capitolati scartati.", LS, MMI),
   ),
   indice: true,
 )

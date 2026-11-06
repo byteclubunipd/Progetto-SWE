@@ -5,22 +5,14 @@
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
   titolo: "Titolo del documento",
+  mostraRegistro: true,
   versione: "0.1.0",
-  stato: "In redazione",
   redazione: ("Nome Cognome",),
   verifica: "Nome verificatore",
-  approvazione: "Nome approvatore",
-  proprietario: "ByteClub",
   uso: "Interno o esterno",
   destinatari: "Destinatari del documento",
   registroModifiche: (
-    (
-      [0.1.0],
-      [YYYY-MM-DD],
-      [Stesura del verbale],
-      ["Giulio Cesare"],
-      ["Kenan Yildiz"],
-    ),
+    ("0.1.0", "YYYY-MM-DD", "Descrizione della modifica", "Nome Cognome", "Nome verificatore"),
   ),
   indice: true,
 )

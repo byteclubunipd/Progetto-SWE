@@ -1,7 +1,7 @@
 // Lettera di Presentazione - ByteClub
 
-#import "../5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
-#import "../5_Templates/documento.typ": documento
+#import "/docs/5_Templates/base.typ": tabellaDati, tutti, BG, EH, MMI, MMO, RP, LS
+#import "/docs/5_Templates/documento.typ": documento
 
 #let gruppo = "ByteClub"
 #let email = "byteclubunipd@gmail.com"
@@ -14,7 +14,7 @@
 #let repo = "https://github.com/byteclubunipd/Progetto-SWE"
 #let sito = "https://byteclubunipd.github.io/Progetto-SWE/"
 #let link-val = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
-#let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.0.0.pdf"
+#let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.1.0.pdf"
 
 #let costo = "11.490"
 #let ore = "552"
