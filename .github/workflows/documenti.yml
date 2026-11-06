@@ -30,6 +30,26 @@ jobs:
       - uses: typst-community/setup-typst@v5
         with:
           typst-version: '0.15.1'
+      - name: Verifica struttura documenti
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          required = (
+              Path('docs/1_Diario_di_bordo'),
+              Path('docs/2_Candidatura/Documenti_esterni'),
+              Path('docs/2_Candidatura/Documenti_interni'),
+              Path('docs/2_Candidatura/Lettera_di_presentazione'),
+              Path('docs/2_Candidatura/Verbali/Esterni'),
+              Path('docs/2_Candidatura/Verbali/Interni'),
+              Path('docs/5_Templates'),
+              Path('docs/6_Output'),
+          )
+          missing = [str(path) for path in required if not path.is_dir()]
+          if missing:
+              raise SystemExit('Struttura documenti incompleta: ' + ', '.join(missing))
+          PY
       - name: Verifica generatore
         run: python -m unittest discover -s test -p test_build_documents.py -v
       - name: Verifica modelli Typst
