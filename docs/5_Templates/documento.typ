@@ -3,6 +3,7 @@
 #let documento(
   titolo: "Documento",
   mostraRegistro: true,
+  mostraInformazioni: true,
   versione: "",
   stato: "",
   redazione: (),
@@ -24,42 +25,48 @@
       #copertina(titolo)
 
       // INFORMAZIONI SUL DOCUMENTO
-      #v(1em)
-      #text(weight: "bold", size: 14pt)[Informazioni sul documento]
+      #if mostraInformazioni [
+        #v(1em)
+        #text(weight: "bold", size: 14pt)[Informazioni sul documento]
 
-      #tabellaDati(
-        colonne: (1fr, 2fr),
-        intestazioni: ([Campo], [Valore]),
-        righe: (
-          ([Versione], [#versione]),
-          ([Stato], [#stato]),
-          ([Redazione], [#redazione]),
-          ([Verifica], [#verifica]),
-          ([Approvazione], [#approvazione]),
-          ([Proprietario], [#proprietario]),
-          ([Uso], [#uso]),
-          ([Destinatari], [#destinatari]),
-        ),
-      )
+        #tabellaDati(
+          colonne: (1fr, 2fr),
+          intestazioni: ([Campo], [Valore]),
+          righe: (
+            ([Versione], [#versione]),
+            ([Stato], [#stato]),
+            ([Redazione], [#redazione]),
+            ([Verifica], [#verifica]),
+            ([Approvazione], [#approvazione]),
+            ([Proprietario], [#proprietario]),
+            ([Uso], [#uso]),
+            ([Destinatari], [#destinatari]),
+          ),
+        )
+      ]
 
       // REGISTRO DELLE MODIFICHE
-      #v(1em)
-      #text(weight: "bold", size: 14pt)[Registro delle modifiche]
+      #if mostraRegistro [
+        #v(1em)
+        #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
-      #tabellaDati(
-        colonne: (auto, auto, 1fr, auto, auto),
-        intestazioni: (
-          [Versione],
-          [Data],
-          [Descrizione],
-          [Autore],
-          [Verificatore],
-        ),
-        righe: registroModifiche,
-      )
+        #tabellaDati(
+          colonne: (auto, auto, 1fr, auto, auto),
+          intestazioni: (
+            [Versione],
+            [Data],
+            [Descrizione],
+            [Autore],
+            [Verificatore],
+          ),
+          righe: registroModifiche,
+        )
+      ]
+      
 
-      #pagebreak()
+      
       #if indice [
+        #pagebreak()
         #indiceDocumento()
         #pagebreak()
       ]
