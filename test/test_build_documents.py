@@ -25,6 +25,7 @@ class Links(HTMLParser):
     def __init__(self):
         super().__init__()
         self.references = []
+        self.document_links = []
 
     # Nome richiesto dal protocollo HTMLParser.
     def handle_starttag(self, tag, attrs):
@@ -32,6 +33,8 @@ class Links(HTMLParser):
         if (tag == "a" and "href" in attributes
                 and not attributes["href"].startswith(("#", "mailto:", "http:", "https:"))):
             self.references.append(attributes["href"])
+            if attributes["href"].lower().endswith(".pdf"):
+                self.document_links.append(attributes)
         if (tag == "link" and "href" in attributes
                 and not attributes["href"].startswith(("http:", "https:"))):
             self.references.append(attributes["href"])
@@ -69,7 +72,7 @@ class DocumentationBuildTest(unittest.TestCase):
     def testEmptySectionsHaveTheRequestedMessage(self):
         self.assertEqual(self.runBuild(), [])
         generated = (self.root / "website/build/index.html").read_text(encoding="utf-8")
-        self.assertEqual(generated.count(PIPELINE.EMPTY), 4)
+        self.assertEqual(generated.count(PIPELINE.EMPTY), 6)
         self.assertNotIn("[DATA_AGGIORNAMENTO]", generated)
         self.assertRegex(
             generated,
@@ -78,10 +81,10 @@ class DocumentationBuildTest(unittest.TestCase):
 
     def testRecursiveScopePreservesNamesAndIsIdempotent(self):
         self.write("docs/1_Diario_di_bordo/rtb/DDB_2026-10-17.typ", "Diario")
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Verbale")
-        self.write("docs/2_Candidatura/Lettera v0.1.0.TYP", "Lettera")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Verbale")
+        self.write("docs/2_Candidatura/Lettera_di_presentazione/Lettera v0.1.0.TYP", "Lettera")
         self.write("docs/5_Templates/base.typ", "Non compilare")
-        self.write("docs/3_RTB/Analisi v0.1.0.typ", "Non compilare")
+        self.write("docs/5_Templates/Analisi v0.1.0.typ", "Non compilare")
         outputs = self.runBuild()
         self.assertEqual(len(outputs), 3)
         for name in outputs:
@@ -109,14 +112,14 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testRenameRemovesOnlyOwnedOutputsAndKeepsSignedPdf(self):
-        source = self.write("docs/2_Candidatura/Vecchio v0.1.0.typ", "Versione")
-        signed = self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf",
+        source = self.write("docs/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.typ", "Versione")
+        signed = self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf",
                             b"%PDF-manuale")
         self.runBuild()
         source.unlink()
-        self.write("docs/2_Candidatura/Nuovo v0.1.0.typ", "Versione aggiornata")
+        self.write("docs/2_Candidatura/Documenti_esterni/Nuovo v0.1.0.typ", "Versione aggiornata")
         self.runBuild()
-        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Vecchio v0.1.0.pdf").exists())
+        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.pdf").exists())
         self.assertEqual(signed.read_bytes(), b"%PDF-manuale")
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertNotIn("Vecchio%20v0.1.0.pdf", page)
@@ -124,7 +127,7 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertIn("Firmato.pdf", page)
 
     def testSignedPdfIsReusedWithoutCompilationAndPublishedUnchanged(self):
-        name = "2_Candidatura/verbali/esterni/VE_2026-10-29"
+        name = "2_Candidatura/Verbali/Esterni/VE_2026-10-29"
         self.write(f"docs/{name}.typ", '#show: verbale.with(firma: true)')
         signedBytes = b"%PDF-1.7\nPDF firmato dall'azienda\n%%EOF"
         signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
@@ -155,19 +158,19 @@ class DocumentationBuildTest(unittest.TestCase):
         self.write("docs/2_Candidatura/Normale.typ", "Versione precedente")
         self.runBuild()
         self.write("docs/2_Candidatura/Normale.typ", "Versione nuova")
-        self.write("docs/2_Candidatura/verbali/esterni/Firmato.typ",
+        self.write("docs/2_Candidatura/Verbali/Esterni/Firmato.typ",
                    '#show: verbale.with(firma: true)')
         for content in (None, b"", b"Questo non e un PDF"):
             with self.subTest(content=content):
                 if content is not None:
-                    self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf", content)
+                    self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf", content)
                 before = self.snapshot()
                 with self.assertRaisesRegex(ValueError, "firma: true richiede un PDF"):
                     self.runBuild()
                 self.assertEqual(self.snapshot(), before)
 
     def testSigningReleasesGeneratedPdfFromCleanupAndCanBeReversed(self):
-        name = "2_Candidatura/verbali/esterni/Verbale"
+        name = "2_Candidatura/Verbali/Esterni/Verbale"
         source = self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
         self.runBuild()
         signedBytes = b"%PDF-1.7\nFirmato"
@@ -219,17 +222,17 @@ class DocumentationBuildTest(unittest.TestCase):
                 self.assertEqual(self.snapshot(), before)
 
     def testUnicodeSpacesHtmlCharactersAndKeywordLikeNames(self):
-        self.write("docs/2_Candidatura/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
+        self.write("docs/2_Candidatura/Documenti_esterni/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
         self.runBuild()
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertIn("&amp;", page)
         self.assertIn("%20", page)
         self.assertIn("%26", page)
         self.assertIn("%C3%A8", page)
-        self.assertIn("[VERBALI_INTERNI]", page)
+        self.assertIn("%5BVERBALI_INTERNI%5D", page)
 
     def testLinksResolveInLocalBuildAndPublishedSite(self):
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Test")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Test")
         self.write("website/assets/logo.png", b"immagine di prova")
         self.runBuild()
         buildRoot = self.root / PIPELINE.SITE_BUILD
@@ -251,17 +254,12 @@ class DocumentationBuildTest(unittest.TestCase):
     def testCatalogListsOnlyCurrentSectionsAndPreservesOtherOutputs(self):
         documents = [
             "1_Diario_di_bordo/rtb/DDB.pdf",
-            "2_Candidatura/Lettera.pdf",
-            "2_Candidatura/verbali/interni/VI.pdf",
-            "2_Candidatura/verbali/esterni/VE.pdf",
-            "2_Candidatura/verbali/Altro.pdf",
-            "2_Candidatura/verbali/archivio/Storico.pdf",
-            "3_RTB/Analisi.pdf",
-            "3_RTB/verbali/interni/VI_RTB.pdf",
-            "4_PB/sottocartella/Manuale.pdf",
-            "0_Verbale/Verbale.pdf",
+            "2_Candidatura/Lettera_di_presentazione/Lettera.pdf",
+            "2_Candidatura/Verbali/Interni/VI.pdf",
+            "2_Candidatura/Verbali/Esterni/VE.pdf",
+            "2_Candidatura/Documenti_esterni/Piano.pdf",
+            "2_Candidatura/Documenti_interni/Studio.pdf",
             "5_Templates/Esempio.pdf",
-            "7_Futura/Nuovo v0.1.0.pdf",
             "Documento_radice.pdf",
         ]
         for name in documents:
@@ -274,8 +272,21 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(len(pdfReferences), 6)
         self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
-        for heading in ("3_RTB", "4_PB", "Altri documenti"):
+        self.assertIn('id="lettera-presentazione"', content)
+        self.assertLess(content.index('id="lettera-presentazione"'),
+                        content.index('id="candidatura"'))
+        self.assertNotIn('class="quick-links"', content)
+        self.assertNotIn("Portale della documentazione", content)
+        self.assertIn("milestone-name", content)
+        self.assertIn("milestone-progress", content)
+        self.assertEqual(len(parser.document_links), 6)
+        for attributes in parser.document_links:
+            self.assertEqual(attributes.get("target"), "_blank")
+            self.assertEqual(attributes.get("rel"), "noopener noreferrer")
+        for heading in ("5_Templates", "Altri documenti"):
             self.assertNotIn(heading, content)
+        for heading in ("Documenti esterni", "Documenti interni", "Verbali esterni", "Verbali interni"):
+            self.assertIn(heading, content)
         for href in pdfReferences:
             self.assertEqual((page.parent / unquote(href)).resolve().read_bytes(),
                              b"%PDF-manuale")
@@ -284,6 +295,25 @@ class DocumentationBuildTest(unittest.TestCase):
                 self.assertEqual((base / "docs/6_Output" / name).read_bytes(), b"%PDF-manuale")
         manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
         self.assertEqual(manifest["outputs"], [])
+
+    def testCatalogUsesTypstDocumentMetadata(self):
+        self.write(
+            "docs/2_Candidatura/Documenti_esterni/Valutazione v1.0.0.typ",
+            '#show: documento.with(titolo: "Valutazione Capitolati", '
+            'versione: "1.0.0", stato: "Approvato")')
+        self.write(
+            "docs/2_Candidatura/Verbali/Esterni/VE_2026-11-04.typ",
+            '#show: verbale.with(titolo: "Verbale Riunione", '
+            'data: "4 novembre 2026", firma: true)')
+        self.write(
+            "docs/6_Output/2_Candidatura/Verbali/Esterni/VE_2026-11-04.pdf",
+            b"%PDF-firmato")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn("Valutazione Capitolati", page)
+        self.assertIn("Versione 1.0.0 · Approvato", page)
+        self.assertIn("Verbale Riunione", page)
+        self.assertIn("4 novembre 2026 · Firmato", page)
 
     def testBadKeywordDoesNotReplaceExistingOutputs(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Prima")
@@ -296,9 +326,9 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testManifestCannotDeleteAPathOutsideManagedDirectories(self):
-        protected = self.write("docs/6_Output/3_RTB/Protetto.pdf", b"%PDF-protetto")
+        protected = self.write("docs/6_Output/5_Templates/Protetto.pdf", b"%PDF-protetto")
         self.write(PIPELINE.MANIFEST, json.dumps({
-            "schema": 1, "outputs": ["3_RTB/Protetto.pdf"]}))
+            "schema": 1, "outputs": ["5_Templates/Protetto.pdf"]}))
         before = self.snapshot()
         with self.assertRaises(ValueError):
             self.runBuild()

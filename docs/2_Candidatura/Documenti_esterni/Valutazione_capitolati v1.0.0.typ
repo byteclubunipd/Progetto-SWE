@@ -4,7 +4,7 @@
 // Modello compilabile: sostituire i segnaposto con i dati effettivi.
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
-  titolo: "Valutazione Capitolati",
+  titolo: "Valutazione capitolati",
   versione: "1.0.0",
   stato: "Approvato",
   redazione: (BG),
@@ -13,16 +13,16 @@
   proprietario: "ByteClub",
   uso: "Esterno",
   destinatari: "Prof. Vardanega Tullio \nProf. Cardin Riccardo",
-  modifiche: (
-    ("1.0.0", "2026-10-30", "Tutto il gruppo", "Approvazione del documento."),
-    ("0.3.5", "2026-10-25", BG, "Corretti refusi e piccoli errori di battitura presenti nel documento dopo una prima revisione."),
-    ("0.3.4", "2026-10-22", BG, "Modifiche minori al capitolato C3 dopo meeting con Uranion."),
-    ("0.3.2", "2026-10-21", BG, "Rimossi numeri indice dato che vengono generati automaticamente attraverso GitHub, corretti errori di battitura."),
-    ("0.3.1", "2026-10-20", BG, "Aggiunte sezioni mancanti sul progetto scelto, modificate le conclusioni dei 3 capitolati principali, corretti piccoli errori e ripetizioni."),
-    ("0.3.0", "2026-10-19", BG, "Completata sezione 'altri capitolati valutati' con analisi dei capitolati C0, C2, C4, C5, C6, C7 e C9."),
-    ("0.2.1", "2026-10-18", BG, "Aggiunti numeri indice e riferimenti incrociati per facilitare la navigazione del documento, iniziata sezione 'altri capitolati valutati' con titoli capitolati e sottotitoli delle sezioni."),
-    ("0.2.0", "2026-10-18", BG, "Aggiunta sezione 'altri capitolati di interesse' con analisi dei capitolati C8 e C1."),
-    ("0.1.0", "2026-10-17", BG, "Prima stesura del documento: introduzione e capitolato scelto."),
+  registroModifiche: (
+    ("1.0.0", "2026-10-30", "Approvazione del documento.", "Tutto il gruppo", "-"),
+    ("0.3.5", "2026-10-25", "Corretti refusi e piccoli errori di battitura presenti nel documento dopo una prima revisione.", BG, LS),
+    ("0.3.4", "2026-10-22", "Modifiche minori al capitolato C3 dopo meeting con Uranion.", BG, LS),
+    ("0.3.2", "2026-10-21", "Rimossi numeri indice dato che vengono generati automaticamente attraverso GitHub, corretti errori di battitura.", BG, LS),
+    ("0.3.1", "2026-10-20", "Aggiunte sezioni mancanti sul progetto scelto, modificate le conclusioni dei 3 capitolati principali, corretti piccoli errori e ripetizioni.", BG, LS),
+    ("0.3.0", "2026-10-19", "Completata sezione 'altri capitolati valutati' con analisi dei capitolati C0, C2, C4, C5, C6, C7 e C9.", BG, LS),
+    ("0.2.1", "2026-10-18", "Aggiunti numeri indice e riferimenti incrociati per facilitare la navigazione del documento, iniziata sezione 'altri capitolati valutati' con titoli capitolati e sottotitoli delle sezioni.", BG, LS),
+    ("0.2.0", "2026-10-18", "Aggiunta sezione 'altri capitolati di interesse' con analisi dei capitolati C8 e C1.", BG, LS),
+    ("0.1.0", "2026-10-17", "Prima stesura del documento: introduzione e capitolato scelto.", BG, LS),
   ),
   indice: true,
 )
