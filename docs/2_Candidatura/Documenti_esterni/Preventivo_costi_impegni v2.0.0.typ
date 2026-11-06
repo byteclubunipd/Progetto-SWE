@@ -28,7 +28,7 @@
   titolo: "Dichiarazione degli impegni e preventivo dei costi",
   mostraRegistro: true,
   versione: "2.0.0",
-  stato: "Da approvare",
+  stato: "Approvato",
   redazione: RP,
   verifica: MMO,
   approvazione: LS,
