@@ -1,7 +1,7 @@
 #import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS
 
 #let verbale(
-  titolo: "Verbale di riunione",
+  titolo: "Verbale Riunione",
   data: "",
   versione: "0.1.0",
   daFirmare: false,
@@ -29,7 +29,7 @@
   discussione: (),
 
   // Tabelle aggiuntive
-  mostraRegistro: true,
+  mostraRegistro: false,
   registroModifiche: (),
   statoAzioni: (),
   azioni: (),

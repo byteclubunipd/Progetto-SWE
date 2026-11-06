@@ -3,7 +3,7 @@
 #import "/docs/5_Templates/base.typ": tutti, BG, EH, MMI, MMO, RP, LS
 
 #show: doc => verbale(
-  titolo: "Verbale di riunione interna",
+  titolo: "Verbale Riunione",
   data: "2026-11-03",
   versione: "0.1.0",
   autori: (EH,),
@@ -31,16 +31,6 @@
     [Ridefinizione sistema di versionamento.],
     [Dichiarazione degli impegni e scadenza di consegna.],
     [Data finale seconda candidatura.],
-  ),
-
-  registroModifiche: (
-    (
-      [0.1.0],
-      [2026-11-03],
-      [Stesura del verbale],
-      [Elico Huang],
-      [Riccardo Pontello],
-    ),
   ),
 
   discussione: (
