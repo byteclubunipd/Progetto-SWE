@@ -4,6 +4,7 @@
   titolo: "Verbale di riunione",
   data: "",
   versione: "0.1.0",
+  daFirmare: false,
   firma: false,
   autori: (),
 
@@ -28,6 +29,7 @@
   discussione: (),
 
   // Tabelle aggiuntive
+  mostraRegistro: true,
   registroModifiche: (),
   statoAzioni: (),
   azioni: (),
@@ -61,8 +63,6 @@
       #copertina(
         titolo,
         data: data,
-        versione: versione,
-        autori: autori,
       )
 
       // INFORMAZIONI SUL DOCUMENTO
@@ -82,21 +82,22 @@
       )
 
       // REGISTRO DELLE MODIFICHE
-      #v(1em)
-      #text(weight: "bold", size: 14pt)[Registro delle modifiche]
+      #if mostraRegistro [
+          #v(1em)
+          #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
-      #tabellaDati(
-        colonne: (auto, auto, 1fr, auto, auto),
-        intestazioni: (
-          [Versione],
-          [Data],
-          [Descrizione],
-          [Autore],
-          [Verificatore],
-        ),
-        righe: registroModifiche,
-      )
-
+        #tabellaDati(
+          colonne: (auto, auto, 1fr, auto, auto),
+          intestazioni: (
+            [Versione],
+            [Data],
+            [Descrizione],
+            [Autore],
+            [Verificatore],
+          ),
+          righe: registroModifiche,
+        )
+      ]
       // INDICE
       #pagebreak()
       #indiceDocumento()
@@ -121,10 +122,14 @@
       = Ordine del giorno
 
       #enum(..ordineDelGiorno)
-
+      
       // 3. DISCUSSIONE E DECISIONI
       #pagebreak()
-      = Discussione e decisioni
+      #if uso == "Interno" [
+        = Discussione e decisioni
+      ] else if uso == "Esterno" [
+        = Contenuto della discussione
+      ]
 
       #for punto in discussione [
         == #punto.titolo
@@ -134,9 +139,9 @@
         #if punto.decisione != none [
           *Decisione D#punto.id:* #punto.decisione
         ]
+      ]
 
         #v(0.5em)
-      ]
 
       // STATO DELLE AZIONI PRECEDENTI
       #if statoAzioni.len() > 0 [
@@ -154,25 +159,54 @@
       ]
 
       // 4. AZIONI DA SVOLGERE
-      #pagebreak()
-      = Azioni da svolgere
+      #if azioni.len() > 0 [
+        #pagebreak()
+        = Azioni da svolgere
 
-      Le seguenti attività sono state concordate durante la riunione:
+        Le seguenti attività sono state concordate durante la riunione:
 
-      #tabellaDati(
-        colonne: (0.7fr, 3fr, 1.7fr, 1.5fr, 1fr),
-        intestazioni: (
-          [ID],
-          [Azione],
-          [Incaricato],
-          [Scadenza],
-          [Decisione],
-        ),
-        righe: azioni,
-      )
+        #tabellaDati(
+          colonne: (0.7fr, 3fr, 1.7fr, 1.5fr, 1fr),
+          intestazioni: (
+            [ID],
+            [Azione],
+            [Incaricato],
+            [Scadenza],
+            [Decisione],
+          ),
+          righe: azioni,
+        )
+      ]
+      
 
       // CONTENUTO AGGIUNTIVO
       #body
+      
+      // FIRMA DELLA PROPONENTE
+      #if daFirmare [
+        = Firma della proponente
+
+        Il presente verbale viene sottoposto alla proponente
+        per presa visione e approvazione.
+
+        #v(2em)
+
+        #table(
+          fill: (x, y) => if y == 0 { luma(95%) },
+          columns: (2fr, 1fr, 2fr),
+          align: (left, left),
+          stroke: 0.8pt,
+          inset: 7pt,
+
+          [*Referente aziendale*],
+          [*Data*],
+          [*Firma*],
+
+          [#v(1.5cm)],
+          [#v(1.5cm)],
+          [#v(1.5cm)],
+        )
+      ]
     ],
   )
 }

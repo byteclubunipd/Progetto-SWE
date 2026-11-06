@@ -168,6 +168,13 @@
       MMO,
       [2026-11-07],
       [D6],
+    ),
+    (
+      [\#8],
+      [Aggiornare la lettera di presentazione],
+      BG,
+      [2026-11-08],
+      [D2 D3]
     )
   ),
 
