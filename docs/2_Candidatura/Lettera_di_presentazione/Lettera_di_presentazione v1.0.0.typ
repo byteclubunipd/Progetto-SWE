@@ -13,13 +13,13 @@
 #let repo = "https://github.com/byteclubunipd/Progetto-SWE"
 #let sito = "https://byteclubunipd.github.io/Progetto-SWE/"
 #let link-val = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Valutazione_Capitolati%20v1.0.0.pdf"
-#let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Preventivo_costi_impegni%20v1.1.0.pdf"
-#let link-VE = "INSERIRE LINK VE MEETING ERGON"
+#let link-prev = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Documenti_esterni/Preventivo_costi_impegni%20v2.0.0.pdf"
+#let link-VE = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Verbali/Esterni/VE_2026-11-04.pdf"
 
 #let costo = "11.070"
 #let ore = "540"
 #let ore-persona = "90"
-#let scadenza = "2027/04/16"
+#let scadenza = "2027-04-16"
 
 #show: documento.with(
   titolo: "Lettera di presentazione",
@@ -42,7 +42,7 @@ Egregio Professore Cardin,
 
 con la presente, il gruppo #gruppo comunica formalmente la propria candidatura
 per l'aggiudicazione del capitolato *#codice - "#titolo"*, proposto dall'azienda
-#proponente. Qualora la capienza del capitolato non lo consentisse, il gruppo indica come alternative, in ordine di preferenza, *C8 - Sonar* proposto da Halue e *C9 - SpecCheck* proposto da Zucchetti.
+#proponente.
 
 La documentazione completa è consultabile nel #link(repo)[#underline[*repository*]] pubblico e nel #link(sito)[#underline[*sito web*]] del gruppo, dove sono disponibili:
 - #link(link-val)[#underline[Valutazione dei capitolati]];
@@ -81,9 +81,10 @@ Il gruppo ha selezionato il capitolato *#codice* per le seguenti ragioni:
 
 = Correzioni effettuate
 In risposta ai rilievi emersi durante la prima candidatura, il gruppo ha rivisto le proprie scelte e definito le seguenti azioni correttive::
-- *Scelta del nuovo capitolato*: tra i capitolati disponibili rimanenti, abbiamo scelto di candidarci per _"#codice: #titolo"_. Questa decisione è stata presa dopo un incontro conoscitivo avvenuto in data 2026/11/04, in cui #proponente si è dimostrato con immediatezza molto disponibile per il gruppo, rispondendo chiaramente alle nostre domande e ai dubbi riguardo il capitolato (il tutto consultabile nel #link(link-VE)[#underline[verbale esterno]] dedicato). Il meeting ci ha fatto capire che il progetto è più comprensibile ad ogni membro del gruppo ed è più fattibile per le competenze che abbiamo, ritrovandolo più stimolante rispetto alle altre preferenze elencate in precedenza.
+- *Scelta del nuovo capitolato*: tra i capitolati disponibili rimanenti, abbiamo scelto di candidarci per _"#codice: #titolo"_. Questa decisione è stata presa dopo un incontro conoscitivo avvenuto in data 2026-11-04, in cui #proponente si è dimostrato con immediatezza molto disponibile per il gruppo, rispondendo chiaramente alle nostre domande e ai dubbi riguardo il capitolato (il tutto consultabile nel #link(link-VE)[#underline[verbale esterno]] dedicato). Il meeting ci ha fatto capire che il progetto è più comprensibile ad ogni membro del gruppo ed è più fattibile per le competenze che abbiamo, ritrovandolo più stimolante rispetto alle altre preferenze elencate in precedenza.
 - *Miglioramento dei template per la documentazione*: abbiamo modificato i template dei verbali rendendo il versionamento migliore. Ora ogni versione del documento, quindi ad ogni modifica minore o sostanziale, viene verificata prima di procedere.
-- *Sito web*: Abbiamo ottimizzato l'organizzazione delle diverse tipologie dei documenti e l'ordinamento per quelli necessari riguardo la candidatura. Inoltre, per agevolare la navigazione, i file PDF presenti sul sito si aprono ora in una nuova scheda del browser anziché nella pagina corrente.
+- *Sito web*: abbiamo ottimizzato l'organizzazione delle diverse tipologie dei documenti e l'ordinamento per quelli necessari riguardo la candidatura. Inoltre, per agevolare la navigazione, i file PDF presenti sul sito si aprono ora in una nuova scheda del browser anziché nella pagina corrente.
+- *Aggiornamento struttura repository*: abbiamo modificato la struttura del repository per rendere più chiara l'organizzazione dei documenti e agevolare il workflow per la creazione automatica dei PDF nel sito web.
 
 = Componenti del gruppo
 
