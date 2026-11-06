@@ -13,7 +13,7 @@
   titolo: "Verbale riunione",
   data: "2026-11-04",
   versione: false,
-  firma: false,
+  firma: true,
   daFirmare: true,
   mostraRegistro: false,
   // INFORMAZIONI SUL DOCUMENTO
