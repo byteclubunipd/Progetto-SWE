@@ -83,21 +83,21 @@
 
       // REGISTRO DELLE MODIFICHE
       #if mostraRegistro [
-        #v(1em)
-        #text(weight: "bold", size: 14pt)[Registro delle modifiche]
+          #v(1em)
+          #text(weight: "bold", size: 14pt)[Registro delle modifiche]
 
-      #tabellaDati(
-        colonne: (auto, auto, 1fr, auto, auto),
-        intestazioni: (
-          [Versione],
-          [Data],
-          [Descrizione],
-          [Autore],
-          [Verificatore],
-        ),
-        righe: registroModifiche,
-      )
-
+        #tabellaDati(
+          colonne: (auto, auto, 1fr, auto, auto),
+          intestazioni: (
+            [Versione],
+            [Data],
+            [Descrizione],
+            [Autore],
+            [Verificatore],
+          ),
+          righe: registroModifiche,
+        )
+      ]
       // INDICE
       #pagebreak()
       #indiceDocumento()
