@@ -3,9 +3,9 @@
 // Nomenclatura: Studio_di_Fattibilita-v1.0.0.typ
 
 #show: documento.with(
-  titolo: "Studio di Fattibilità",
+  titolo: "Studio di fattibilità",
   versione: "1.0.0",
-  stato: "Approvato",
+  stato: "Non approvato",
   redazione: (LS),
   verifica: MMI,
   approvazione: "Tutto il gruppo",

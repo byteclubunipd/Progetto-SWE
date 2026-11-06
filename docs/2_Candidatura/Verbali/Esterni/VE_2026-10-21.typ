@@ -1,10 +1,12 @@
 #import "/docs/5_Templates/verbale.typ": *
 
 #show: verbale.with(
-  titolo: "Verbale Riunione",
-  data: "21 ottobre 2026",
+  titolo: "Verbale riunione",
+  data: "2026-10-26",
   versione: false,
   firma: true,
+  uso: "Esterno",
+  stato: "Approvato",
   autori: (EH,),
   tipoRiunione: "Esterna con proponente",
   luogo: "Google Meet",
@@ -17,7 +19,7 @@
     "Conoscere l'azienda Uranion (C3).",
     "Ricevere risposte riguardo ad alcune domande sul capitolato C3."
   ),
-  diario: (
+  discussione: (
     [#v(1em)Dopo una veloce presentazione abbiamo posto le nostre domande che sono riportate qua sotto: ],
     [
       #v(1em)
@@ -64,6 +66,8 @@
         *Risposta:* Stiamo progettando una sede a Piove di Sacco ma al momento non è ancora operativa, comunque se servono degli incontri in presenza per chiarimenti o tech dive possiamo sempre sfruttare gli spazi offerti dall'università o anche cercarli in zona.
     ],
   ),
-  todo: (("Tutto il gruppo", "Analizzare le risposte della proponente."),
-         (EH, "Redigere il verbale del 21/10/2026.")),
+  azioni: (
+    ([#1], [Analizzare le risposte della proponente.], "Tutto il gruppo", [], []),
+    ([#2], [Redigere il verbale del 21/10/2026.], EH, [], []),
+  ),
 )

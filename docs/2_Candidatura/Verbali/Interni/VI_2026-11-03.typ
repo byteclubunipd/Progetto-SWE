@@ -3,18 +3,18 @@
 #import "/docs/5_Templates/base.typ": tutti, BG, EH, MMI, MMO, RP, LS
 
 #show: doc => verbale(
-  titolo: "Verbale di riunione interna",
+  titolo: "Verbale riunione",
   data: "2026-11-03",
-  versione: "0.1.0",
+  versione: false,
   autori: (EH,),
-
+  mostraRegistro: false,
   redattore: EH,
   verificatore: BG,
   uso: "Interno",
-  stato: "Da verificare",
+  stato: "Approvato",
 
   tipoRiunione: "Riunione interna",
-  luogo: "canale vocale Discord",
+  luogo: "Canale vocale Discord",
   oraInizio: "14:30",
   oraFine: "16:00",
   responsabile: LS,
@@ -31,16 +31,6 @@
     [Ridefinizione sistema di versionamento.],
     [Dichiarazione degli impegni e scadenza di consegna.],
     [Data finale seconda candidatura.],
-  ),
-
-  registroModifiche: (
-    (
-      [0.1.0],
-      [2026-11-03],
-      [Stesura del verbale],
-      [Elico Huang],
-      [Riccardo Pontello],
-    ),
   ),
 
   discussione: (

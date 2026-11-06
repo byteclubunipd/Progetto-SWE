@@ -82,6 +82,14 @@ main {
   width: calc(100% - 260px);
 }
 
+main > section {
+  max-width: none;
+}
+
+#introduzione {
+  width: 100%;
+}
+
 .document-pair {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;

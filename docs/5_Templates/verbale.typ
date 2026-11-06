@@ -3,7 +3,7 @@
 #let verbale(
   titolo: "Verbale di riunione",
   data: "",
-  versione: "0.1.0",
+  versione: false,
   daFirmare: false,
   firma: false,
   autori: (),
@@ -73,12 +73,16 @@
         colonne: (1fr, 2fr),
         intestazioni: ([Campo], [Valore]),
         righe: (
-          ([Versione], [#versione]),
+          ..if versione != false and versione != none and versione != "" {
+            (([Versione], [#versione]),)
+          } else {
+            ()
+          },
           ([Redattore], [#redattore]),
           ([Verificatore], [#verificatore]),
           ([Uso], [#uso]),
           ([Stato], [#stato]),
-        ),
+        ).flatten(),
       )
 
       // REGISTRO DELLE MODIFICHE
@@ -132,12 +136,16 @@
       ]
 
       #for punto in discussione [
-        == #punto.titolo
+        #if type(punto) == dictionary [
+          == #punto.titolo
 
-        #punto.descrizione
+          #punto.descrizione
 
-        #if punto.decisione != none [
-          *Decisione D#punto.id:* #punto.decisione
+          #if punto.decisione != none [
+            *Decisione D#punto.id:* #punto.decisione
+          ]
+        ] else [
+          #punto
         ]
       ]
 
