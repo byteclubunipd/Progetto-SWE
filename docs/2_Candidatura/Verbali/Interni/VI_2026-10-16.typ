@@ -1,11 +1,12 @@
 #import "/docs/5_Templates/verbale.typ": *
 
 #show: verbale.with(
-  titolo: "Verbale Riunione",
-  data: "16 ottobre 2026",
+  titolo: "Verbale riunione",
+  data: "2026-10-16",
   versione: false,
   firma: true,
   autori: (EH,),
+  stato: "Approvato",
   tipoRiunione: "Interna",
   luogo: "Discord",
   oraInizio: "15:00",
@@ -20,7 +21,7 @@
     "Concordare la gestione dei ruoli del primo periodo",
     "Concordare le tecnologie da usare per la documentazione",
   ),
-  diario: (
+  discussione: (
     "La riunione è stata dedicata all'allineamento del gruppo sulle scelte tecnologiche, strutturali della repository e workflow. SOno stati scelti: Typst per i template dei docmenti, Python per gli script di build dei documenti nel workflow GitHub.",
     "Per la documentazione è stato scelto Typst al posto di LaTeX, perché considerato più moderno e più veloce da compilare; questo potrebbe risultare rilevante per i tempi della CI.",
     "Sono state raccolte domande sui capitolati, iniziando dal capitolato C3, con l'obiettivo di contattare le aziende interessate: il piano da utilizzare quando l'utente non dispone di un abbonamento al servizio LLM, la gestione della privacy e della wake word, la compatibilità dell'uso di Rust con l'opzione hardware B, l'organizzazione degli incontri di formazione, la progettazione del contenitore estetico, la disponibilità di più set hardware per l'interconnessione dei dispositivi e la gestione dei server per l'elaborazione delle domande degli utenti.",
@@ -28,10 +29,10 @@
     "Per gestire le decisioni del gruppo, composto da sei membri e quindi privo di una maggioranza automatica, sono state individuate temporaneamente una persona con il ruolo di capo progetto e una persona con il ruolo di verificatore. In caso di parità, il voto del capo gruppo vale doppio.",
     "Il prossimo incontro è stato fissato per il 20 Ottobre 2026 alle ore 14.30 su Discord.",
   ),
-  todo: (
-    ("Tutti", "Pensare alle domande relative al capitolato C8"),
-    (EH, "Definire le specifiche della repository GitHub e del file Contributing.md"),
-    (RP, "Creare template in Typst per verbali, diario di bordo e documenti. Creare workflow di build in Python"),
-    (BG, "Contattare via email l'azienda Uranion, capitolato C3, ponendo le domande concordate"),
+  azioni: (
+    ([#1], [Pensare alle domande relative al capitolato C8], "Tutti", [], []),
+    ([#2], [Definire le specifiche della repository GitHub e del file Contributing.md], EH, [], []),
+    ([#3], [Creare template in Typst per verbali, diario di bordo e documenti. Creare workflow di build in Python], RP, [], []),
+    ([#4], [Contattare via email l'azienda Uranion, capitolato C3, ponendo le domande concordate], BG, [], []),
   ),
 )

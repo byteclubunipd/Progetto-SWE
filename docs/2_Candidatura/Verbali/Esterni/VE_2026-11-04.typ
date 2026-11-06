@@ -10,9 +10,9 @@
 
 #show: verbale.with(
   // INFORMAZIONI GENERALI
-  titolo: "Verbale Riunione",
+  titolo: "Verbale riunione",
   data: "2026-11-04",
-  versione: "1.0.0",
+  versione: false,
   firma: false,
   daFirmare: true,
   mostraRegistro: false,

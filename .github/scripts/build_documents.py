@@ -89,15 +89,25 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
     for file in files:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
-        title = document.get("titolo", file.stem.replace("_", " "))
+        if document.get("stato") and document["stato"].casefold() != "approvato":
+            continue
+        isDiary = directory.name == "1_Diario_di_bordo"
+        isExternalMinutes = directory.name == "Esterni" and directory.parent.name == "Verbali"
+        isInternalMinutes = directory.name == "Interni" and directory.parent.name == "Verbali"
+        isMinutes = isExternalMinutes or isInternalMinutes
+        title = "Diario di bordo" if isDiary else document.get(
+            "titolo", file.stem.replace("_", " "))
         details = []
-        if document.get("versione") and document["versione"].lower() != "false":
+        if document.get("data"):
+            details.append(document["data"])
+        if (not isDiary and not isMinutes and document.get("versione")
+                and document["versione"].lower() != "false"):
             details.append(f'Versione {document["versione"]}')
         if document.get("stato"):
             details.append(document["stato"])
-        if document.get("data"):
-            details.append(document["data"])
-        if document.get("firma") == "true":
+        if isExternalMinutes:
+            details.append("Firmato" if document.get("firma") == "true" else "Non firmato")
+        elif not isInternalMinutes and document.get("firma") == "true":
             details.append("Firmato")
         detailMarkup = ""
         if details:

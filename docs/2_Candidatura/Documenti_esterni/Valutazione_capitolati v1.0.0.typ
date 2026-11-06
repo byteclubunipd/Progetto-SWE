@@ -4,7 +4,7 @@
 // Modello compilabile: sostituire i segnaposto con i dati effettivi.
 // Salvare una copia nella cartella della fase pertinente in docs.
 #show: documento.with(
-  titolo: "Valutazione Capitolati",
+  titolo: "Valutazione capitolati",
   versione: "1.0.0",
   stato: "Approvato",
   redazione: (BG),
