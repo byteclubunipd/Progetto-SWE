@@ -12,16 +12,16 @@
   // INFORMAZIONI GENERALI
   titolo: "Verbale Riunione",
   data: "2026-11-04",
-  versione: "0.1.0",
+  versione: "1.0.0",
   firma: false,
   daFirmare: true,
-
+  mostraRegistro: false,
   // INFORMAZIONI SUL DOCUMENTO
   autori: (EH,),
   redattore: EH,
-  verificatore: RP,
+  verificatore: MMO,
   uso: "Esterno",
-  stato: "Da verificare",
+  stato: "Approvato",
 
   // DETTAGLI DELLA RIUNIONE
   tipoRiunione: "Esterna",
@@ -137,15 +137,6 @@
   // Lasciare vuoto se non ci sono azioni precedenti da aggiornare.
 
   // REGISTRO DELLE MODIFICHE
-  registroModifiche: (
-    (
-      [0.1.0],
-      [2026-11-05],
-      [Prima stesura del verbale],
-      EH,
-      MMO,
-    ),
-  ),
 
   // AZIONI DA SVOLGERE
   azioni: (
