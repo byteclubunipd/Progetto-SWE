@@ -3,7 +3,7 @@
 // Nomenclatura: DDB_YYYY-MM-DD.typ, senza versione nel nome.
 // Il modello riproduce il mockup Canva in formato 16:9.
 #show: diarioDiBordo.with(
-  data: "2026-11-02",
+  data: "2026-11-09",
   responsabile: LS,
   progressi: (
     "Riunione interna del 2026-11-03, verbale approvato e pubblicato",
