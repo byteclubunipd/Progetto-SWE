@@ -8,6 +8,7 @@
   versione: false,
   autori: (EH,),
   mostraRegistro: false,
+  firma: true,
   redattore: EH,
   verificatore: BG,
   uso: "Interno",
