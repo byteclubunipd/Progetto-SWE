@@ -14,7 +14,7 @@ import subprocess
 import tempfile
 from urllib.parse import quote
 
-SOURCE_DIRS = ("1_Diario_di_bordo", "2_Candidatura")
+SOURCE_DIRS = ("1_Diario_di_bordo", "2_Candidatura", "3_RTB")
 MANIFEST = Path(".github/typst-manifest.json")
 TEMPLATE = Path("website/index.html")
 SITE_BUILD = Path("website/build")
