@@ -40,7 +40,39 @@ Esempi:
 - Assicurarsi che le modifiche non vadano a influenzare il corretto funzionamento dei moduli già esistenti.
 
 ## 6. Commits e Pull requests
-- Scrivere messaggi chiari e descrittivi nelle commit;
+I messaggi dei commit devono essere chiari, concisi e descrivere il cambiamento effettuato.
+
+Si utilizza una versione semplificata della convenzione Conventional Commits.
+
+Formato:
+
+```text
+<tipo>: <descrizione>
+```
+
+Tipologie:
+
+| Tipo | Utilizzo |
+|---|---|
+| `feat` | Aggiunta di una funzionalità. |
+| `fix` | Correzione di un bug. |
+| `docs` | Modifiche alla documentazione. |
+| `style` | Modifiche alla formattazione del codice. |
+| `refactor` | Riorganizzazione del codice. |
+| `test` | Aggiunta o modifica dei test. |
+| `chore` | Attività di manutenzione e configurazione. |
+
+Esempi:
+
+```text
+feat: add user registration
+fix: correct login validation
+docs: update installation instructions
+style: improve navigation layout
+refactor: simplify database connection
+test: add registration tests
+chore: update gitignore
+```
 - Spiegare il fine delle modifiche nella pull request, possibilmente evidenziando la issue;
 - Descrivere come sono stati testati i cambiamenti;
 - Inserire il verificatore per la verifica della pull request.
