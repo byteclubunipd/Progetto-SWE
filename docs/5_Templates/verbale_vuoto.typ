@@ -69,8 +69,8 @@
   statoAzioni: (
     (
       [A1],
-      [Descrizione dell'azione],
       [Completata / In corso / Non iniziata],
+      [Riprendere dalla sezione azione del verbale precedente],
     ),
   ),
 

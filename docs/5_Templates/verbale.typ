@@ -153,12 +153,12 @@
 
       // STATO DELLE AZIONI PRECEDENTI
       #if statoAzioni.len() > 0 [
-        == Stato delle azioni precedenti
+        = Stato delle azioni precedenti
 
         #tabellaDati(
-          colonne: (1fr, 2fr, 3fr),
+          colonne: (0.3fr, 1fr, 3fr),
           intestazioni: (
-            [Azione],
+            [ID],
             [Stato],
             [Note],
           ),
