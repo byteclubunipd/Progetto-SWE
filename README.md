@@ -21,9 +21,16 @@ La repository è organizzata nel seguente modo:
 │   │   ├── Lettera_di_presentazione/                        
 │   │   └── Verbali/                                         
 │   │       ├── Esterni/                                     
-│   │       └── Interni/                                     
+│   │       └── Interni/  
+│   ├── 3_RTB/                                               Requirement and Tecnology Baseline
+│   │   ├── Documenti_esterni/                               
+│   │   ├── Documenti_interni/                                                     
+│   │   └── Verbali/                                         
+│   │       ├── Esterni/                                     
+│   │       └── Interni/                             
 │   ├── 5_Templates/                                         Modelli dei documenti
 │   └── 6_Output/                                            Replica della struttura con soli PDF
+├── PoC/                                                     Proof of Concept
 ├── test/                                                    Test del sito e del progetto
 ├── website/                                                 Sorgenti del sito GitHub Pages
 │   └── assets/                                              Risorse grafiche del sito
