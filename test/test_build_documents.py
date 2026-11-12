@@ -95,6 +95,41 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual((self.root / PIPELINE.TEMPLATE).read_text(encoding="utf-8"),
                          HTML_TEMPLATE)
 
+    def testRtbDocumentsAreCompiledIntoTheirMatchingOutputDirectories(self):
+        names = [
+            "3_RTB/Documenti_esterni/Specifica.pdf",
+            "3_RTB/Documenti_interni/Analisi.pdf",
+            "3_RTB/Verbali/Esterni/VE_2026-11-11.pdf",
+            "3_RTB/Verbali/Interni/VI_2026-11-11.pdf",
+        ]
+        for name in names:
+            self.write("docs/" + name.removesuffix(".pdf") + ".typ", "Documento RTB")
+
+        outputs = self.runBuild()
+
+        for name in names:
+            output = self.root / "docs/6_Output" / name
+            self.assertTrue(output.is_file(), name)
+            self.assertTrue(output.read_bytes().startswith(b"%PDF-"), name)
+
+            published = self.root / "website/build/docs/6_Output" / name
+            self.assertEqual(published.read_bytes(), output.read_bytes())
+
+        self.assertEqual(
+            sorted(name for name in outputs if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+        manifest = json.loads(
+            (self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(
+            sorted(name for name in manifest["outputs"] if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+
+        before = self.snapshot()
+        self.runBuild()
+        self.assertEqual(self.snapshot(), before)
+
     def testCompilationFailureKeepsPreviousPdfCatalogAndManifest(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Versione precedente")
         self.runBuild()
