@@ -38,12 +38,20 @@ jobs:
 
           required = (
               Path('docs/1_Diario_di_bordo'),
+
               Path('docs/2_Candidatura/Documenti_esterni'),
               Path('docs/2_Candidatura/Documenti_interni'),
               Path('docs/2_Candidatura/Lettera_di_presentazione'),
               Path('docs/2_Candidatura/Verbali/Esterni'),
               Path('docs/2_Candidatura/Verbali/Interni'),
+
+              Path('docs/3_RTB/Documenti_esterni'),
+              Path('docs/3_RTB/Documenti_interni'),
+              Path('docs/3_RTB/Verbali/Esterni'),
+              Path('docs/3_RTB/Verbali/Interni'),
+
               Path('docs/5_Templates'),
+              
               Path('docs/6_Output'),
           )
           missing = [str(path) for path in required if not path.is_dir()]
