@@ -10,7 +10,7 @@
   versione: "0.1.0",
   redazione: "Nome Cognome",
   verifica: "Nome verificatore",
-  approvazione: "Nome e Cognome"
+  approvazione: "Nome e Cognome",
   uso: "Interno o esterno",
   destinatari: "Destinatari del documento",
   proprietario: gruppo,
