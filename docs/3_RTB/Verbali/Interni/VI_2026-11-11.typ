@@ -11,7 +11,7 @@
   redattore: EH,
   verificatore: LS,
   uso: "Interno",
-  stato: "In redazione",
+  stato: "Da verificare",
 
   tipoRiunione: "Riunione interna",
   luogo: "Canale vocale Discord",
@@ -104,8 +104,14 @@
     (
       id: 12,
       titolo: "Conteggio ore",
-      descrizione: [],
-      decisione: none,
+      descrizione: [
+        Viene discusso il metodo da adottare per il conteggio delle ore dedicate al progetto da parte di ciascun componente. Si concorda sulla necessità di registrare in modo sistematico il tempo impiegato nelle diverse attività, così da poter monitorare l'effettivo impegno del gruppo e confrontarlo con le stime riportate nel "Preventivo dei Costi e degli Impegni".
+
+        Il conteggio delle ore dovrà essere aggiornato dai singoli componenti e utilizzato come riferimento per valutare l'avanzamento delle attività, individuare eventuali scostamenti rispetto alla pianificazione iniziale e aggiornare, se necessario, le previsioni di impegno.
+      ],
+      decisione: [
+        Ogni componente si impegna a registrare le ore effettivamente dedicate alle attività di progetto, mantenendo aggiornato il relativo conteggio secondo le modalità stabilite dal gruppo.
+      ],
     ),
     (
       id: 13,
