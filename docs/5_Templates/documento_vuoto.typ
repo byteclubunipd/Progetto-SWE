@@ -13,7 +13,7 @@
   approvazione: "Nome e Cognome",
   uso: "Interno o esterno",
   destinatari: "Destinatari del documento",
-  proprietario: gruppo,
+  proprietario: "ByteClub",
   registroModifiche: (
     ("0.1.0", "YYYY-MM-DD", "Descrizione della modifica", "Nome Cognome", "Nome verificatore"),
   ),
