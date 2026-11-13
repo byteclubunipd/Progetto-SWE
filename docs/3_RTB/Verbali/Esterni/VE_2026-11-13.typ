@@ -158,63 +158,63 @@
   // AZIONI DA SVOLGERE
   azioni: (
     (
-      [\#18],
+      [A18],
       [Creare il gruppo WhatsApp.],
       RP,
       "2026-11-14",
       "D14"
     ),
     (
-      [\#19],
+      [A19],
       [Creare e testare il database relazionale con i dati CSV tramite Python e testare le chiavi API tramite FastAPI fornite dall'azienda.],
       MMI,
       "2026-11-20",
       "D15, D18"
     ),
     (
-      [\#20],
+      [A20],
       [Organizzare l'incontro di SAL del 2026-11-27.],
       RP,
       "2026-11-27",
       "D16"
     ),
     (
-      [\#21],
+      [A21],
       [Fornire le date per l'incontro in presenza.],
       RP,
       "2026-11-20",
       "D17"
     ),
     (
-      [\#22],
+      [A22],
       [Aggiornare il documento dell'analisi dei requisiti.],
       BG,
       "2026-11-20",
       "D18"
     ),
     (
-      [\#23],
+      [A23],
       [Studiare la tecnologia Tailwind CSS e individuare eventuali alternative comuni al gruppo.],
       MMO,
       "2026-11-20",
       "D18"
     ),
     (
-      [\#24],
+      [A24],
       [Testare la tecnologia Tailwind CSS.],
       MMI,
       "2026-11-20",
       "D18"
     ),
     (
-      [\#25],
+      [A25],
       [Ricercare le fonti ufficiali per le tecnologie da utilizzare.],
       MMO,
       "2026-11-20",
       "D19"
     ),
     (
-      [\#26], 
+      [A26], 
       [Inviare il verbale alla proponente per l'approvazione e la firma.], 
       RP,
       "2026-11-20",
