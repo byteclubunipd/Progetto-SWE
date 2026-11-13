@@ -19,8 +19,8 @@
   oraFine: "16:00",
   responsabile: RP,
   scriba: EH,
-  partecipanti: (RP, EH, BG, MMI, MMO),
-  assenti: (LS, ),
+  partecipanti: (RP + " (Responsabile)", EH+ " (Amministratore)", BG + " (Analista)", MMI + " (Programmatore)", MMO + " (Progettista)"),
+  assenti: (LS + " (Verificatrice)", ),
 
   ordineDelGiorno: (
     [Nomina responsabile primo sprint],
