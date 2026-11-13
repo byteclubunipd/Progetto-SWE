@@ -4,7 +4,7 @@
 
 #show: documento.with(
   titolo: "Glossario",
-  versione: "0.1.0",
+  versione: "0.1.1",
   mostraInformazioni: true,
   mostraRegistro: true,
   stato: "Da Approvare",
@@ -16,6 +16,7 @@
   destinatari: gruppo,
   indice: true,
   registroModifiche: (
+    ("0.1.1", "2026-11-12", "Aggiunti nuovi termini", BG, "-"),
     ("0.1.0", "2026-11-12", "Prima stesura del documento", BG, "-"),
   ),
 )
@@ -34,18 +35,22 @@ Il documento definisce in modo univoco i termini adottati all’interno del prog
 #align(center)[termine#super[G]]
 #pagebreak()
 = A
-== Analisi dei Requisiti
-Documento contenente i Casi d’Uso identificati da un gruppo per i requisiti di un determinato progetto. Contiene anche i Requisiti funzionali, Requisiti di Qualità e Requisiti di Vincolo.
 == Agile
 In informatica, Agile è un approccio di lavoro basato su iterazioni brevi e frequenti feedback. Nel metodo Scrum, uno dei più diffusi, il lavoro viene suddiviso in Sprint di una o due settimane. Ogni Sprint inizia con una Sprint Planning, in cui si definiscono gli obiettivi, e si conclude con una Sprint Retrospective, in cui il gruppo valuta cosa è andato bene e cosa migliorare.
 == Amministratore
 L’Amministratore si occupa della configurazione e gestione dell’infrastruttura IT di supporto a un progetto.
+== Analisi dei Requisiti
+Documento contenente i Casi d’Uso identificati da un gruppo per i requisiti di un determinato progetto. Contiene anche i Requisiti funzionali, Requisiti di Qualità e Requisiti di Vincolo.
 == Analista
 Si occupa di identificare e chiarire i requisiti, interpretando le esigenze degli utilizzatori finali per garantire una corretta definizione delle funzionalità.
 == API
 Acronimo di Application Programming Interface, è un’interfaccia utile a permettere o facilitare la comunicazione tra diversi software o parti di un singolo software.
 == Attore
 Un’entità esterna e non controllabile dal progetto, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.
+== Autenticazione
+Processo di verifica dell’identità di un utente o di un sistema, al fine di garantire l’accesso sicuro a risorse o servizi. L’autenticazione può avvenire tramite credenziali (come username e password), token, certificati digitali o altri metodi di identificazione. Una volta autenticato, l’utente può accedere alle funzionalità e ai dati autorizzati, mentre l’autenticazione fallita impedisce l’accesso non autorizzato.
+== Autorizzazione
+Processo che determina i privilegi e i permessi di un utente o di un sistema autenticato, stabilendo quali azioni può eseguire e quali risorse può accedere. L’autorizzazione viene spesso gestita tramite ruoli, gruppi o politiche di accesso, garantendo che solo gli utenti con i diritti appropriati possano eseguire determinate operazioni o visualizzare informazioni sensibili.
 == Azione
 L’insieme di processi intrapresi per mettere in pratica una determinata Decisione.
 
@@ -69,6 +74,8 @@ Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto 
 = D
 == Database
 Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Database Management System), che gestisce l’accesso ai dati, ne garantisce la persistenza e fornisce un metodo sicuro ed efficiente per leggerli e modificarli.
+== Dashboard
+Interfaccia grafica che fornisce una panoramica delle informazioni più rilevanti e consente di monitorare lo stato di un sistema o di un progetto. Spesso include grafici, tabelle e indicatori chiave di prestazione (KPI) per facilitare la comprensione e l’analisi dei dati.
 == DB
 Acronimo di Database, per la definizione vedere ‘Database’.
 == Decisione
@@ -77,6 +84,8 @@ Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da ad
 Soluzione progettuale riutilizzabile a problemi comuni nella progettazione del software, utile per migliorare struttura e manutenibilità del codice.
 == Discord
 Piattaforma di videochiamate e messaggistica asincrona. È caratterizzata dalla possibilità di creare spazi indipendenti chiamati server, all’interno dei quali è possibile istituire vari canali testuali (tipicamente suddivisi per argomento) e canali vocali indipendenti, utilizzati per chiamate di gruppo tra i membri del server.
+== Drag & Drop
+Tecnica di interazione con l’interfaccia utente che permette di selezionare un elemento e spostarlo in un’altra posizione trascinandolo con il cursore del mouse o con il dito su dispositivi touch. Viene spesso utilizzata per organizzare elementi, come file o icone, in modo intuitivo e visivo.
 
 #pagebreak()
 = E
@@ -84,6 +93,8 @@ Piattaforma di videochiamate e messaggistica asincrona. È caratterizzata dalla 
 Indica il modo con cui un insieme di attività raggiunge gli obiettivi attesi.
 == Efficienza
 Rapporto tra risultati ottenuti e risorse impiegate per ottenerli.
+== Excel
+Software di Microsoft per la gestione di fogli di calcolo, che consente di organizzare, analizzare e visualizzare dati in tabelle, grafici e report. È ampiamente utilizzato in ambito aziendale, finanziario e accademico per attività come la contabilità, l’analisi dei dati e la pianificazione.
 
 #pagebreak()
 = F
@@ -94,6 +105,8 @@ Una caratteristica offerta da un Sistema, spesso con lo scopo di soddisfare un b
 
 #pagebreak()
 = G
+== Gauge
+Elemento grafico simile a un tachimetro o a un contachilometri utilizzato per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.
 == Git
 Sistema di controllo di versione che traccia le modifiche al codice sorgente nel tempo. Permette a più sviluppatori di collaborare simultaneamente sullo stesso progetto, gestendo la cronologia delle versioni e supportando lo sviluppo parallelo.
 == GitFlow
@@ -116,8 +129,12 @@ Servizio di posta elettronica sviluppato da Google che permette di inviare, rice
 Acronimo di Intelligenza Artificiale, per la definizione vedere ‘Intelligenza Artificiale’.
 == IEEE
 È l’acronimo di Institute of Electrical and Electronics Engineers, un’associazione internazionale che promuove lo sviluppo delle tecnologie e dell’ingegneria in ambiti come l’elettronica, informatica e le telecomunicazioni.
+== Indicatori a quadrante
+Elementi grafici simili a un tachimetro o a un contachilometri utilizzati per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.
 == Intelligenza Artificiale
 Disciplina dell’informatica che studia e sviluppa sistemi in grado di eseguire compiti che richiedono tipicamente l’intelligenza umana, come il ragionamento, l’apprendimento e la comprensione del linguaggio naturale.
+== Interfaccia responsive
+Design grafico che adatta automaticamente layout, dimensioni e disposizione degli elementi dello schermo al dispositivo utilizzato dall'utente (computer desktop, tablet o smartphone), garantendo sempre una navigazione ottimale.
 == Issue
 All’interno dell’ecosistema GitHub, rappresenta un’attività che richiede modifiche al codice sorgente per essere svolta, può trattarsi di un bug da risolvere, una feature da aggiungere, di una correzione minore o anche di qualcosa definito dagli sviluppatori.
 
@@ -126,6 +143,8 @@ All’interno dell’ecosistema GitHub, rappresenta un’attività che richiede 
 
 #pagebreak()
 = K
+== KPI
+Acronimo di Key Performance Indicator, è una metrica utilizzata per misurare le prestazioni di un progetto, processo o attività, fornendo informazioni chiave sul raggiungimento degli obiettivi prefissati. I KPI aiutano a monitorare i progressi, identificare aree di miglioramento e prendere decisioni informate per ottimizzare le performance complessive.
 
 #pagebreak()
 = L
@@ -161,6 +180,8 @@ Documento che descrive il Way of Working del gruppo. Contiene le regole che Byte
 = P
 == PB
 Acronimo di Product Baseline, per la definizione vedere ‘Product Baseline’.
+== PDF
+Acronimo di Portable Document Format, è un formato di file standard ideale per esportare, archiviare e condividere report e documenti mantenendo inalterati layout, font e grafici su qualsiasi dispositivo.
 == Pianificazione
 Processo di definizione degli obiettivi del progetto identificandone le risorse ed i tempi richiesti per la sua realizzazione.
 == Piano di Progetto
@@ -216,6 +237,12 @@ Baseline iniziale e vincolante di requisiti e tecnologie approvate per il proget
 
 #pagebreak()
 = S
+== Schede KPI
+Strumenti di monitoraggio delle prestazioni che visualizzano metriche chiave (KPI) in modo chiaro e conciso, consentendo agli utenti di valutare rapidamente lo stato di un progetto o di un sistema e prendere decisioni informate.
+== Self-service
+Modalità di interazione con un sistema che consente agli utenti di accedere a funzionalità e informazioni senza l’assistenza diretta di un operatore umano, spesso tramite interfacce intuitive e automatizzate.
+== Server
+Sistema informatico (hardware o virtuale) che ospita applicazioni, elabora le richieste degli utenti, gestisce i database e distribuisce i dati attraverso una rete aziendale o tramite internet.
 == Sprint
 Ciclo di lavoro di durata fissa, tipico dello sviluppo Agile, durante il quale il gruppo si impegna a completare un insieme prefissato di attività per produrre un incremento del software.
 == SQL
@@ -227,6 +254,8 @@ Attività pratica di scrittura, test e integrazione del codice necessaria a impl
 
 #pagebreak()
 = T
+== Tabelle pivot
+Strumento di analisi dei dati che consente di riassumere, aggregare e visualizzare grandi quantità di informazioni in modo interattivo. Le tabelle pivot permettono di riorganizzare i dati, calcolare totali e medie, e creare report personalizzati per facilitare la comprensione e l’interpretazione dei dati.
 == Test
 Un processo dello sviluppo software che si occupa di verificare la funzionalità di una o più parti del prodotto.
 == Typst
@@ -256,6 +285,8 @@ Acronimo di Verbale Interno, viene utilizzato per tracciare nel tempo decisioni 
 = W
 == Way of Working
 Insieme di metodologie e strutture organizzative approvate dall’intero gruppo per svolgere in modo coerente i propri compiti.
+== Widget
+Elemento dell’interfaccia grafica di un software che consente all’utente di interagire con il sistema, come pulsanti, caselle di testo, menu a discesa o barre di scorrimento. I widget facilitano l’accesso a funzionalità e informazioni, migliorando l’esperienza dell’utente.
 == WhatsApp
 Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne.
 
