@@ -4,7 +4,7 @@
 
 #show: documento.with(
   titolo: "Glossario",
-  versione: "0.1.1",
+  versione: "0.1.2",
   mostraInformazioni: true,
   mostraRegistro: true,
   stato: "Da Approvare",
@@ -16,8 +16,9 @@
   destinatari: gruppo,
   indice: true,
   registroModifiche: (
-    ("0.1.1", "2026-11-12", "Aggiunti nuovi termini", BG, "-"),
-    ("0.1.0", "2026-11-12", "Prima stesura del documento", BG, "-"),
+    ("0.1.2", "2026-11-15", "Corrette definizioni dopo la verifica", BG, "-"),
+    ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, "-"),
+    ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, "-"),
   ),
 )
 
@@ -38,11 +39,11 @@ Il documento definisce in modo univoco i termini adottati all’interno del prog
 == Agile
 In informatica, Agile è un approccio di lavoro basato su iterazioni brevi e frequenti feedback. Nel metodo Scrum, uno dei più diffusi, il lavoro viene suddiviso in Sprint di una o due settimane. Ogni Sprint inizia con una Sprint Planning, in cui si definiscono gli obiettivi, e si conclude con una Sprint Retrospective, in cui il gruppo valuta cosa è andato bene e cosa migliorare.
 == Amministratore
-L’Amministratore si occupa della configurazione e gestione dell’infrastruttura IT di supporto a un progetto.
+Ruolo che si occupa della configurazione e gestione dell’infrastruttura IT di supporto a un progetto.
 == Analisi dei Requisiti
 Documento contenente i Casi d’Uso identificati da un gruppo per i requisiti di un determinato progetto. Contiene anche i Requisiti funzionali, Requisiti di Qualità e Requisiti di Vincolo.
 == Analista
-Si occupa di identificare e chiarire i requisiti, interpretando le esigenze degli utilizzatori finali per garantire una corretta definizione delle funzionalità.
+Ruolo che si occupa di identificare e chiarire i requisiti, interpretando le esigenze degli utilizzatori finali per garantire una corretta definizione delle funzionalità.
 == API
 Acronimo di Application Programming Interface, è un’interfaccia utile a permettere o facilitare la comunicazione tra diversi software o parti di un singolo software.
 == Attore
@@ -73,11 +74,13 @@ Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto 
 #pagebreak()
 = D
 == Database
-Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Database Management System), che gestisce l’accesso ai dati, ne garantisce la persistenza e fornisce un metodo sicuro ed efficiente per leggerli e modificarli.
+Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Guardare definizione DBMS).
 == Dashboard
 Interfaccia grafica che fornisce una panoramica delle informazioni più rilevanti e consente di monitorare lo stato di un sistema o di un progetto. Spesso include grafici, tabelle e indicatori chiave di prestazione (KPI) per facilitare la comprensione e l’analisi dei dati.
 == DB
 Acronimo di Database, per la definizione vedere ‘Database’.
+== DBMS
+Acronimo di Database Management System, è un software che gestisce l’archiviazione, l’organizzazione e l’accesso ai dati all’interno di un database. Fornisce strumenti per creare, leggere, aggiornare e cancellare dati, garantendo integrità, sicurezza e prestazioni ottimali. Esempi di DBMS includono MySQL, PostgreSQL, Oracle Database e Microsoft SQL Server.
 == Decisione
 Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da adottare per soddisfare un determinato bisogno.
 == Design Pattern
@@ -162,7 +165,7 @@ Processo con il quale, in un sistema di versionamento come git, un ramo di lavor
 == Metodo Agile
 Metodo di sviluppo software per la gestione di progetti complessi basato sui cicli iterativi brevi chiamati Sprint, che favorisce la flessibilità del progetto e la collaborazione continua.
 == Milestone
-Periodo di tempo entro il quale il gruppo si pone il raggiungimento di determinati obiettivi.
+Punto significativo nel percorso del progetto in cui il gruppo si pone il raggiungimento di determinati obiettivi.
 == Minimum Viable Product
 La prima versione di un prodotto che assolve le funzionalità minime per rispettare i requisiti obbligatori stabiliti dalla proponente.
 == MVP
@@ -201,11 +204,11 @@ Processo di traduzione della progettazione in codice sorgente mediante la progra
 == Progettazione
 Processo che definisce la struttura di un sistema, identificandone componenti, relazioni e livello di dettaglio necessari per la realizzazione. Serve a semplificarne lo sviluppo e la manutenzione futura.
 == Progettista
-Ruolo dedito alla progettazione dell’architettura di un progetto, al fine di assicurarsi codice più corretto e manutenibile.
+Ruolo che si occupa della progettazione dell’architettura di un progetto, al fine di assicurarsi codice più corretto e manutenibile.
 == Progetto
 Insieme ordinato di attività, istanziate dai processi di ciclo di vita che soddisfano gli obiettivi dati.
 == Programmatore
-La persona incaricata di svolgere le attività di codifica, data l’architettura.
+Ruolo che si occupa di svolgere le attività di codifica, data l’architettura.
 == Proof of Concept
 Prodotto dimostrativo atto a presentare la fattibilità dell’idea.
 == Proponente
@@ -231,7 +234,7 @@ Definiscono cosa il sistema deve fare, descrivendo le sue azioni e funzioni spec
 == Requisito non funzionale
 Specificano come il sistema deve comportarsi mentre svolge quelle funzioni. Si concentrano su qualità come le prestazioni, la sicurezza o l’affidabilità, ad esempio “il sistema deve supportare 1000 utenti contemporanei senza rallentamenti”.
 == Responsabile
-Il Responsabile coordina le attività del gruppo e garantisce una pianificazione efficace.
+Ruolo che si occupa di coordinare le attività del gruppo e garantire una pianificazione efficace.
 == RTB
 Baseline iniziale e vincolante di requisiti e tecnologie approvate per il progetto. Comprende requisiti funzionali, non funzionali, di sicurezza e conformità, insieme a strumenti, linguaggi, piattaforme e infrastrutture scelte. Costituisce il riferimento stabile per verificare coerenza e avanzamento. Qualsiasi modifica richiede revisione e approvazione formale.
 
@@ -246,7 +249,7 @@ Sistema informatico (hardware o virtuale) che ospita applicazioni, elabora le ri
 == Sprint
 Ciclo di lavoro di durata fissa, tipico dello sviluppo Agile, durante il quale il gruppo si impegna a completare un insieme prefissato di attività per produrre un incremento del software.
 == SQL
-Acronimo di Structured Query Language, è un linguaggio di programmazione con lo scopo di creare, filtrare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.
+Acronimo di Structured Query Language, è un linguaggio dichiarativo con lo scopo di creare, filtrare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.
 == Stakeholder
 Qualunque persona, gruppo o organizzazione che ha interesse, influenza o è coinvolta nel progetto, includendo clienti, utenti, sviluppatori, dirigenti, fornitori e persino organizzazioni esterne, ed è fondamentale per definire requisiti.
 == Sviluppo
@@ -275,7 +278,7 @@ Acronimo di Verbale Esterno, viene utilizzato per tracciare nel tempo decisioni 
 == Verifica
 Insieme di processi atti a garantire che una funzione all’interno di un prodotto soddisfi determinati requisiti.
 == Verificatore
-Il Verificatore si occupa di assicurare la qualità dei prodotti e dei processi adottati, effettuando revisioni e test.
+Ruolo che si occupa di assicurare la qualità dei prodotti e dei processi adottati, effettuando revisioni e test.
 == Versionamento
 Metodo per gestire e tenere traccia di documenti, codice o altri artefatti digitali, organizzandoli in versioni identificate da un codice univoco, in modo da poter monitorare modifiche, confrontare stati diversi e ripristinare versioni precedenti.
 == VI
