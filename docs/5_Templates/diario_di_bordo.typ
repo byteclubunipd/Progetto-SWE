@@ -229,7 +229,7 @@
     text(font: titleFont, size: 14pt, fill: whiteText)[UNIVERSITÀ DI PADOVA],
   )
   #place(left + top, dx: 9.69in, dy: 6.227in,
-    text(font: titleFont, size: 16pt, fill: whiteText)[Autore: #linebreak() #responsible],
+    text(font: titleFont, size: 16pt, fill: whiteText)[Responsabile: #linebreak() #responsible],
   )
 ])
 }
