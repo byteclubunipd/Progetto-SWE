@@ -14,6 +14,8 @@
   destinatari: "",
   registroModifiche: (),
   indice: true,
+  tabelle: false,
+  immagini: false,
   body,
 ) = {
   set document(title: titolo, author: redazione)
@@ -68,6 +70,22 @@
       #if indice [
         #pagebreak()
         #indiceDocumento()
+        #pagebreak()
+      ]
+      #if tabelle [
+        #outline(
+          title: [Elenco delle tabelle],
+          target: figure.where(kind: table),
+          indent: 1em,
+        )
+        #pagebreak()
+      ]
+      #if immagini [
+        #outline(
+          title: [Elenco delle figure],
+          target: figure.where(kind: image),
+          indent: 1em,
+        )
         #pagebreak()
       ]
       #body
