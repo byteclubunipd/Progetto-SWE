@@ -16,6 +16,7 @@
   destinatari: "Tutti i componenti del gruppo ByteClub",
   proprietario: "ByteClub",
   registroModifiche: (
+    ("0.2.0", "2026-11-16", "Integrazione delle norme relative a Gitflow, gestione della documentazione, Typst, build, testing e nomenclatura dei commit.", EH, LS),
     ("0.1.0", "2026-11-13", "Prima stesura del documento", EH, LS),
   ),
   indice: true,
@@ -239,13 +240,42 @@ Esempi:
 
 == Commit
 
-Ogni commit deve rappresentare un insieme coerente di modifiche.
 
-Il messaggio associato al commit deve descrivere sinteticamente il contenuto delle modifiche, evitando descrizioni generiche o poco significative.
+Ogni commit deve rappresentare un insieme coerente e circoscritto di modifiche. I messaggi devono essere chiari, concisi e descrivere il cambiamento effettuato.
 
-È preferibile effettuare commit frequenti e circoscritti, così da facilitare la comprensione della cronologia e l'eventuale individuazione di problemi.
+Il gruppo adotta una versione semplificata della convenzione Conventional Commits, secondo il formato:
 
-La convenzione formale per la denominazione dei commit deve essere condivisa e mantenuta uniforme da tutti i componenti.
+`<tipo>: <descrizione>`
+
+Le tipologie ammesse sono:
+
+#table(
+  columns: (1fr, 2fr),
+  align: horizon,
+  table.header(
+    [*Tipo*],
+    [*Utilizzo*],
+  ),
+  [feat], [Aggiunta di una funzionalità.],
+  [fix], [Correzione di un bug.],
+  [docs], [Modifiche alla documentazione.],
+  [style], [Modifiche alla formattazione del codice.],
+  [refactor], [Riorganizzazione del codice.],
+  [test], [Aggiunta o modifica dei test.],
+  [chore], [Attività di manutenzione e configurazione.],
+)
+
+Esempi:
+
+```text
+feat: add user registration
+fix: correct login validation
+docs: update installation instructions
+style: improve navigation layout
+refactor: simplify database connection
+test: add registration tests
+chore: update gitignore
+```
 
 == Pull Request
 
@@ -285,11 +315,37 @@ Quando previsto, i documenti devono riportare le informazioni relative alla vers
 
 == Organizzazione dei documenti
 
-La documentazione viene organizzata all'interno della cartella `docs`, seguendo la suddivisione prevista per le diverse fasi del progetto.
+La documentazione viene organizzata all'interno della cartella `docs`, seguendo la suddivisione prevista per le diverse fasi del progetto:
 
-I documenti devono essere collocati nella cartella corrispondente alla loro tipologia e alla fase progettuale di riferimento.
+- `docs/1_Diario_di_bordo/`: diari di bordo;
 
-I template condivisi sono conservati nella cartella `docs/5_Templates`.
+- `docs/2_Candidatura/`: documenti relativi alla candidatura;
+
+- `docs/3_RTB/`: documenti della fase RTB;
+
+- `docs/4_PB/`: documenti della fase PB;
+
+- `docs/5_Templates/`: sorgenti Typst riutilizzabili e relativi asset;
+
+- `docs/6_Output/`: PDF generati, organizzati con una struttura analoga a quella dei sorgenti.
+
+I documenti devono essere collocati nella cartella corrispondente alla loro tipologia e alla fase progettuale di riferimento. All'interno delle cartelle dei verbali, questi devono essere ulteriormente distinti in `interni/` ed `esterni/`.
+
+I file `.gitkeep` sono utilizzati per mantenere nel repository le cartelle altrimenti vuote. I template condivisi sono conservati nella cartella `docs/5_Templates`.
+
+== Nomenclatura dei documenti
+
+Per garantire uniformità e rendere immediatamente riconoscibile la tipologia dei documenti, il gruppo adotta convenzioni di denominazione distinte.
+
+Per verbali e diari di bordo si utilizza il formato:
+
+`[VE/VI/DDB]_YYYY-MM-DD`
+
+dove `VE` identifica un verbale esterno, `VI` un verbale interno e `DDB` un diario di bordo. La data deve essere espressa nel formato anno-mese-giorno.
+
+Esempi: `VI_2005-12-22`, `VE_2005-12-22` e `DDB_2005-12-22`.
+
+Per i documenti tecnici si utilizza il formato `Nome_documento vx.y.z`. La versione è composta da tre numeri: `x` identifica le modifiche sostanziali al contenuto, `y` le modifiche alla struttura e `z` le modifiche allo stile. Ad esempio: `Analisi_dei_requisiti v8.8.8`.
 
 == Redazione dei documenti
 
@@ -321,11 +377,46 @@ La responsabilità della verifica deve essere assegnata a un componente diverso 
 
 == Compilazione e pubblicazione
 
-I documenti Typst devono essere compilabili senza errori.
+I documenti Typst devono essere compilabili senza errori. Typst deve essere installato nell'ambiente di lavoro del componente che redige o verifica la documentazione.
 
-Il gruppo utilizza workflow automatizzati per supportare la compilazione dei documenti e la pubblicazione della documentazione.
+L'installazione può essere effettuata attraverso il gestore di pacchetti disponibile nel sistema operativo:
+
+- Windows, tramite Windows Package Manager: `winget install --id Typst.Typst`;
+
+- macOS, tramite Homebrew: `brew install typst`;
+
+- Linux, tramite `sudo apt install typst`, se disponibile nella distribuzione, oppure `cargo install typst-cli`.
+
+L'installazione può essere verificata eseguendo `typst --version`. In caso di utilizzo di Visual Studio Code, può essere necessario riavviare l'editor dopo l'installazione.
+
+I comandi Typst devono essere eseguiti dalla cartella principale del repository. Per compilare un sorgente in PDF si utilizza:
+
+```bash
+typst compile --root . percorso/sorgente.typ percorso/destinazione.pdf
+```
+
+Per mantenere la compilazione aggiornata automaticamente durante la modifica del sorgente si può utilizzare:
+
+```bash
+typst watch --root . percorso/sorgente.typ percorso/destinazione.pdf
+```
+
+I percorsi devono essere sostituiti con quelli del documento da compilare e del PDF da generare. Gli asset utilizzati dai template devono essere conservati nella cartella `docs/5_Templates/assets/`.
+
+Il file `base.typ` contiene impostazioni e componenti condivisi, quali layout, font e spaziature. I file `verbale.typ`, `diario_di_bordo.typ` e `documento.typ` costituiscono i template completi per le rispettive tipologie documentali. I file `*_vuoto.typ` sono versioni minimali da copiare e compilare per creare un nuovo documento.
+
+Il gruppo utilizza inoltre script Python e workflow automatizzati per supportare la compilazione dei documenti e la pubblicazione della documentazione. Lo script `.github/scripts/build_documents.py` individua i sorgenti Typst, li compila in PDF, aggiorna il catalogo del sito e prepara i contenuti pubblicabili nella cartella `website/build/`.
+
+La build completa viene avviata dalla cartella principale del repository mediante il comando:
+
+```bash
+python .github/scripts/build_documents.py
+```
+
+Il comando richiede che Typst sia installato e aggiorna i PDF in `docs/6_Output/` e il sito generato in `website/build/`.
 
 La documentazione destinata alla consultazione deve essere resa disponibile attraverso il sito del progetto, pubblicato mediante GitHub Pages.
+
 
 = Riunioni e comunicazione
 
@@ -386,6 +477,16 @@ Le modifiche devono essere revisionate prima di essere integrate nei branch prin
 
 Quando disponibili, devono essere utilizzati strumenti automatizzati per controllare la correttezza e il funzionamento del codice.
 
+Per verificare la pipeline di generazione della documentazione sono disponibili test automatici nel file `test/test_build_documents.py`. I test controllano la compilazione, il catalogo HTML, i collegamenti e la gestione degli errori senza richiedere la compilazione effettiva dei documenti Typst.
+
+I test devono essere eseguiti dalla cartella principale del repository mediante il comando:
+
+```bash
+python -m unittest discover -s test -p "test_build_documents.py" -v
+```
+
+Prima di aprire una Pull Request è consigliato eseguire prima i test automatici e successivamente la build completa, così da verificare sia il comportamento della pipeline sia la generazione degli artefatti.
+
 == Verifica della documentazione
 
 La documentazione deve essere controllata sia dal punto di vista del contenuto sia dal punto di vista formale.
@@ -418,10 +519,7 @@ Alcuni aspetti organizzativi e operativi richiedono ulteriori decisioni da parte
 
 In particolare, devono essere definiti:
 
-- la convenzione definitiva per i messaggi dei commit;
-- la convenzione per la denominazione dei branch;
-- le modalità di approvazione delle Pull Request e il numero di revisioni richieste;
 - lo strumento e la frequenza di aggiornamento del conteggio delle ore;
 - le modalità di gestione delle priorità delle issue;
-- i criteri di verifica specifici per codice, documenti e altri prodotti;
-- la procedura per la gestione delle versioni e dei rilasci.
+- i criteri di verifica specifici per il codice e per gli altri prodotti;
+- la procedura dettagliata per la gestione delle versioni e dei rilasci.
