@@ -21,7 +21,7 @@
   redattore: RP,
   verificatore: LS,
   uso: "Esterno",
-  stato: "Da approvare",
+  stato: "Approvato",
 
   // DETTAGLI DELLA RIUNIONE
   tipoRiunione: "Esterna",
