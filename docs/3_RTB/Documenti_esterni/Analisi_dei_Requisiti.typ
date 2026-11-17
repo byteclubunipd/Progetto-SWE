@@ -2,12 +2,16 @@
 #import "/docs/5_Templates/documento.typ": *
 
 #let gruppo = "ByteClub"
+#let linkGlossario = "InserireLinkGlossario"
+#let linkCapitolato = "https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C7-SD.pdf"
+#let linkLezioneAnalisi = "https://www.math.unipd.it/~tullio/IS-1/2026/Dispense/T05.pdf"
+#let linkNormeProgetto = "InserireLinkNormeProgetto"
 // Macro per il Glossario (aggiunge la G all'apice)
 #let glos(term) = [#term#super[G]]
 
 #show: documento.with(
   titolo: "Analisi dei Requisiti",
-  versione: "0.1.1",
+  versione: "0.1.4",
   mostraInformazioni: true,
   mostraRegistro: true,
   stato: "Da Approvare",
@@ -19,15 +23,68 @@
   destinatari: gruppo + "\nErgon Informatica S.r.l.\nProf. Vardanega Tullio \nProf. Cardin Riccardo",
   indice: true,
   registroModifiche: (
-    ("0.1.1", "2026-11-13", "Aggiunte funzioni del prodotto", BG, "-"),
-    ("0.1.0", "2026-11-12", "Prima stesura del documento", BG, "-"),
+    ("0.1.4", "2026-11-17", "Aggiunto paragrafo 2.2, 3; inizializzati paragrafi 2.3, 3.1, 3.2, 3.3, 3.4, 3.5", BG, "-"),
+    ("0.1.3", "2026-11-16", "Aggiunti indici tabelle e immagini", BG, "-"),
+    ("0.1.2", "2026-11-15", "Aggiunti paragrafi 1.5, 1.6, 2, 2.1", BG, "-"),
+    ("0.1.1", "2026-11-13", "Aggiunti paragrafi 1.1, 1.2, 1.3, 1.4", BG, "-"),
+    ("0.1.0", "2026-11-12", "Formattazione e divisione in paragrafi del documento", BG, "-"),
   ),
 )
 
-DA INSERIRE ELENCO IMMAGINI USATE
+/*
+Per inserire e far indicizzare le immagini e le tabelle nel documento usa i seguenti blocchi di codice:
+TABELLA
+#figure(
+  table(
+    columns: (1fr, 1fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Intestazione 1]], [#strong[Intestazione 2]],
+    [Valore 1], [Valore 2],
+  ),
+  caption: [Titolo della tabella]
+) <nome_tabella>
+
+IMMAGINE
+#figure(
+  image("percorso/immagine.formato", width: 60%),
+  caption: [Titolo dell'immagine]
+) \
+*/
+
+//Indice delle tabelle
+#outline(
+  title: [Elenco delle tabelle],
+  target: figure.where(kind: table)
+)
+#pagebreak()
+
+//indice delle immagini
+#outline(
+  title: [Elenco delle immagini],
+  target: figure.where(kind: image)
+)
+#pagebreak()
+
+// Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
+#show outline.entry: it => {
+  if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
+    let loc = it.element.location()
+    let num = counter(figure.where(kind: it.element.kind)).at(loc).first()
+    let desc = it.element.caption.body
+    let page-num = loc.page()
+    link(loc, [
+      #num -- #desc
+      #box(width: 1fr, repeat([. ]))
+      #page-num \
+    ])
+  } else {
+    it
+  }
+}
+
 = Introduzione
 == Glossario
-Per tutti i termini tecnici, gli acronimi e le definizioni utilizzate nel documento si rimanda al #link("InserireLinkGlossario")[#underline[#glos[Glossario]]], disponibile come documento separato.
+Per tutti i termini tecnici, gli acronimi e le definizioni utilizzate nel documento si rimanda al #link(linkGlossario)[#underline[#glos[Glossario]]], disponibile come documento separato.
 Ogni parola presente nel #glos[Glossario] viene segnata come segue: \
 #align(center)[#glos[termine]]
 == Scopo del documento
@@ -50,7 +107,6 @@ Il documento è inoltre destinato ad altre figure professionali coinvolte nello 
 
 == Prospettiva del prodotto
 SmartDashboard si propone come una piattaforma intelligente e multimodale per la visualizzazione e l'analisi dei dati aziendali, permettendo agli utenti di monitorare le performance del business in tempo reale.
-
 Il sistema è progettato secondo un'architettura modulare e scalabile, in grado di integrare modelli avanzati di #glos[intelligenza artificiale] (#glos[LLM]) e di adattarsi a volumi elevati di dati mantenendo fluidità nelle prestazioni.
 
 == Funzioni del prodotto
@@ -71,5 +127,143 @@ Il sistema dovrà offrire le seguenti #glos[funzionalità] principali:
 I requisiti obbligatori sono stati definiti in accordo con le indicazioni del #glos[proponente] e con quanto emerso dai colloqui preliminari.
 
 == Caratteristiche dell'utente
+Il sistema si rivolge a utenti aziendali con competenze di base nell'uso di strumenti informatici e nella lettura di dati. In particolare:
+- *Dipendente*: utilizzatore della #glos[dashboard] per l'analisi e la visualizzazione dei dati aziendali.
+- *Amministratore*: gestisce gli utenti e i relativi permessi; crea delle #glos[dashboard] aziendali.
+- *Amministratore di gestione*: crea e gestisce gli altri utenti (modifica i ruoli e abilita o disabilita le autorizzazioni), ha accesso alle impostazioni generali della piattaforma (configurazione #glos[API]).
+Ogni ruolo eredita i permessi e le funzionalità del ruolo precedente, con l'aggiunta di privilegi specifici.\
+Gli utenti dovranno essere in grado di interagire con l'interfaccia del sistema, comprendere le visualizzazioni dei dati e utilizzare le funzionalità di filtraggio e personalizzazione delle #glos[dashboard].
+== Riferimenti
+=== Riferimenti normativi
+- #link(linkNormeProgetto)[#underline[#glos[Norme di progetto]]]. Ulitma consultazione: 2026-xx-yy.
+- #link(linkCapitolato)[#underline[#glos[Capitolato] C8 - Ergon Informatica S.r.l. - SmartDashboard]]. Ulitma consultazione: 2026-11-13.
+=== Riferimenti informativi
+- #link(linkLezioneAnalisi)[#underline[Lezione del prof. Tullio sull'#glos[Analisi dei Requisiti]]]. Ulitma consultazione: 2026-11-15.
+- #link(linkGlossario)[#underline[#glos[Glossario]]]. Ulitma consultazione: 2026-11-13.
+= Casi d'uso
+== Descrizione associata al caso d'uso
+Ogni #glos[caso d'uso] si  compone di tutte le informazioni presenti nella seguente
+tabella, salvo i casi in cui uno specifico campo non risulti rilevante.
+#figure(
+  table(
+    columns: (0.3fr, 1fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Campo]], [#strong[Descrizione]],
+    [Grafico #glos[UML]], [Rappresenta lo scenario del Casi d’Uso in oggetto.],
+    [#glos[Attore]], [Rappresenta coloro che interagiscono in quel sistema, senza il controllo da parte del sistema.],
+    [Scenario principale], [La sequenza ragionevole delle operazioni che l’#glos[Attore] deve effettuare per portare a compimento lo scenario.],
+    [Precondizioni], [Lista di elementi necessari per far sì che l’#glos[Attore] possa soddisfare il #glos[Caso d’Uso] in oggetto.],
+    [Postcondizioni], [Lista di elementi che descrive le modifiche effettuate internamente dopo il corretto avvenimento dello scenario principale.],
+    [Scenario alternativo], [Rappresenta un comportamento valido ma non principale, che devia dal flusso base a causa di errori.],
+    [Inclusioni], [Ulteriori Casi d’Uso che l’#glos[Attore] deve compiere per portare a termine lo scenario.],
+    [Estensioni], [Relazione che aggiunge comportamento opzionale o alternativo a un caso d’uso completo, attivata solo al verificarsi di una condizione specifica.],
+    [Specializzazioni], [Rappresentazioni di varianti del caso d’uso generale, sono tra loro mutualmente esclusive. Non impongono un percorso di esecuzione obbligatorio.],
+    [Trigger], [Descrizione sintetica di una #glos[funzionalità] dal punto di vista dell’utente, focalizzata sugli obiettivi.],
+  ),
+  caption: [Campi dei casi d'uso e loro descrizione]
+) <DescrizioneCasoUso>
+#pagebreak()
+== Attori
+#figure(
+  image("Assets/attori.png", width: 60%),
+  caption: [Attori principali del sistema SmartDashboard]
+) \
+#figure(
+  table(
+    columns: (0.4fr, 1fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Attore]], [#strong[Descrizione]],
+    [Utente], [Indica quando il #glos[caso d'uso] è generico e può essere eseguito da qualsiasi #glos[attore].],
+    [Dipendente], [Accede al sistema per visualizzare e analizzare i dati aziendali tramite le #glos[dashboard].],
+    [Amministratore], [Gestisce gli utenti e i relativi permessi; crea delle #glos[dashboard] aziendali.],
+    [Amministratore di gestione], [Crea e gestisce gli altri utenti (modifica i ruoli e abilita o disabilita le autorizzazioni), ha accesso alle impostazioni generali della piattaforma (configurazione #glos[API]).],
+  ),
+  caption: [Descrizione attori]
+) <Attori>
+#pagebreak()
 
+== Lista casi d'uso
+=== UC_01: ???
 
+#pagebreak()
+= Requisiti
+Vengono ora descritti i requisiti individuati dal gruppo ByteClub.\ I requisiti vengono classificati in:
+- *Funzionali*: requisiti che individuano ciò che il sistema deve presentare per soddisfare l’aspettativa.
+- *Qualità*: requisiti che individuano la qualità del #glos[progetto] realizzato.
+- *Vincolo*: requisiti che individuano le restrizioni del sistema, come ad esempio l’utilizzo di determinate tecnologie e di specifiche caratteristiche tecniche.
+Per chiarimenti sulla nomenclatura utilizzata si rimanda al documento #link(linkNormeProgetto)[#underline[#glos[Norme di Progetto]]].
+== Requisiti funzionali
+=== Requisiti funzionali obbligatori
+#figure(
+  table(
+    columns: (0.4fr, 1fr, 0.4fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Codice]], [#strong[Descrizione]], [#strong[Fonti]],
+    [Codice requisito], [Testo della descrizione], [Link al riferimento],
+  ),
+  caption: [Requisiti funzionali obbligatori]
+) <RequisitiFunzionaliObbligatori>
+=== Requisiti funzionali desiderabili
+#figure(
+  table(
+    columns: (0.4fr, 1fr, 0.4fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Codice]], [#strong[Descrizione]], [#strong[Fonti]],
+    [Codice requisito], [Testo della descrizione], [Link al riferimento],
+  ),
+  caption: [Requisiti funzionali desiderabili]
+) <RequisitiFunzionaliDesiderabili>
+=== Requisiti funzionali opzionali
+#figure(
+  table(
+    columns: (0.4fr, 1fr, 0.4fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Codice]], [#strong[Descrizione]], [#strong[Fonti]],
+    [Codice requisito], [Testo della descrizione], [Link al riferimento],
+  ),
+  caption: [Requisiti funzionali opzionali]
+) <RequisitiFunzionaliOpzionali>
+== Requisiti di qualità
+=== Requisiti di qualità obbligatori
+#figure(
+  table(
+    columns: (0.4fr, 1fr, 0.4fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Codice]], [#strong[Descrizione]], [#strong[Fonti]],
+    [Codice requisito], [Testo della descrizione], [Link al riferimento],
+  ),
+  caption: [Requisiti di qualità obbligatori]
+) <RequisitiQualitaObbligatori>
+== Requisiti di vincolo
+=== Requisiti di vincolo obbligatori
+#figure(
+  table(
+    columns: (0.4fr, 1fr, 0.4fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[Codice]], [#strong[Descrizione]], [#strong[Fonti]],
+    [Codice requisito], [Testo della descrizione], [Link al riferimento],
+  ),
+  caption: [Requisiti di vincolo obbligatori]
+) <RequisitiVincoloObbligatori>
+== Tracciamento dei casi d'uso e riepilogo
+#figure(
+  table(
+    columns: (0.4fr, 1fr),
+    fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+    [#strong[#glos[Caso d'uso]]], [#strong[Requisiti associati]],
+    [Codice caso d'uso], [Codici dei requisiti associati al caso d'uso],
+  ),
+  caption: [Tracciamento dei casi d'uso e riepilogo dei requisiti]
+) <TracciamentoCasiUso>
+== Riepilogo dei requisiti
+#figure(
+    table(
+      columns: (1fr, 1fr, 1fr, 1fr),
+      fill: (col, row) => if row == 0 { rgb("e8e8e8") },
+      [#strong[Tipologia]], [#strong[Obbligatori]], [#strong[Desiderabili]], [#strong[Opzionali]],
+      [*Funzionali*], [x], [y], [z],
+      [*Qualità*], [x], [y], [z],
+      [*Vincolo*], [x], [y], [z],
+    ),
+    caption: [Riepilogo dei requisiti]
+  ) <RiepilogoRequisiti>
