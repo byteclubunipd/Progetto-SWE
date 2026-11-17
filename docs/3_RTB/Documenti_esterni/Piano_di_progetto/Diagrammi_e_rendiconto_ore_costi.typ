@@ -8,27 +8,135 @@
 // Title, URL, Assignees, Status, Inizio, Fine, Sprint, Ruolo.
 // Per aggiornare il Gantt basta riesportare il TSV mantenendo lo stesso nome.
 
-#let tsv-righe = (read("@byteclubunipd's RTB - Diagramma di Gantt.tsv").split("\n").slice(1)).filter(riga => riga.trim() != "")
-#let cell(riga, indice) = if indice < riga.len() {
-  riga.at(indice).trim()
+// ============================================================================
+// DATE, MILESTONE E SPRINT DINAMICI
+// ============================================================================
+
+#let mese-numero(nome) = if nome == "Jan" or nome == "January" {
+  1
+} else if nome == "Feb" or nome == "February" {
+  2
+} else if nome == "Mar" or nome == "March" {
+  3
+} else if nome == "Apr" or nome == "April" {
+  4
+} else if nome == "May" or nome == "Maggio" {
+  5
+} else if nome == "Jun" or nome == "June" {
+  6
+} else if nome == "Jul" or nome == "July" {
+  7
+} else if nome == "Aug" or nome == "August" {
+  8
+} else if nome == "Sep" or nome == "September" {
+  9
+} else if nome == "Oct" or nome == "October" {
+  10
+} else if nome == "Nov" or nome == "November" or nome == "Novembre" {
+  11
+} else if nome == "Dec" or nome == "December" or nome == "Dicembre" {
+  12
 } else {
-  ""
+  panic("Mese non riconosciuto nella data: " + nome)
 }
 
-#let giorno-data(data) = if data == "" {
-  1
+#let bisestile(anno) = calc.rem(anno, 400) == 0 or (
+  calc.rem(anno, 4) == 0 and calc.rem(anno, 100) != 0
+)
+
+#let giorni-mese(anno, mese) = if mese == 2 {
+  if bisestile(anno) { 29 } else { 28 }
+} else if mese == 4 or mese == 6 or mese == 9 or mese == 11 {
+  30
 } else {
-  let parti = data.split(" ")
-  int(parti.at(1).replace(",", "")) - 10
+  31
 }
+
+#let data-valida(anno, mese, giorno, origine) = if anno < 1 or mese < 1 or mese > 12 or giorno < 1 or giorno > giorni-mese(anno, mese) {
+  panic("Data non valida (" + origine + "): " + str(anno) + "-" + str(mese) + "-" + str(giorno))
+} else {
+  datetime(year: anno, month: mese, day: giorno)
+}
+
+// Formati supportati: YYYY-MM-DD, YYYY/MM/DD, DD/MM/YYYY,
+// "Nov 11, 2026" e "11 Nov 2026".
+#let parse-data(testo, origine: "data") = {
+  if testo == none or testo.trim() == "" {
+    none
+  } else {
+    let valore = testo.trim()
+    let numerica = valore.replace("/", "-").split("-")
+    let parole = valore.split(" ").filter(parola => parola.trim() != "")
+
+    if numerica.len() == 3 and numerica.at(0).len() == 4 {
+      data-valida(int(numerica.at(0)), int(numerica.at(1)), int(numerica.at(2)), origine)
+    } else if numerica.len() == 3 and numerica.at(2).len() == 4 {
+      data-valida(int(numerica.at(2)), int(numerica.at(1)), int(numerica.at(0)), origine)
+    } else if parole.len() == 3 and parole.at(0).len() <= 3 {
+      data-valida(int(parole.at(2)), mese-numero(parole.at(0)), int(parole.at(1).replace(",", "")), origine)
+    } else if parole.len() == 3 {
+      data-valida(int(parole.at(2)), mese-numero(parole.at(1)), int(parole.at(0).replace(",", "")), origine)
+    } else {
+      panic("Formato data non riconosciuto (" + origine + "): " + valore)
+    }
+  }
+}
+
+#let giorno-data(data) = {
+  let valore = parse-data(data)
+  if valore == none { 1 } else { valore.day() - 10 }
+}
+
+#let milestone(nome, data) = {
+  let valore = parse-data(data, origine: "milestone " + nome)
+  if valore == none { panic("La milestone " + nome + " richiede una data") }
+  (nome: nome, data: valore, data-testo: data)
+}
+
+#let milestones-periodo(voci) = voci.map(voce => milestone(voce.at(0), voce.at(1)))
+
+#let crea-sprint(numero, data-inizio, data-fine, milestones: ()) = {
+  let inizio = parse-data(data-inizio, origine: "inizio Sprint " + str(numero))
+  let fine = parse-data(data-fine, origine: "fine Sprint " + str(numero))
+  if inizio == none or fine == none { panic("Lo Sprint " + str(numero) + " richiede dataInizio e dataFine") }
+  if fine < inizio { panic("Intervallo non valido nello Sprint " + str(numero) + ": la fine precede l'inizio") }
+  let giorni = int((fine - inizio).days()) + 1
+  let etichette = range(0, giorni).map(offset => str((inizio + duration(days: offset)).day()))
+  let milestone-sprint = milestones.filter(item => item.data >= inizio and item.data <= fine).map(item => (..item, giorno: int((item.data - inizio).days()) + 1))
+  (
+    numero: numero,
+    data-inizio: inizio,
+    data-fine: fine,
+    milestones: milestone-sprint,
+    gantt: (giorni: giorni, etichette: etichette),
+  )
+}
+
+#let data-sprint-fallback(data, fallback) = if data == none { fallback } else { data }
+
+#let adatta-record-sprint(record, dati) = {
+  let inizio-data = data-sprint-fallback(record.inizio-data, dati.data-inizio)
+  let fine-data = data-sprint-fallback(record.fine-data, dati.data-fine)
+  let inizio = calc.max(1, int((inizio-data - dati.data-inizio).days()) + 1)
+  let fine-prevista = calc.min(dati.gantt.giorni, int((fine-data - dati.data-inizio).days()) + 1)
+  let fine-effettiva = if record.stato == "Done" and record.fine-data != none {
+    calc.min(dati.gantt.giorni, int((record.fine-data - dati.data-inizio).days()) + 1)
+  } else { dati.gantt.giorni }
+  (
+    ..record,
+    previsto_inizio: inizio,
+    durata_prevista: calc.max(1, fine-prevista - inizio + 1),
+    effettivo_inizio: inizio,
+    durata_effettiva: calc.max(1, fine-effettiva - inizio + 1),
+  )
+}
+
+#let tsv-righe = (read("@byteclubunipd's RTB - Diagramma di Gantt.tsv").split("\n").slice(1)).filter(riga => riga.trim() != "")
+#let cell(riga, indice) = if indice < riga.len() { riga.at(indice).trim() } else { "" }
 
 #let id-url(url) = {
   let parti = url.split("/")
-  if parti.len() == 0 {
-    "-"
-  } else {
-    parti.at(parti.len() - 1)
-  }
+  if parti.len() == 0 { "-" } else { parti.at(parti.len() - 1) }
 }
 
 #let tsv-record(riga) = {
@@ -41,14 +149,8 @@
   let fine = cell(colonne, 7)
   let sprint = cell(colonne, 9)
   let ruolo = cell(colonne, 10)
-  let inizio-giorno = giorno-data(inizio)
-  let fine-prevista = if fine == "" { 17 } else { giorno-data(fine) }
-  let fine-effettiva = if stato == "Done" and fine != "" {
-    giorno-data(fine)
-  } else {
-    6
-  }
-
+  let inizio-data = parse-data(inizio, origine: "Inizio issue " + titolo)
+  let fine-data = parse-data(fine, origine: "Fine issue " + titolo)
   (
     id: id-url(url),
     titolo: titolo,
@@ -57,19 +159,21 @@
     stato: if stato == "" { "-" } else { stato },
     inizio: inizio,
     fine: fine,
+    inizio-data: inizio-data,
+    fine-data: fine-data,
     sprint: if sprint == "" { 1 } else { int(sprint) },
     ruolo: if ruolo == "" { "-" } else { ruolo },
-    previsto_inizio: inizio-giorno,
-    durata_prevista: calc.max(1, fine-prevista - inizio-giorno + 1),
-    effettivo_inizio: inizio-giorno,
-    durata_effettiva: calc.max(1, fine-effettiva - inizio-giorno + 1),
+    previsto_inizio: 1,
+    durata_prevista: 1,
+    effettivo_inizio: 1,
+    durata_effettiva: 1,
     ore: 0,
   )
 }
 
 #let issue-records = tsv-righe.map(tsv-record)
-
 #let records-sprint(numero) = issue-records.filter(record => record.sprint == numero)
+#let records-sprint-calcolati(dati) = records-sprint(dati.numero).map(record => adatta-record-sprint(record, dati))
 
 // ============================================================================
 // ORE E COSTI
@@ -95,25 +199,19 @@
 
 #let colonne-timeline(giorni) = range(1, giorni + 1).map(giorno => 1fr)
 
-#let etichette-sprint-1 = (
-  "11", "12", "13", "14", "15",
-  "16", "17", "18", "19", "20",
-  "21", "22", "23", "24", "25",
-  "26", "27",
-)
+// Configurazione predefinita, sovrascrivibile dal documento Piano di progetto.
 #let etichette-placeholder = range(1, 18).map(giorno => "MM-DD")
-
-#let gantt-1 = (giorni: 17, etichette: etichette-sprint-1)
+#let gantt-1 = (giorni: 17, etichette: etichette-placeholder)
 #let gantt-2 = (giorni: 17, etichette: etichette-placeholder)
 #let gantt-3 = (giorni: 17, etichette: etichette-placeholder)
 #let gantt-4 = (giorni: 17, etichette: etichette-placeholder)
 #let gantt-5 = (giorni: 17, etichette: etichette-placeholder)
 
-#let sprint-1 = (numero: 1, gantt: gantt-1)
-#let sprint-2 = (numero: 2, gantt: gantt-2)
-#let sprint-3 = (numero: 3, gantt: gantt-3)
-#let sprint-4 = (numero: 4, gantt: gantt-4)
-#let sprint-5 = (numero: 5, gantt: gantt-5)
+#let sprint-1 = crea-sprint(1, "2026-11-11", "2026-11-27")
+#let sprint-2 = crea-sprint(2, "2026-11-28", "2026-12-14")
+#let sprint-3 = crea-sprint(3, "2026-12-15", "2026-12-31")
+#let sprint-4 = crea-sprint(4, "2027-01-01", "2027-01-17")
+#let sprint-5 = crea-sprint(5, "2027-01-18", "2027-02-03")
 
 // ============================================================================
 // TABELLE DI SUPPORTO
@@ -138,7 +236,7 @@
   caption: [#titolo],
 )
 
-#let righe-report(numero) = records-sprint(numero).map(record => (
+#let righe-report(dati) = records-sprint-calcolati(dati).map(record => (
   record.id,
   record.assegnatari,
   record.stato,
@@ -152,21 +250,21 @@
   "Sprint " + str(dati.numero) + ": Preventivo importato da GitHub Project",
   (1fr, 2fr, 1fr, 1fr, 2fr, 1fr, 1fr),
   ("ID", "Assegnatari", "Stato", "Ruolo", "Periodo", "Ore", "Costo"),
-  righe-report(dati.numero),
+  righe-report(dati),
 )
 
 #let mostra-consuntivo(dati) = tabella-report(
   "Sprint " + str(dati.numero) + ": Consuntivo importato da GitHub Project",
   (1fr, 2fr, 1fr, 1fr, 2fr, 1fr, 1fr),
   ("ID", "Assegnatari", "Stato", "Ruolo", "Periodo", "Ore", "Costo"),
-  righe-report(dati.numero),
+  righe-report(dati),
 )
 
 #let mostra-aggiornamento-risorse(dati) = tabella-report(
   "Sprint " + str(dati.numero) + ": Aggiornamento risorse",
   (1fr, 2fr, 1fr, 1fr),
   ("ID", "Assegnatari", "Stato", "Ruolo"),
-  records-sprint(dati.numero).map(record => (
+  records-sprint-calcolati(dati).map(record => (
     record.id,
     record.assegnatari,
     record.stato,
@@ -184,7 +282,7 @@
 )
 
 #let mostra-burndown(dati) = {
-  let records = records-sprint(dati.numero)
+  let records = records-sprint-calcolati(dati)
   let totale = calc.max(1, records.len())
   let aperte = records.filter(record => record.stato != "Done").len()
   let punti = (
@@ -463,7 +561,7 @@
 }
 
 #let mostra-gantt(dati) = {
-  let records = records-sprint(dati.numero)
+  let records = records-sprint-calcolati(dati)
 
   figure(
     kind: image,

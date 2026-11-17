@@ -1,5 +1,19 @@
 ﻿#import "/docs/5_Templates/documento.typ": *
 #import "Diagrammi_e_rendiconto_ore_costi.typ": *
+// ============================================================================
+// CONFIGURAZIONE AUTOMATICA DI MILESTONE E SPRINT
+// ============================================================================
+// Formati data accettati: YYYY-MM-DD, YYYY/MM/DD, DD/MM/YYYY,
+// "Nov 11, 2026" e "11 Nov 2026".
+#let milestones-progetto = milestones-periodo((
+  ("M1", "2026-11-27"),
+))
+
+#let sprint-1 = crea-sprint(1, "2026-11-11", "2026-11-27", milestones: milestones-progetto)
+#let sprint-2 = crea-sprint(2, "2026-11-28", "2026-12-14", milestones: milestones-progetto)
+#let sprint-3 = crea-sprint(3, "2026-12-15", "2026-12-31", milestones: milestones-progetto)
+#let sprint-4 = crea-sprint(4, "2027-01-01", "2027-01-17", milestones: milestones-progetto)
+#let sprint-5 = crea-sprint(5, "2027-01-18", "2027-02-03", milestones: milestones-progetto)
 
 #show: documento.with(
   titolo: "Piano di progetto",
@@ -10,6 +24,7 @@
   uso: "Esterno",
   destinatari: [Prof.Vardanega Tullio Prof. Cardin Riccardo Ergon Informatica S.r.l.],
   registroModifiche: (
+    ("0.1.1", "2026-11-16", "Miglioramento template diagramma di Gantt", RP, LS),
     ("0.1.0", "2026-11-16", "Creazione della struttura iniziale", RP, LS),
   ),
   indice: true,
@@ -151,4 +166,3 @@
 
 [Descrivere gli obiettivi e le attività dello Sprint 5.]
 #mostra-sprint(sprint-5)
-
