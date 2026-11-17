@@ -1,4 +1,4 @@
-#import "/docs/5_Templates/base.typ": *
+﻿#import "/docs/5_Templates/base.typ": *
 
 // ============================================================================
 // IMPORT DELLA TABLE GITHUB PROJECT
@@ -96,10 +96,10 @@
 #let colonne-timeline(giorni) = range(1, giorni + 1).map(giorno => 1fr)
 
 #let etichette-sprint-1 = (
-  "11-11", "11-12", "11-13", "11-14", "11-15",
-  "11-16", "11-17", "11-18", "11-19", "11-20",
-  "11-21", "11-22", "11-23", "11-24", "11-25",
-  "11-26", "11-27",
+  "11", "12", "13", "14", "15",
+  "16", "17", "18", "19", "20",
+  "21", "22", "23", "24", "25",
+  "26", "27",
 )
 #let etichette-placeholder = range(1, 18).map(giorno => "MM-DD")
 
@@ -208,12 +208,12 @@
       stroke: 0.5pt,
       inset: (left: 1cm, right: 0.5cm, top: 0.5cm, bottom: 0.5cm),
     )[
-      #place(left + top, line(
+      place(left + top, line(
         start: (0pt, altezza),
         end: (13cm, altezza),
         stroke: 1pt + luma(35%),
       ))
-      #place(left + top, line(
+      place(left + top, line(
         start: (0pt, 0pt),
         end: (0pt, altezza),
         stroke: 1pt + luma(35%),
@@ -235,7 +235,7 @@
       #for punto in effettivi {
         place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: rgb("#e45756")))
       }
-      #place(left + top, dx: 3.2cm, dy: altezza + 0.65cm)[
+      place(left + top, dx: 3.2cm, dy: altezza + 0.65cm)[
         #grid(
           columns: (auto, auto, auto, auto),
           column-gutter: 5pt,
@@ -254,21 +254,39 @@
 // GANTT
 // ============================================================================
 
-// Il Gantt riproduce la vista a bacheca di GitHub Project:
-// ogni riga contiene l'icona di stato, il titolo dell'issue, il suo ID,
-// l'assegnatario e una timeline giornaliera. Il blu indica il periodo
-// pianificato, mentre la barra nera più stretta indica il periodo effettivo.
+// Palette chiara ByteClub usata esclusivamente dal diagramma Gantt.
+#let gantt-sfondo = rgb("#FFFFFF")
+#let gantt-sfondo-secondario = rgb("#FAFBFC")
+#let gantt-testo = rgb("#07051C")
+#let gantt-testo-secondario = rgb("#526071")
+#let gantt-bordo = rgb("#EAEAEA")
+#let gantt-griglia = rgb("#EEF1F5")
+#let gantt-blu = rgb("#2877FF")
+#let gantt-ciano = rgb("#00C7DD")
+#let gantt-viola = rgb("#8651FF")
+#let gantt-lavanda = rgb("#E1D4EC")
+#let gantt-verde = rgb("#15803D")
+#let gantt-corallo = rgb("#E45756")
+#let gantt-grigio = rgb("#94A3B8")
+
+// Il valore e` l'indice della colonna, contando da sinistra a destra.
+#let giorno-corrente = 7
+#let giorno-milestone = 17
 
 #let icona-stato(record) = if record.stato == "Done" {
-  circle(radius: 4pt, fill: rgb("#7668e8"), stroke: 0.5pt + rgb("#c4c0ff"))[
-    #text(size: 5pt, fill: white, "✓")
+  circle(radius: 4pt, fill: gantt-viola, stroke: 0.5pt + gantt-lavanda)[
+    #text(size: 5pt, fill: white, "v")
   ]
 } else if record.stato == "In Progress" {
-  circle(radius: 4pt, fill: rgb("#1faa63"), stroke: 0.5pt + rgb("#9af0ba"))[
+  circle(radius: 4pt, fill: gantt-verde, stroke: 0.5pt + rgb("#B7E4C7"))[
     #text(size: 5pt, fill: white, "•")
   ]
+} else if record.stato == "Waiting review" {
+  circle(radius: 4pt, fill: gantt-ciano, stroke: 0.5pt + rgb("#A5F3FC"))[
+    #text(size: 4pt, fill: white, "•")
+  ]
 } else {
-  circle(radius: 4pt, fill: rgb("#303a46"), stroke: 0.5pt + rgb("#9aa6b5"))
+  circle(radius: 4pt, fill: gantt-sfondo-secondario, stroke: 0.6pt + gantt-grigio)
 }
 
 #let avatar-assignee(record) = {
@@ -281,69 +299,153 @@
     width: 0.38cm,
     height: 0.38cm,
     radius: 50%,
-    fill: rgb("#9b6acb"),
-    stroke: 0.4pt + rgb("#e6d9f2"),
+    fill: gantt-viola,
+    stroke: 0.4pt + gantt-lavanda,
   )[ #align(center, text(size: 5pt, fill: white, testo)) ]
 }
 
+#let icona-elemento(record) = if record.url.contains("/pull/") {
+  text(size: 8pt, fill: gantt-ciano, "PR")
+} else {
+  []
+}
+
+// Larghezza automatica: il chip segue il contenuto e non la durata dell'issue.
 #let chip-issue(record) = box(
-  width: 100%,
   height: 0.54cm,
   radius: 4pt,
-  fill: rgb("#171d26"),
-  stroke: 0.5pt + rgb("#596574"),
+  fill: gantt-sfondo,
+  stroke: 0.5pt + gantt-bordo,
   inset: (x: 5pt, y: 2pt),
 )[
   #grid(
-    columns: (auto, 1fr, auto),
-    column-gutter: 4pt,
+    columns: (auto, auto, auto, auto),
+    column-gutter: 3pt,
     icona-stato(record),
-    [#text(size: 7pt, fill: rgb("#d8dee7"), record.titolo)
+    [#text(size: 7pt, fill: gantt-testo, record.titolo)
       #h(3pt)
-      #text(size: 6pt, fill: rgb("#9da8b5"), "#" + record.id)],
+      #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)],
+    icona-elemento(record),
     avatar-assignee(record),
   )
 ]
 
-#let cella-gantt(giorno, record) = stack(
-  dir: ttb,
-  spacing: -0.27cm,
-  box(
-    width: 100%,
-    height: 0.34cm,
-    fill: if giorno >= record.previsto_inizio and giorno < record.previsto_inizio + record.durata_prevista {
-      rgb("#8cb9f1")
-    } else {
-      rgb("#202832")
-    },
-    stroke: 0.2pt + rgb("#374452"),
-  )[],
-  box(
-    width: 100%,
-    height: 0.11cm,
-    fill: if giorno >= record.effettivo_inizio and giorno < record.effettivo_inizio + record.durata_effettiva {
-      rgb("#090b0e")
-    } else {
-      none
-    },
-  )[],
+// Disegna un segmento della griglia e, quando necessario, un segmento di marker.
+#let cella-timeline(giorno, altezza, contenuto: [], fill: gantt-sfondo-secondario, bordo: true) = box(
+  width: 100%,
+  height: altezza,
+  fill: fill,
+  stroke: if bordo { 0.25pt + gantt-griglia } else { none },
+  inset: 0pt,
+)[
+  #if giorno == giorno-corrente {
+    place(center + top, line(
+      start: (0pt, 0pt),
+      end: (0pt, altezza),
+      stroke: 1pt + gantt-corallo,
+    ))
+  }
+  #if giorno == giorno-milestone {
+    place(center + top, line(
+      start: (0pt, 0pt),
+      end: (0pt, altezza),
+      stroke: 1pt + gantt-verde,
+    ))
+  }
+  #contenuto
+]
+
+#let cella-header(giorno, altezza, contenuto: [], evidenzia: false, mostra-punto: false, mostra-label: false) = cella-timeline(
+  giorno,
+  altezza,
+  contenuto: [
+    #if mostra-punto and giorno == giorno-corrente {
+      place(center + top, circle(radius: 2.2pt, fill: gantt-corallo))
+    }
+    #if mostra-punto and giorno == giorno-milestone {
+      place(center + top, circle(radius: 2.4pt, fill: gantt-verde))
+    }
+    #if mostra-label and giorno == giorno-milestone {
+      place(center + top, dx: 4pt, dy: 1pt, text(size: 5pt, fill: gantt-verde, "M1"))
+    }
+    #align(center, contenuto)
+  ],
+  fill: if evidenzia { gantt-corallo } else { gantt-sfondo-secondario },
 )
 
-#let barra-gantt(record, giorni) = grid(
-  columns: colonne-timeline(giorni),
-  column-gutter: 0pt,
-  ..range(1, giorni + 1).map(giorno => cella-gantt(giorno, record)).flatten(),
-)
+#let cella-gantt(giorno, record) = cella-timeline(giorno, 0.62cm)
+
+#let barra-gantt(record, giorni) = box(width: 100%, height: 0.62cm)[
+  #grid(
+    columns: colonne-timeline(giorni),
+    column-gutter: 0pt,
+    ..range(1, giorni + 1).map(giorno => cella-gantt(giorno, record)).flatten(),
+  )
+  #place(
+    left + top,
+    dx: (record.previsto_inizio - 1) * (100% / giorni),
+    dy: 4pt,
+    chip-issue(record),
+  )
+]
 
 #let intestazione-giorni(dati) = grid(
   columns: colonne-timeline(dati.gantt.giorni),
   column-gutter: 0pt,
-  ..dati.gantt.etichette.map(data => box(
-    width: 100%,
-    height: 0.45cm,
-    fill: rgb("#252e39"),
-    stroke: 0.2pt + rgb("#46515e"),
-  )[ #align(center, text(size: 5pt, fill: rgb("#b7c0cb"), data)) ]).flatten(),
+  ..dati.gantt.etichette.enumerate().map(((indice, data)) => cella-header(
+    indice + 1,
+    0.42cm,
+    contenuto: text(
+      size: 5.5pt,
+      fill: if indice + 1 == giorno-corrente { white } else { gantt-testo-secondario },
+      data,
+    ),
+    evidenzia: indice + 1 == giorno-corrente,
+  )).flatten(),
+)
+
+#let intestazione-temporale(dati) = {
+  let giorni = dati.gantt.giorni
+  let centro = calc.ceil(giorni / 2)
+  let anno = if dati.numero == 1 { "2026" } else { "----" }
+  let mese = if dati.numero == 1 { "Novembre" } else { "Mese" }
+
+  stack(
+    dir: ttb,
+    spacing: 0pt,
+    grid(
+      columns: colonne-timeline(giorni),
+      column-gutter: 0pt,
+      ..range(1, giorni + 1).map(giorno => cella-header(
+        giorno,
+        0.25cm,
+        contenuto: if giorno == centro { text(size: 9pt, fill: gantt-testo, anno) } else { [] },
+        mostra-punto: true,
+        mostra-label: true,
+      )).flatten(),
+    ),
+    grid(
+      columns: colonne-timeline(giorni),
+      column-gutter: 0pt,
+      ..range(1, giorni + 1).map(giorno => cella-header(
+        giorno,
+        0.38cm,
+        contenuto: if giorno == centro { text(size: 8pt, fill: gantt-testo, mese) } else { [] },
+      )).flatten(),
+    ),
+    intestazione-giorni(dati),
+  )
+}
+
+#let legenda-gantt = grid(
+  columns: (auto, auto, auto, auto, auto, auto),
+  column-gutter: 5pt,
+  icona-stato((stato: "Done")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "Done")],
+  icona-stato((stato: "In Progress")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "In Progress")],
+  box(width: 0.45cm, height: 1pt, fill: gantt-corallo)[],
+  [#text(size: 6pt, fill: gantt-testo-secondario, "Oggi")],
 )
 
 #let mostra-gantt(dati) = {
@@ -353,41 +455,28 @@
     kind: image,
     block(
       width: 100%,
-      fill: rgb("#111820"),
-      stroke: 0.6pt + rgb("#3b4653"),
+      fill: gantt-sfondo,
+      stroke: 0.6pt + gantt-bordo,
       inset: (x: 8pt, y: 8pt),
     )[
-      #grid(
-        columns: (5.8cm, 1fr),
-        gutter: 6pt,
-        box(
-          width: 100%,
-          height: 0.45cm,
-          fill: rgb("#252e39"),
-          stroke: 0.2pt + rgb("#46515e"),
-          inset: (x: 5pt, y: 2pt),
-        )[ #text(size: 6pt, fill: rgb("#b7c0cb"), "Sprint " + str(dati.numero)) ],
-        intestazione-giorni(dati),
-      )
-      #v(3pt)
+      #intestazione-temporale(dati)
       #stack(
         dir: ttb,
-        spacing: 3pt,
-        ..records.map(record => grid(
-          columns: (5.8cm, 1fr),
-          gutter: 6pt,
-          chip-issue(record),
-          barra-gantt(record, dati.gantt.giorni),
-        )).flatten(),
+        spacing: 0pt,
+        ..records.map(record => barra-gantt(record, dati.gantt.giorni)),
       )
-      #v(7pt)
+      #v(6pt)
       #grid(
-        columns: (auto, auto, auto, auto),
+        columns: (auto, auto, auto, auto, auto, auto, auto, auto),
         column-gutter: 5pt,
-        box(width: 0.45cm, height: 0.24cm, fill: rgb("#8cb9f1"), stroke: 0.2pt + rgb("#374452"))[],
-        [#text(size: 6pt, fill: rgb("#cbd5e1"), "Periodo previsto")],
-        box(width: 0.45cm, height: 0.10cm, fill: rgb("#090b0e"))[],
-        [#text(size: 6pt, fill: rgb("#cbd5e1"), "Periodo effettivo")],
+        icona-stato((stato: "Done")),
+        [#text(size: 6pt, fill: gantt-testo-secondario, "Done")],
+        icona-stato((stato: "In Progress")),
+        [#text(size: 6pt, fill: gantt-testo-secondario, "In Progress")],
+        box(width: 0.45cm, height: 1pt, fill: gantt-corallo)[],
+        [#text(size: 6pt, fill: gantt-testo-secondario, "Data corrente")],
+        box(width: 0.45cm, height: 1pt, fill: gantt-verde)[],
+        [#text(size: 6pt, fill: gantt-testo-secondario, "M1")],
       )
     ],
     caption: [Diagramma di Gantt dello Sprint #dati.numero],
