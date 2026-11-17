@@ -133,7 +133,7 @@
       id: none,
       titolo: "Possibile coinvolgimento di aziende target",
       descrizione: [
-        Il gruppo ha chiesto se fosse possibile organizzare, in prospettiva, un confronto con una o più aziende potenzialmente interessate al prodotto, così da raccogliere un riscontro diretto sui requisiti più utili e sulle funzionalità da includere nell'MVP.
+        Il gruppo ha chiesto se fosse possibile organizzare, in prospettiva, un confronto con una o più clienti potenzialmente interessate al prodotto, così da raccogliere un riscontro diretto sui requisiti più utili e sulle funzionalità da includere nell'MVP.
 
         La proponente valuterà la possibilità di individuare un'azienda target disponibile a fornire questo tipo di feedback.
       ],
