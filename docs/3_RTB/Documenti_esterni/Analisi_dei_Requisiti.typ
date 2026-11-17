@@ -51,20 +51,6 @@ IMMAGINE
 ) \
 */
 
-//Indice delle tabelle
-#outline(
-  title: [Elenco delle tabelle],
-  target: figure.where(kind: table)
-)
-#pagebreak()
-
-//indice delle immagini
-#outline(
-  title: [Elenco delle immagini],
-  target: figure.where(kind: image)
-)
-#pagebreak()
-
 // Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
 #show outline.entry: it => {
   if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
@@ -81,6 +67,22 @@ IMMAGINE
     it
   }
 }
+
+//Indice delle tabelle
+#outline(
+  title: [Elenco delle tabelle],
+  target: figure.where(kind: table)
+)
+#pagebreak()
+
+//indice delle immagini
+#outline(
+  title: [Elenco delle immagini],
+  target: figure.where(kind: image)
+)
+#pagebreak()
+
+
 
 = Introduzione
 == Glossario
