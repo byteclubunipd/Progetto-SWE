@@ -8,7 +8,7 @@
   redazione: RP,
   verifica: LS,
   uso: "Esterno",
-  destinatari: [Prof. Vardanega Tullio Prof. Cardin Riccardo Ergon Informatica S.r.l.],
+  destinatari: [Prof.Vardanega Tullio Prof. Cardin Riccardo Ergon Informatica S.r.l.],
   registroModifiche: (
     ("0.1.0", "2026-11-16", "Creazione della struttura iniziale", RP, LS),
   ),
