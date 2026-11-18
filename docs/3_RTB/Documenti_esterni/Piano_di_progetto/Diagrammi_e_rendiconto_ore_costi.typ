@@ -1,4 +1,4 @@
-﻿#import "/docs/5_Templates/base.typ": *
+#import "/docs/5_Templates/base.typ": *
 
 // ============================================================================
 // IMPORT DELLA TABLE GITHUB PROJECT
@@ -112,6 +112,33 @@
   )
 }
 
+#let nome-mese(numero) = (
+  "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
+  "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre",
+).at(numero - 1)
+
+// Raggruppa i giorni consecutivi dello Sprint per mese o anno.
+#let segmenti-temporali(dati, livello) = {
+  let inizio = dati.data-inizio
+  let primo-data = inizio
+  let primo-chiave = if livello == "anno" { primo-data.year() } else { primo-data.month() }
+  let primo-testo = if livello == "anno" { str(primo-data.year()) } else { nome-mese(primo-data.month()) }
+  let primo = (chiave: primo-chiave, testo: primo-testo, giorni: 1)
+
+  range(1, dati.gantt.giorni).fold((primo,), (acc, offset) => {
+    let data = inizio + duration(days: offset)
+    let chiave = if livello == "anno" { data.year() } else { data.month() }
+    let testo = if livello == "anno" { str(data.year()) } else { nome-mese(data.month()) }
+    let ultimo = acc.last()
+    if ultimo.chiave == chiave {
+      let senza-ultimo = acc.slice(0, acc.len() - 1)
+      senza-ultimo + ((..ultimo, giorni: ultimo.giorni + 1),)
+    } else {
+      acc + ((chiave: chiave, testo: testo, giorni: 1),)
+    }
+  })
+}
+
 #let data-sprint-fallback(data, fallback) = if data == none { fallback } else { data }
 
 #let adatta-record-sprint(record, dati) = {
@@ -147,6 +174,7 @@
   let stato = cell(colonne, 3)
   let inizio = cell(colonne, 6)
   let fine = cell(colonne, 7)
+  let ore-testo = cell(colonne, 8)
   let sprint = cell(colonne, 9)
   let ruolo = cell(colonne, 10)
   let inizio-data = parse-data(inizio, origine: "Inizio issue " + titolo)
@@ -167,7 +195,7 @@
     durata_prevista: 1,
     effettivo_inizio: 1,
     durata_effettiva: 1,
-    ore: 0,
+    ore: if ore-testo == "" { 0 } else { int(ore-testo) },
   )
 }
 
@@ -253,6 +281,70 @@
   righe-report(dati),
 )
 
+#let mostra-preventivo-ruoli(dati) = {
+  let records = records-sprint-calcolati(dati)
+  let ruoli = ("Responsabile", "Amministratore", "Analista", "Progettista", "Programmatore", "Verificatore")
+  let ore-ruolo(ruolo) = records.filter(record => record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+  let valori = ruoli.map(ruolo => ore-ruolo(ruolo))
+  let massimo = calc.max(1, valori.fold(0, (massimo, valore) => calc.max(massimo, valore)))
+  let larghezza = 13cm
+  let altezza = 5cm
+  let spazio = larghezza / ruoli.len()
+  let larghezza-colonna = spazio * 0.58
+
+  figure(
+    kind: image,
+    block(
+      width: 100%,
+      height: 7.4cm,
+      stroke: 0.5pt,
+      inset: (left: 1.35cm, right: 0.5cm, top: 0.45cm, bottom: 0.45cm),
+    )[
+      #for valore in range(0, massimo + 1) {
+        let presente = valori.fold(false, (trovato, elemento) => trovato or elemento == valore)
+        if valore == 0 or presente {
+          let y = altezza - valore / massimo * altezza
+          place(left + top, line(
+            start: (0pt, y),
+            end: (larghezza, y),
+            stroke: 0.45pt + rgb("#E5E7EB"),
+          ))
+          place(left + top, dx: -0.32cm, dy: y - 3pt)[
+            #text(size: 6pt, fill: rgb("#526071"), str(valore))
+          ]
+        }
+      }
+      #place(left + top, line(
+        start: (0pt, altezza),
+        end: (larghezza, altezza),
+        stroke: 1pt + luma(35%),
+      ))
+      #place(left + top, line(
+        start: (0pt, 0pt),
+        end: (0pt, altezza),
+        stroke: 1pt + luma(35%),
+      ))
+      #for elemento in valori.enumerate() {
+        let indice = elemento.at(0)
+        let ore = elemento.at(1)
+        let x = indice * spazio + (spazio - larghezza-colonna) / 2
+        let h = ore / massimo * altezza
+        place(left + top, dx: x, dy: altezza - h, box(width: larghezza-colonna, height: h, fill: rgb("#8651FF"))[])
+        place(left + top, dx: indice * spazio, dy: altezza + 5pt)[
+          #box(width: spazio)[#align(center)[#text(size: 5.5pt, fill: rgb("#526071"), ruoli.at(indice))]]
+        ]
+      }
+      #place(left + top, dx: -1cm, dy: 1.8cm)[
+        #rotate(90deg)[#text(size: 7pt, fill: rgb("#07051C"), "Ore")]
+      ]
+      #place(left + top, dx: 5.1cm, dy: altezza + 0.75cm)[
+        #box(width: 2.8cm)[#align(center)[#text(size: 7pt, fill: rgb("#07051C"), "Ruolo")]]
+      ]
+    ],
+    caption: [Preventivo ore per ruolo dello Sprint #dati.numero],
+  )
+}
+
 #let mostra-consuntivo(dati) = tabella-report(
   "Sprint " + str(dati.numero) + ": Consuntivo importato da GitHub Project",
   (1fr, 2fr, 1fr, 1fr, 2fr, 1fr, 1fr),
@@ -276,42 +368,80 @@
 // BURNDOWN
 // ============================================================================
 
-#let posizione-punto(punto, scala, giorni, altezza) = (
-  x: punto.giorno / giorni * 13cm,
+#let burndown-larghezza = 13cm
+#let burndown-altezza = 5cm
+#let burndown-fucsia = rgb("#D946EF")
+#let burndown-viola-scuro = rgb("#4C1D95")
+#let burndown-testo = rgb("#07051C")
+#let burndown-testo-secondario = rgb("#526071")
+
+#let posizione-punto(punto, scala, giorni, altezza, larghezza: burndown-larghezza) = (
+  x: punto.giorno / calc.max(1, giorni) * larghezza,
   y: altezza - punto.valore / scala * altezza,
 )
 
 #let mostra-burndown(dati) = {
   let records = records-sprint-calcolati(dati)
   let totale = calc.max(1, records.len())
-  let aperte = records.filter(record => record.stato != "Done").len()
+  let rimanenti = records.filter(record => record.stato != "Done").len()
   let punti = (
     (giorno: 0, valore: totale),
-    (giorno: 6, valore: aperte),
-    (giorno: dati.gantt.giorni, valore: aperte),
+    (giorno: 6, valore: rimanenti),
+    (giorno: dati.gantt.giorni, valore: rimanenti),
   )
+  // Il burndown ideale parte dal totale iniziale e arriva a zero
+  // nell'ultimo giorno: valore(giorno) = totale * (1 - giorno / giorni).
   let ideali = (
     (giorno: 0, valore: totale),
     (giorno: dati.gantt.giorni, valore: 0),
   )
-  let altezza = 5cm
-  let effettivi = punti.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza))
-  let teorici = ideali.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza))
+  let altezza = burndown-altezza
+  let larghezza = burndown-larghezza
+  let effettivi = punti.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
+  let teorici = ideali.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
+  let passo-x = calc.max(1, calc.ceil(dati.gantt.giorni / 8))
+  let passo-y = 3
 
   figure(
     kind: image,
     block(
       width: 100%,
-      height: 7.5cm,
+      height: 8.2cm,
       stroke: 0.5pt,
-      inset: (left: 1cm, right: 0.5cm, top: 0.5cm, bottom: 0.5cm),
+      inset: (left: 1.35cm, right: 0.5cm, top: 0.45cm, bottom: 0.45cm),
     )[
-      place(left + top, line(
+      #for valore in range(0, totale + 1) {
+        if valore == 0 or valore == totale or calc.rem(valore, passo-y) == 0 {
+          let y = altezza - valore / totale * altezza
+          place(left + top, line(
+            start: (0pt, y),
+            end: (larghezza, y),
+            stroke: 0.45pt + rgb("#E5E7EB"),
+          ))
+          place(left + top, dx: -0.32cm, dy: y - 3pt)[
+            #text(size: 6pt, fill: burndown-testo-secondario, str(valore))
+          ]
+        }
+      }
+      #for giorno in range(0, dati.gantt.giorni + 1) {
+        if giorno == 0 or giorno == dati.gantt.giorni or calc.rem(giorno, passo-x) == 0 {
+          let x = giorno / calc.max(1, dati.gantt.giorni) * larghezza
+          place(left + top, line(
+            start: (x, 0pt),
+            end: (x, altezza),
+            stroke: 0.45pt + rgb("#E5E7EB"),
+          ))
+          place(left + top, dx: x - 4pt, dy: altezza + 5pt)[
+            #text(size: 6pt, fill: burndown-testo-secondario, str(giorno))
+          ]
+        }
+      }
+      #place(left + top, line(
         start: (0pt, altezza),
-        end: (13cm, altezza),
+        end: (larghezza, altezza),
         stroke: 1pt + luma(35%),
       ))
-      place(left + top, line(
+      #place(left + top, line(
         start: (0pt, 0pt),
         end: (0pt, altezza),
         stroke: 1pt + luma(35%),
@@ -320,27 +450,33 @@
         place(left + top, line(
           start: (segmento.at(0).x, segmento.at(0).y),
           end: (segmento.at(1).x, segmento.at(1).y),
-          stroke: 1.5pt + rgb("#2f80ed"),
+          stroke: 1.5pt + burndown-fucsia,
         ))
       }
       #for segmento in range(0, effettivi.len() - 1).map(i => (effettivi.at(i), effettivi.at(i + 1))) {
         place(left + top, line(
           start: (segmento.at(0).x, segmento.at(0).y),
           end: (segmento.at(1).x, segmento.at(1).y),
-          stroke: 1.5pt + rgb("#e45756"),
+          stroke: 1.5pt + burndown-viola-scuro,
         ))
       }
       #for punto in effettivi {
-        place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: rgb("#e45756")))
+        place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: burndown-viola-scuro))
       }
-      place(left + top, dx: 3.2cm, dy: altezza + 0.65cm)[
+      #place(left + top, dx: -1.05cm, dy: 1.65cm)[
+        #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, "Issue rimanenti")]
+      ]
+      #place(left + top, dx: 5cm, dy: altezza + 0.65cm)[
+        #box(width: 3cm)[#align(center)[#text(size: 7pt, fill: burndown-testo, "Giorni di sprint")]]
+      ]
+      #place(left + top, dx: 3.2cm, dy: altezza + 1.25cm)[
         #grid(
           columns: (auto, auto, auto, auto),
           column-gutter: 5pt,
-          box(width: 0.45cm, height: 2pt, fill: rgb("#2f80ed"))[],
+          box(width: 0.45cm, height: 2pt, fill: burndown-fucsia)[],
           [Burndown ideale],
-          box(width: 0.45cm, height: 2pt, fill: rgb("#e45756"))[],
-          [Issue aperte],
+          box(width: 0.45cm, height: 2pt, fill: burndown-viola-scuro)[],
+          [Issue rimanenti],
         )
       ]
     ],
@@ -363,10 +499,19 @@
 #let gantt-viola = rgb("#8651FF")
 #let gantt-lavanda = rgb("#E1D4EC")
 #let gantt-verde = rgb("#15803D")
+#let gantt-ambra = rgb("#F59E0B")
 #let gantt-corallo = rgb("#E45756")
 #let gantt-grigio = rgb("#94A3B8")
 
 #let giorno-milestone = 17
+
+#let colore-milestone(milestone) = if milestone.nome == "M2" {
+  gantt-ambra
+} else if milestone.nome == "M3" {
+  gantt-corallo
+} else {
+  gantt-verde
+}
 
 #let colore-stato(record) = if record.stato == "Done" {
   gantt-viola
@@ -476,25 +621,28 @@
   ],
 )
 
-#let cella-gantt(giorno, record, primo: false) = cella-timeline(
+#let cella-gantt(giorno, record: none, primo: false, milestones: ()) = cella-timeline(
   giorno,
   0.62cm,
   settimanale: true,
   contenuto: [
-    #if giorno == giorno-milestone {
-      place(center + top, line(
-        start: (0pt, 0pt),
-        end: (0pt, 0.62cm),
-        stroke: 1pt + gantt-verde,
-      ))
-    }
-    #if primo and giorno == giorno-milestone {
-      place(center + top, circle(radius: 2.4pt, fill: gantt-verde))
+    #for milestone in milestones {
+      if giorno == milestone.giorno {
+        let colore = colore-milestone(milestone)
+        place(center + top, line(
+          start: (0pt, 0pt),
+          end: (0pt, 0.62cm),
+          stroke: 1pt + colore,
+        ))
+        if primo {
+          place(center + top, circle(radius: 2.4pt, fill: colore))
+        }
+      }
     }
   ],
 )
 
-#let barra-gantt(record, giorni, primo: false) = {
+#let barra-gantt(record, giorni, primo: false, milestones: ()) = {
   let durata = calc.min(record.durata_prevista, giorni)
   let contenuto-giorni = calc.max(durata, calc.ceil(record.titolo.len() / 12))
   let inizio = calc.min(record.previsto_inizio, giorni - contenuto-giorni + 1)
@@ -504,7 +652,7 @@
     #grid(
       columns: colonne-timeline(giorni),
       column-gutter: 0pt,
-      ..range(1, giorni + 1).map(giorno => cella-gantt(giorno, record, primo: primo)).flatten(),
+      ..range(1, giorni + 1).map(giorno => cella-gantt(giorno, milestones: milestones, primo: primo)).flatten(),
     )
     #place(
       left + top,
@@ -534,31 +682,36 @@
   )).flatten(),
 )
 
-#let fascia-temporale(dati, altezza, testo, dimensione) = {
-  box(width: 100%, height: altezza, fill: gantt-sfondo-secondario)[
-    #align(center + horizon, box(width: auto, height: 100%)[
-      #text(size: dimensione, fill: gantt-testo, testo)
-    ])
-    #place(left + top, line(
-      start: (0pt, altezza),
-      end: (100%, altezza),
-      stroke: 0.8pt + gantt-testo-secondario,
-    ))
-  ]
-}
+#let fascia-temporale(dati, livello, altezza, dimensione) = grid(
+  columns: colonne-timeline(dati.gantt.giorni),
+  column-gutter: 0pt,
+  ..segmenti-temporali(dati, livello).map(segmento => grid.cell(
+    colspan: segmento.giorni,
+  )[
+#box(width: 100%, height: altezza, fill: gantt-sfondo-secondario)[
+  #align(center + horizon, text(size: dimensione, fill: gantt-testo, segmento.testo))
+  #place(right + top, line(
+    start: (0pt, 0pt),
+    end: (0pt, altezza),
+    stroke: 0.8pt + gantt-testo-secondario,
+  ))
+  #place(left + top, line(
+    start: (0pt, altezza),
+    end: (100%, altezza),
+    stroke: 0.8pt + gantt-testo-secondario,
+  ))
+]
+    ]
+  ).flatten(),
+)
 
-#let intestazione-temporale(dati) = {
-  let anno = if dati.numero == 1 { "2026" } else { "----" }
-  let mese = if dati.numero == 1 { "Novembre" } else { "Mese" }
-
-  stack(
-    dir: ttb,
-    spacing: 0pt,
-    fascia-temporale(dati, 0.34cm, anno, 9pt),
-    fascia-temporale(dati, 0.45cm, mese, 8pt),
-    intestazione-giorni(dati),
-  )
-}
+#let intestazione-temporale(dati) = stack(
+  dir: ttb,
+  spacing: 0pt,
+  fascia-temporale(dati, "anno", 0.34cm, 9pt),
+  fascia-temporale(dati, "mese", 0.45cm, 8pt),
+  intestazione-giorni(dati),
+)
 
 #let mostra-gantt(dati) = {
   let records = records-sprint-calcolati(dati)
@@ -579,12 +732,13 @@
         ..records.enumerate().map(((indice, record)) => barra-gantt(
           record,
           dati.gantt.giorni,
+          milestones: dati.milestones,
           primo: indice == 0,
         )),
       )
       #v(5pt)
       #grid(
-        columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto, auto),
+        columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto),
         column-gutter: 5pt,
         icona-stato((stato: "Done")),
         [#text(size: 6pt, fill: gantt-testo-secondario, "Completato")],
@@ -594,8 +748,10 @@
         [#text(size: 6pt, fill: gantt-testo-secondario, "In revisione")],
         icona-stato((stato: "Todo")),
         [#text(size: 6pt, fill: gantt-testo-secondario, "Da fare")],
-        box(width: 0.45cm, height: 1pt, fill: gantt-verde)[],
-        [#text(size: 6pt, fill: gantt-testo-secondario, "M1")],
+        ..dati.milestones.map(milestone => (
+          box(width: 0.45cm, height: 1pt, fill: colore-milestone(milestone))[],
+          [#text(size: 6pt, fill: gantt-testo-secondario, milestone.nome)],
+        )).flatten(),
       )
     ],
     caption: [Diagramma di Gantt dello Sprint #dati.numero],

@@ -6,21 +6,21 @@ Configurazione e aggiornamento della repository GitHub	https://github.com/bytecl
 Aggiornamento del workflow di compilazione automatica	https://github.com/byteclubunipd/Progetto-SWE/issues/45	ElicoPro	Done	https://github.com/byteclubunipd/Progetto-SWE/pull/53		Nov 12, 2026	Nov 12, 2026		1	Amministratore
 Formalizzazione dei ruoli e delle responsabilità	https://github.com/byteclubunipd/Progetto-SWE/issues/43	ElicoPro	Done			Nov 12, 2026	Nov 13, 2026		1	Amministratore
 Prima bozza dell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/49	BrunoGrimaldi	Waiting review			Nov 12, 2026			1	Analista
-Docs/analisi dei requisiti	https://github.com/byteclubunipd/Progetto-SWE/pull/66	BrunoGrimaldi	Waiting review			Nov 12, 2026			1	Analista
+Docs/analisi dei requisiti	https://github.com/byteclubunipd/Progetto-SWE/pull/66	BrunoGrimaldi	Waiting review			Nov 12, 2026			1	Verificatore
 Creazione del glossario di progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/46	BrunoGrimaldi	Waiting review	https://github.com/byteclubunipd/Progetto-SWE/pull/54		Nov 13, 2026			1	Analista
-Prima bozza delle Norme di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/50	ElicoPro	In Progress			Nov 13, 2026			1	Amministratore
-Glossario	https://github.com/byteclubunipd/Progetto-SWE/pull/54	BrunoGrimaldi	Waiting review			Nov 13, 2026			1	Analista
-Aggiornamento dell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/58	BrunoGrimaldi	Waiting review			Nov 13, 2026			1	Analista
+Prima bozza delle Norme di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/50	ElicoPro	In Progress			Nov 13, 2026		1	1	Amministratore
+Glossario	https://github.com/byteclubunipd/Progetto-SWE/pull/54	BrunoGrimaldi	Waiting review			Nov 13, 2026			1	Verificatore
+Aggiornamento dell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/58	BrunoGrimaldi	Waiting review		3	Nov 13, 2026			1	Analista
 Allineamento della vista web alla milestone corrente	https://github.com/byteclubunipd/Progetto-SWE/issues/48	PitinPitan	Waiting review			Nov 15, 2026			1	Programmatore
 Creazione del gruppo WhatsApp	https://github.com/byteclubunipd/Progetto-SWE/issues/55	rpontell	Done			Nov 15, 2026	Nov 15, 2026		1	Responsabile
-Diario di bordo 16 Novembre	https://github.com/byteclubunipd/Progetto-SWE/pull/64	rpontell	Waiting review			Nov 15, 2026	Nov 16, 2026		1	Responsabile
-Update sito web 	https://github.com/byteclubunipd/Progetto-SWE/pull/63	PitinPitan	Waiting review			Nov 15, 2026			1	Programmatore
+Diario di bordo 16 Novembre	https://github.com/byteclubunipd/Progetto-SWE/pull/64	rpontell	Waiting review			Nov 15, 2026	Nov 16, 2026		1	Verificatore
+Update sito web 	https://github.com/byteclubunipd/Progetto-SWE/pull/63	PitinPitan	Waiting review			Nov 15, 2026			1	Verificatore
 Organizzazione dell'incontro SAL del 27/11/2026	https://github.com/byteclubunipd/Progetto-SWE/issues/57	rpontell	In Progress			Nov 16, 2026			1	Responsabile
 Invio del verbale alla proponente per approvazione e firma	https://github.com/byteclubunipd/Progetto-SWE/issues/62	rpontell	In Progress	https://github.com/byteclubunipd/Progetto-SWE/pull/65		Nov 16, 2026	Nov 17, 2026		1	Responsabile
-Prima bozza del Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/51	rpontell	In Progress			Nov 16, 2026			1	Responsabile
-Docs verbali	https://github.com/byteclubunipd/Progetto-SWE/pull/65	rpontell	Waiting review			Nov 16, 2026	Nov 17, 2026		1	Responsabile
+Prima bozza del Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/51	rpontell	In Progress			Nov 16, 2026		5	1	Responsabile
+Docs verbali	https://github.com/byteclubunipd/Progetto-SWE/pull/65	rpontell	Waiting review			Nov 16, 2026	Nov 17, 2026		1	Verificatore
 Prima bozza del Piano di Qualifica	https://github.com/byteclubunipd/Progetto-SWE/issues/52	lololoren	Todo						1	Verificatore
 Configurazione e test del database e delle API aziendali	https://github.com/byteclubunipd/Progetto-SWE/issues/56	PitinPitan	Todo						1	Programmatore
 Studio di Tailwind CSS e ricerca di alternative	https://github.com/byteclubunipd/Progetto-SWE/issues/59	mimi8017	Todo						1	Progettista
-Sperimentazione di Tailwind CSS	https://github.com/byteclubunipd/Progetto-SWE/issues/60	PitinPitan	Todo						1	Programmatore
+Sperimentazione di Tailwind CSS	https://github.com/byteclubunipd/Progetto-SWE/issues/60	PitinPitan	Todo					2	1	Programmatore
 Ricerca delle fonti ufficiali delle tecnologie	https://github.com/byteclubunipd/Progetto-SWE/issues/61	mimi8017	Todo						1	Progettista
