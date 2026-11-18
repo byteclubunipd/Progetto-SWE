@@ -20,7 +20,7 @@
 #show: documento.with(
   titolo: "Piano di progetto",
   mostraRegistro: true,
-  versione: "0.1.1",
+  versione: "0.2.0",
   stato: "Da redigere",
   redazione: (RP),
   verifica: (LS),
