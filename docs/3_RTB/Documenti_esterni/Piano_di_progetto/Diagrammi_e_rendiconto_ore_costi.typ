@@ -400,7 +400,9 @@
   let effettivi = punti.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
   let teorici = ideali.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
   let passo-x = calc.max(1, calc.ceil(dati.gantt.giorni / 8))
-  let passo-y = 3
+  // Mostra le tacche dell'asse Y ogni cinque issue, mantenendo comunque
+  // sempre visibili il valore iniziale e lo zero.
+  let passo-y = 5
 
   figure(
     kind: image,
@@ -463,7 +465,7 @@
       #for punto in effettivi {
         place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: burndown-viola-scuro))
       }
-      #place(left + top, dx: -1.05cm, dy: 1.65cm)[
+      #place(left + top, dx: -1.55cm, dy: 1.65cm)[
         #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, "Issue rimanenti")]
       ]
       #place(left + top, dx: 5cm, dy: altezza + 0.65cm)[

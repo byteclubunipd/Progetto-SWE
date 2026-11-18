@@ -31,7 +31,8 @@
     "Ergon Informatica S.r.l.",
   ),
   registroModifiche: (
-    ("0.1.1", "2026-11-17", "Miglioramento template diagramma di Gantt", RP, LS),
+    ("0.2.0", "2026-11-17", "Prima stesura sezioni 1, 2 e 3", RP, LS),
+    ("0.1.1", "2026-11-17", "Miglioramento template, diagramma di Gantt e Burndown", RP, LS),
     ("0.1.0", "2026-11-16", "Creazione della struttura iniziale", RP, LS),
   ),
   indice: true,
@@ -43,7 +44,7 @@
 
 Il presente Piano di progetto descrive la pianificazione, l'organizzazione e il controllo delle attività del gruppo ByteClub per la realizzazione del capitolato C7 - SmartDashboard, proposto da Ergon Informatica S.r.l. Il documento è redatto nel contesto del progetto didattico di Ingegneria del Software dell'Università degli Studi di Padova e aggiorna progressivamente obiettivi, risorse, rischi, scadenze e risultati.
 
-Il progetto prevede la realizzazione incrementale di una piattaforma per l'acquisizione, la trasformazione e l'analisi di dati aziendali. La pianificazione è articolata nei periodi Requirements and Technology Baseline (RTB) e Product Baseline (PB), a loro volta suddivisi in Sprint verificabili.
+Il progetto prevede la realizzazione incrementale di una piattaforma per l'acquisizione, la trasformazione e l'analisi di dati aziendali. La pianificazione è articolata nei periodi RTB e PB, a loro volta suddivisi in Sprint verificabili.
 
 == Scopo del documento
 
@@ -69,67 +70,65 @@ Gli obiettivi progettuali sono:
 - validare tecnologie, prestazioni, qualità dei dati e risposte del layer AI attraverso un PoC e successive evoluzioni incrementali;
 - consegnare un MVP verificato, documentato e coerente con i requisiti concordati con la proponente.
 
-== Glossario
+== Glossario, acronimi e convenzioni 
 
-- #strong[AI (Artificial Intelligence):] componente che supporta l'analisi e l'interrogazione dei dati.
-- #strong[API (Application Programming Interface):] interfaccia con cui i componenti software scambiano dati e operazioni.
-- #strong[BI (Business Intelligence):] insieme di dati, processi e visualizzazioni usati per supportare l'analisi aziendale.
-- #strong[ETL (Extract, Transform, Load):] processo di estrazione, trasformazione e caricamento dei dati.
-- #strong[MVP (Minimum Viable Product):] versione minima del prodotto, completa delle funzionalità essenziali e verificata.
-- #strong[PoC (Proof of Concept):] prototipo finalizzato a validare le tecnologie e le scelte architetturali più rischiose.
-- #strong[PB (Product Baseline):] periodo dedicato allo sviluppo, all'integrazione e alla verifica del prodotto.
-- #strong[RTB (Requirements and Technology Baseline):] periodo dedicato alla formazione, ai requisiti, all'architettura e alla validazione tecnologica.
-- #strong[Sprint:] iterazione temporale con obiettivo, attività pianificate, verifica dei risultati e retrospettiva.
-- #strong[Raw data store:] livello di conservazione dei dati acquisiti prima delle trasformazioni.
-- #strong[Data warehouse:] archivio strutturato e integrato per interrogazioni e analisi.
+Per evitare equivoci nella terminologia utilizzata, gli acronimi e i termini tecnici del documento sono raccolti nel Glossario, documento separato che riporta per ciascuna voce il termine, l'eventuale contesto di utilizzo e la relativa definizione.
+
+La presenza di una voce nel Glossario è indicata nel testo con una "G" in apice, ad esempio: Esempio#super[G].
+
+Alla #underline(link(<sezione-2>)[sezione 2]), per facilitare l'identificazione dei rischi, è stata introdotta una convenzione di formato che verrà usata per tutto il documento: R[Tipo][Indice].
+Il Tipo rappresenta la categoria di rischio, che può essere:
+- T: Tecnologico;
+- O: Organizzativo;
+- P: Personale;
+- A: Ambientale;
+L'Indice è incrementale e identifica univocamente ogni rischio all'interno di un Tipo.
 
 == Riferimenti
 
 === Riferimenti normativi
 
 - Regolamento del progetto didattico di Ingegneria del Software, anno accademico 2026/2027.
+- Capitolato C7 - SmartDashboard e documentazione tecnica di Ergon Informatica S.r.l. #footnote[#link("https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C7-SD.pdf")[Documentazione del capitolato C7]]
 - Standard ISO/IEC/IEEE 12207, usato come riferimento per i processi del ciclo di vita del software.
 - Norme di Progetto del gruppo ByteClub, per ruoli, comunicazione, versionamento, verifica e gestione delle modifiche.
 
 === Riferimenti informativi
 
-- Capitolato C7 - SmartDashboard e documentazione tecnica di Ergon Informatica S.r.l. #footnote[#link("https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C7-SD.pdf")[Documentazione del capitolato C7]]
 - Dichiarazione degli impegni e preventivo dei costi del gruppo ByteClub, versione 2.0.0.
-- Lettera di presentazione e valutazione dei capitolati del gruppo ByteClub.
-- Verbali interni ed esterni relativi agli incontri con la proponente e ai riesami del progetto.
-- Repository GitHub del progetto, issue tracker, pull request e file TSV usato per la pianificazione delle attività.
+- Specifica dei requisiti software secondo IEEE 830-1998.
+- Glossario
+- ISO/IEC 31000:2018
 
-= Analisi e gestione dei rischi
+= Analisi e gestione dei rischi <sezione-2>
 
-== RT
+Questa sezione descrive l’analisi dei potenziali rischi associati al progetto. Ogni rischio è stato identificato, analizzato, valutato e sono state definite strategie di gestione e monitoraggio in accordo con lo standard ISO/IEC 31000:2018.
+
+== *RT*
 
 I rischi tecnologici riguardano la scelta e l'integrazione di raw data store, data warehouse, pipeline ETL, web app, API e layer AI. Sono inoltre considerati i rischi di prestazioni, qualità dei dati, compatibilità tra librerie e dipendenza da servizi esterni.
 
-La mitigazione prevede PoC mirati, valutazione comparativa delle tecnologie, contratti API, test delle trasformazioni, dataset sintetici di fallback e riesami tecnici prima di consolidare le scelte nella baseline.
+=== *RT1*
 
-== RE
-
-I rischi relativi alla stima comprendono la sottovalutazione delle attività di analisi, integrazione, verifica e documentazione, oltre alle modifiche di ambito e agli scostamenti tra ore preventivate e consuntivate.
-
-Il Responsabile aggiorna il preventivo a ogni Sprint, confronta ore e risultati con il piano, segnala gli scostamenti e propone il riequilibrio delle attività o la rinegoziazione delle funzionalità opzionali.
-
-== RO
+== *RO*
 
 I rischi organizzativi comprendono passaggi di consegne incompleti, sovrapposizione delle responsabilità, perdita di tracciabilità e uso non uniforme degli strumenti di progetto.
 
-La mitigazione si basa su ruoli espliciti e rotati, repository condiviso, issue e pull request collegate, verbali delle decisioni, riunioni SAL e riesame a fine Sprint.
+=== *RO1*
 
-== RA
+== *RP*
 
-Tra gli avvenimenti imprevisti rientrano indisponibilità dei dati della proponente, variazioni dei requisiti, incompatibilità tecniche, indisponibilità dei servizi esterni e vincoli di calendario, inclusi esami e festività.
+I rischi personali riguardano assenze, carichi di studio, differenze di competenze, ritardi nelle comunicazioni e concentrazione delle conoscenze su un solo componente.
 
-Il gruppo mantiene margine temporale, dataset sintetici di fallback, priorità per le funzionalità essenziali e un registro delle decisioni. Ogni modifica rilevante viene valutata, motivata e riportata nel piano e nei verbali.
+=== *RP1*
 
-== RP
+== *RA*
 
-I rischi relativi alle persone riguardano assenze, carichi di studio, differenze di competenze, ritardi nelle comunicazioni e concentrazione delle conoscenze su un solo componente.
+I rischi ambientali riguardano indisponibilità dei dati della proponente, variazioni dei requisiti, incompatibilità tecniche, indisponibilità dei servizi esterni, imprevisti al lavoro per gli studeti lavoratori e vincoli di calendario, inclusi esami e festività.
 
-La mitigazione prevede condivisione delle conoscenze, rotazione dei ruoli, revisione indipendente, affiancamento, consegne documentate e riassegnazione preventiva delle attività quando emerge una riduzione della disponibilità.
+=== *RA1*
+
+
 
 = Modello di sviluppo
 
