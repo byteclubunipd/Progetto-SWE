@@ -160,7 +160,7 @@
           intestazioni: (
             [ID],
             [Stato],
-            [Note],
+            [Azione],
           ),
           righe: statoAzioni,
         )

@@ -44,7 +44,7 @@
         - Preparazione e presentazione diario di bordo del 2026-11-16.
       ],
       decisione: [
-        Nominato #RP come rappresentante per il primo sprint.
+        Nominato #RP come responsabile per il primo sprint.
       ],
     ),
     (
@@ -65,7 +65,7 @@
       id: 9,
       titolo: "Durata primo sprint",
       descrizione: [
-        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è prevista in settimana, vengono contate due settimane dalla fine della settimana corrente.
+        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è previsto in settimana, vengono contate due settimane dalla fine della settimana corrente.
       ],
       decisione: [
         - Inizio sprint: 2026-11-11 
@@ -183,7 +183,7 @@
     ),
     (
       [A11],
-      [Crezione milestone e relative issue],
+      [Creazione milestone e relative issue],
       EH,
       [2026-11-12],
       [D8, D10],

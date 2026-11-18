@@ -24,17 +24,20 @@
   stato: "Approvato",
 
   // DETTAGLI DELLA RIUNIONE
-  tipoRiunione: "Esterna",
+  tipoRiunione: "Riunione esterna",
   luogo: "Microsoft Teams",
   oraInizio: "11:00",
   oraFine: "11:30",
   responsabile: RP,
-  scriba: RP,
+  scriba: BG,
   partecipanti: (
-    "Gianluca Carlesso (Ergon S.r.l)",
-    BG, EH, MMO, RP, 
+    "Gianluca Carlesso (Ergon S.r.l.)",
+    BG + " (Analista)",
+    EH + " (Amministratore)",
+    MMO + " (Progettista)",
+    RP + " (Responsabile)",
   ),
-  assenti: (MMI, LS),
+  assenti: (MMI + " (Programmatore)", LS + " (Verificatrice)"),
 
   // ORDINE DEL GIORNO
   ordineDelGiorno: (
