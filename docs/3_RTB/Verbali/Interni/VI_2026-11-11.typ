@@ -51,7 +51,7 @@
       id: 8,
       titolo: "Assegnazione ruoli",
       descrizione: [
-        Assegnazione dei ruoli secondo preferenze, affinità, disponibilità personali. Questi ruoli sono definiti solo per il primo sprint, ma viene ritenuta la possibilità di mantenere lo stesso ruolo per sprint successivi se ritenuto necessario e proficuo per il proseguo del progetto.
+        Assegnazione dei ruoli secondo preferenze, affinità, disponibilità personali. Questi ruoli sono definiti solo per il primo sprint, ma viene ritenuta la possibilità di mantenere lo stesso ruolo per sprint successivi se ritenuto necessario e proficuo per il prosieguo del progetto.
       ],
       decisione: [
         - Amministratore: #EH.
@@ -65,7 +65,7 @@
       id: 9,
       titolo: "Durata primo sprint",
       descrizione: [
-        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è previsto in settimana, vengono contate due settimane dalla fine della settimana corrente.
+        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è prevista in settimana, vengono contate due settimane dalla fine della settimana corrente.
       ],
       decisione: [
         - Inizio sprint: 2026-11-11 
@@ -192,7 +192,7 @@
       [A12],
       [Aggiornare workflow],
       EH,
-      [2026-12-12],
+      [2026-11-12],
       [D8, D11],
     ),
     (
