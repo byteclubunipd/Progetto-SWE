@@ -264,6 +264,41 @@
   caption: [#titolo],
 )
 
+// Tabella a scheda per il registro dei rischi.
+// La prima colonna si dimensiona automaticamente sull'etichetta più lunga;
+// la cella iniziale occupa entrambe le colonne e costituisce il titolo della scheda.
+#let tabella-rischio(
+  codice,
+  titolo,
+  descrizione,
+  probabilita,
+  ripercussione,
+  mitigazione,
+) = figure(
+  kind: table,
+  table(
+    columns: (auto, 1fr),
+    inset: 4pt,
+    stroke: 0.5pt,
+    fill: (x, y) => if y == 0 {
+      tabellaHeader
+    } else if calc.rem(y, 2) == 0 {
+      tabellaRigaPari
+    } else {
+      tabellaRigaDispari
+    },
+    table.header(
+      table.cell(colspan: 2)[#align(center, strong(titolo))],
+    ),
+    [Codice], [#codice],
+    [Descrizione], [#descrizione],
+    [Probabilità di avvenimento], [#probabilita],
+    [Probabilità di ripercussione], [#ripercussione],
+    [Mitigazione], [#mitigazione],
+  ),
+  caption: [#codice — #titolo],
+)
+
 #let righe-report(dati) = records-sprint-calcolati(dati).map(record => (
   record.id,
   record.assegnatari,
