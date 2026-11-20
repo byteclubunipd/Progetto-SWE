@@ -41,6 +41,7 @@
         - Comunicazione esterna con proponente e professore.
         - Coordinamento del gruppo.
         - Pianifica sprint e scadenze.
+        - Pianificazione incontro SAL con Ergon del 2026-11-13
         - Preparazione e presentazione diario di bordo del 2026-11-16.
       ],
       decisione: [
@@ -65,7 +66,7 @@
       id: 9,
       titolo: "Durata primo sprint",
       descrizione: [
-        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è prevista in settimana, vengono contate due settimane dalla fine della settimana corrente.
+        In base a quanto definito nel preventivo dei costi e degli impegni ogni sprint dovrebbe avere durata indicativa di due settimane. Per questo siccome l'incontro con la proponente è previsto in settimana, vengono contate due settimane dalla fine della settimana corrente.
       ],
       decisione: [
         - Inizio sprint: 2026-11-11 
@@ -169,10 +170,10 @@
   azioni: (
     (
       [A9],
-      [Fissare incontro con Ergon],
+      [Fissare incontri con Ergon],
       RP,
       [2026-11-11],
-      [D7],
+      [D7, D11],
     ),
     (
       [A10],
