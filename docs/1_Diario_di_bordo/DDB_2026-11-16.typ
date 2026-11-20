@@ -26,7 +26,7 @@
     "Difficoltà nell'essere presenti tutti alla chiamata con Ergon.",
   ),
   dubbi: (
-    "Nel concreto concreto cosa bisogna fare per il conteggio ore?",
+    "Nel concreto cosa bisogna fare per il conteggio ore?",
     "Come dobbiamo permettere la verifica di queste ore?"
   ),
 )
