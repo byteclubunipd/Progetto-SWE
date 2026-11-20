@@ -1,12 +1,11 @@
-
-#import "/docs/5_Templates/verbale.typ": *
-
 // Nomenclatura: VI_YYYY-MM-DD.typ oppure VE_YYYY-MM-DD.typ,
 // senza versione nel nome.
 // Salvare una copia in verbali/interni oppure verbali/esterni
 // della fase.
 
 // Modello compilabile: sostituire i segnaposto con i dati effettivi.
+
+#import "/docs/5_Templates/verbale.typ": *
 
 #show: verbale.with(
   // INFORMAZIONI GENERALI
