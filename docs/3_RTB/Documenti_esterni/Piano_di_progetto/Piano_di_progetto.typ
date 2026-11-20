@@ -17,10 +17,18 @@
 #let sprint-4 = crea-sprint(4, "2027-01-01", "2027-01-17", milestones: milestones-progetto)
 #let sprint-5 = crea-sprint(5, "2027-01-18", "2027-02-03", milestones: milestones-progetto)
 
+// Ore preventivate per ruolo e Sprint: Responsabile, Amministratore,
+// Analista, Progettista, Programmatore, Verificatore.
+#let ore-preventivate-sprint-1 = (4, 18, 10, 0, 0, 3)
+#let ore-preventivate-sprint-2 = (6, 4, 14, 8, 14, 10)
+#let ore-preventivate-sprint-3 = (7, 3, 14, 12, 14, 13)
+#let ore-preventivate-sprint-4 = (5, 2, 12, 10, 12, 12)
+#let ore-preventivate-sprint-5 = (8, 3, 10, 6, 8, 10)
+
 #show: documento.with(
   titolo: "Piano di progetto",
   mostraRegistro: true,
-  versione: "0.2.1",
+  versione: "0.2.2",
   stato: "Da redigere",
   redazione: (RP),
   verifica: (LS),
@@ -31,6 +39,7 @@
     "Ergon Informatica S.r.l.",
   ),
   registroModifiche: (
+    ("0.2.2", "2026-11-20", "Prima stesura sezione 5 e sprint 1", RP, LS),
     ("0.2.1", "2026-11-19", "Prima stesura dei rischi specifici e sezione 4", RP, LS),
     ("0.2.0", "2026-11-18", "Prima stesura sezioni 1, 2 e 3", RP, LS),
     ("0.1.1", "2026-11-17", "Miglioramento template, diagramma di Gantt e Burndown", RP, LS),
@@ -107,11 +116,11 @@ Questa sezione descrive l’analisi dei potenziali rischi associati al progetto.
 Ogni rischio è stato identificato, analizzato, valutato e sono state definite strategie di gestione e monitoraggio in accordo con lo standard ISO/IEC 31000:2018.
 Ogni rischio possiede una probabilità di avvenimento e una di ripercussione, espresse attraverso al seguente scala: Molto bassa, Bassa, Media, Elevata, Molto elevata.
 
-== *RT*
+== RT
 
 I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazione dei componenti, la qualità del prodotto e l'affidabilità delle soluzioni adottate.
 
-=== *RT1*
+=== RT1
 
   #tabella-rischio(
     "RT1",
@@ -122,7 +131,7 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "Definizione di contratti API e di uno schema condiviso, PoC delle integrazioni, sviluppo incrementale, test di qualità dei dati e di regressione. I template condivisi per documentazione, issue e pull request, insieme a GitHub Project, rendono ripetibile e più veloce il workflow.",
   ) <tab-rischio-rt1>
 
-=== *RT2*
+=== RT2
 
   #tabella-rischio(
     "RT2",
@@ -133,7 +142,7 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "Definizione di un data contract, controlli automatici sulla qualità, dataset sintetico di fallback, versionamento degli schemi e test riproducibili della pipeline.",
   ) <tab-rischio-rt2>
 
-=== *RT3*
+=== RT3
 
   #tabella-rischio(
     "RT3",
@@ -144,7 +153,7 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "Uso di guardrail, domande di riferimento, query in sola lettura, controlli di coerenza, tracciamento delle fonti e test di regressione su casi rappresentativi.",
   ) <tab-rischio-rt3>
 
-=== *RT4*
+=== RT4
 
   #tabella-rischio(
     "RT4",
@@ -155,7 +164,7 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "Minimizzazione e anonimizzazione dei dati, controllo degli accessi, gestione sicura dei segreti, isolamento delle query, logging degli accessi e valutazione preventiva dei flussi verso provider esterni.",
   ) <tab-rischio-rt4>
 
-=== *RT5*
+=== RT5
 
   #tabella-rischio(
     "RT5",
@@ -166,7 +175,7 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "PoC prestazionali, benchmark su dataset rappresentativi, query limitate, caching, paginazione, monitoraggio dei tempi e dei costi e definizione di soglie operative.",
   ) <tab-rischio-rt5>
 
-=== *RT6*
+=== RT6
 
   #tabella-rischio(
     "RT6",
@@ -177,11 +186,11 @@ I rischi tecnologici riguardano l'incertezza delle scelte tecniche, l'integrazio
     "Astrazione tramite adapter, versionamento delle dipendenze, mock locali, test di integrazione, monitoraggio delle modifiche e predisposizione di alternative per i servizi critici.",
   ) <tab-rischio-rt6>
 
-== *RO*
+== RO
 
 I rischi organizzativi riguardano il coordinamento del gruppo, la pianificazione delle attività, la comunicazione, la distribuzione delle responsabilità e la tracciabilità del lavoro.
 
-=== *RO1*
+=== RO1
 
   #tabella-rischio(
     "RO1",
@@ -192,7 +201,7 @@ I rischi organizzativi riguardano il coordinamento del gruppo, la pianificazione
     "Assegnazione esplicita dei ruoli, template per verbali e documenti, uso uniforme di GitHub con issue, pull request e Project, e verifica periodica della tracciabilità dei prodotti.",
   ) <tab-rischio-ro1>
 
-=== *RO2*
+=== RO2
 
   #tabella-rischio(
     "RO2",
@@ -203,7 +212,7 @@ I rischi organizzativi riguardano il coordinamento del gruppo, la pianificazione
     "Scomposizione delle attività in issue più piccole, stime conservative, consuntivo a fine Sprint, ricalcolo a finire, burndown e rinegoziazione tempestiva delle funzionalità opzionali.",
   ) <tab-rischio-ro2>
 
-=== *RO3*
+=== RO3
 
   #tabella-rischio(
     "RO3",
@@ -214,11 +223,11 @@ I rischi organizzativi riguardano il coordinamento del gruppo, la pianificazione
     "Issue collegate ai requisiti, pull request con riferimenti alle issue, Project per il controllo dello stato, template di documentazione e Definition of Done con verifica della tracciabilità.",
   ) <tab-rischio-ro3>
 
-== *RP*
+== RP
 
 I rischi personali riguardano la disponibilità e la continuità dei componenti, la distribuzione delle competenze, la comunicazione e la condivisione delle conoscenze.
 
-=== *RP1*
+=== RP1
 
   #tabella-rischio(
     "RP1",
@@ -229,7 +238,7 @@ I rischi personali riguardano la disponibilità e la continuità dei componenti,
     "Calendario condiviso, margine temporale, pianificazione anticipata delle assenze e riassegnazione preventiva delle attività. Template, issue, pull request e GitHub Project rendono visibili gli impegni, facilitano i passaggi di consegne e velocizzano la riorganizzazione del lavoro.",
   ) <tab-rischio-rp1>
 
-=== *RP2*
+=== RP2
 
   #tabella-rischio(
     "RP2",
@@ -240,11 +249,11 @@ I rischi personali riguardano la disponibilità e la continuità dei componenti,
     "Pair programming, rotazione dei ruoli, sessioni di formazione, documentazione tramite template, code review e condivisione delle decisioni tecniche nelle issue e nelle pull request.",
   ) <tab-rischio-rp2>
 
-== *RA*
+== RA
 
 I rischi ambientali riguardano fattori esterni al controllo diretto del gruppo, come disponibilità di dati e servizi, vincoli del calendario, cambiamenti del contesto e dipendenze dalla proponente.
 
-=== *RA1*
+=== RA1
 
   #tabella-rischio(
     "RA1",
@@ -255,7 +264,7 @@ I rischi ambientali riguardano fattori esterni al controllo diretto del gruppo, 
     "Dataset sintetico di fallback, accordi tempestivi sulle consegne, validazione anticipata del formato, test riproducibili e registrazione delle dipendenze nel GitHub Project.",
   ) <tab-rischio-ra1>
 
-=== *RA2*
+=== RA2
 
   #tabella-rischio(
     "RA2",
@@ -266,7 +275,7 @@ I rischi ambientali riguardano fattori esterni al controllo diretto del gruppo, 
     "Mock locali, retry controllati, gestione esplicita degli errori, adapter sostituibili, caching e disponibilità di una modalità dimostrativa basata su dati e servizi locali.",
   ) <tab-rischio-ra2>
 
-=== *RA3*
+=== RA3
 
   #tabella-rischio(
     "RA3",
@@ -380,208 +389,215 @@ La PB sarà quindi pianificata in modo più dettagliato dopo il riesame della RT
 
 == Introduzione
 
-[Descrivere il criterio di pianificazione dei singoli Sprint.]
+Il gruppo pianifica il lavoro con Sprint di due settimane. All'avvio di ogni Sprint vengono fissati obiettivo, attività, ruoli, ore preventivate, criteri di completamento e rischi attesi; durante l'esecuzione vengono aggiornati issue, ore e stato dei prodotti. Al termine si confrontano preventivo e consuntivo, si aggiornano le risorse rimanenti e si registrano rischi, azioni correttive e decisioni della retrospettiva. La pianificazione può essere ricalibrata sulla base dei consuntivi o di nuove indicazioni della proponente, mantenendo tracciabilità nel repository e nei verbali.
 
+#pagebreak()
 == Requirements and Technology Baseline
 
-[Descrivere la baseline e il collegamento con gli Sprint.]
+=== *Sprint 1*
 
-== Sprint 1
+==== Informazioni generali e attività da svolgere
+#mostra-informazioni-sprint(sprint-1, "Avvio della RTB, consolidamento del way of working, raccolta iniziale dei requisiti e preparazione del PoC.")
+- Formalizzare ruoli, responsabilità e flusso di lavoro del gruppo.
+- Raccogliere i requisiti iniziali e predisporre il glossario.
+- Configurare repository, issue tracker e workflow di verifica.
+- Individuare le tecnologie candidate e definire il perimetro del PoC.
 
-[Descrivere gli obiettivi e le attività dello Sprint 1.]
-=== Informazioni generali e attività da svolgere
-
-[Periodo dello Sprint: #sprint-1.data-inizio.day()/#sprint-1.data-inizio.month()/#sprint-1.data-inizio.year() — #sprint-1.data-fine.day()/#sprint-1.data-fine.month()/#sprint-1.data-fine.year().]
-[Le attività dello Sprint sono riportate nel Gantt e nelle tabelle generate dai record del TSV.]
-
-==== Diagramma di Gantt
+==== Attività svolte
+#mostra-burndown(sprint-1)
 #mostra-gantt(sprint-1)
 
-=== Rischi attesi
+==== Preventivo ore per ruolo
+#mostra-preventivo-ruoli(sprint-1, ore-preventivate: ore-preventivate-sprint-1)
 
-[Indicare i rischi tecnologici, economici, organizzativi e relativi alle persone attesi durante lo Sprint, insieme alle probabilità, agli impatti e alle azioni preventive.]
+==== Consuntivo ore per ruolo
+#mostra-consuntivo-ruoli(sprint-1)
 
-=== Preventivo
-#mostra-preventivo(sprint-1)
+#pagebreak()
+==== Aggiornamento delle risorse rimanenti
+#mostra-aggiornamento-risorse(sprint-1, ore-preventivate: ore-preventivate-sprint-1)
 
-==== Ore preventivate per ruolo
-#mostra-preventivo-ruoli(sprint-1)
+#pagebreak()
+==== Rischi attesi
+- *RT1:* complessità dell'integrazione tra le tecnologie candidate; probabilità elevata, impatto elevato; eseguire un PoC incrementale e definire contratti tra componenti.
+- *RO2:* sottostima delle attività di avvio e raccolta requisiti; probabilità elevata, impatto elevato; scomporre le issue e controllare il burndown ogni settimana.
+- *RP1:* disponibilità ridotta dei componenti; probabilità elevata, impatto elevato; condividere il calendario e predisporre passaggi di consegne.
 
-=== Aggiornamento delle risorse rimanenti
-#mostra-consuntivo(sprint-1)
-#mostra-aggiornamento-risorse(sprint-1)
+==== Rischi incontrati
+- *RO1:* rischio da compilare a consuntivo con riferimento a sovrapposizioni o perdite di tracciabilità osservate nello Sprint.
 
-==== Diagramma di Burndown
-#mostra-burndown(sprint-1)
+==== Efficacia delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint indicando rischi mitigati, rischi ancora aperti e azioni correttive concordate.
 
-=== Efficacia delle strategie di gestione e mitigazione dei rischi
+==== Migliorie da attuare per le attività future
+Registrare le migliorie operative, tecniche e organizzative emerse durante il riesame dello Sprint.
 
-[Valutare l'efficacia delle strategie applicate nello Sprint, indicando i rischi mitigati, quelli ancora aperti e le eventuali azioni correttive.]
+==== Retrospettiva
+Registrare cosa ha funzionato, cosa non ha funzionato e le azioni concrete concordate per lo Sprint successivo.
 
-=== Migliorie da attuare per le attività future
+#pagebreak()
+=== *Sprint 2*
 
-[Raccogliere le migliorie operative, tecniche e organizzative da applicare agli Sprint successivi.]
+==== Informazioni generali e attività da svolgere
+#mostra-informazioni-sprint(sprint-2, "Completamento della raccolta requisiti e validazione delle prime integrazioni tecnologiche.")
+- Consolidare requisiti, vincoli e criteri di accettazione.
+- Eseguire il PoC sulle integrazioni a rischio.
+- Aggiornare piano di qualifica, glossario e documentazione tecnica.
 
-=== Retrospettiva
-
-[Registrare cosa ha funzionato, cosa non ha funzionato e quali azioni concrete vengono concordate per il prossimo Sprint.]
-
-== Sprint 2
-
-[Descrivere gli obiettivi e le attività dello Sprint 2.]
-=== Informazioni generali e attività da svolgere
-
-[Periodo dello Sprint: #sprint-2.data-inizio.day()/#sprint-2.data-inizio.month()/#sprint-2.data-inizio.year() — #sprint-2.data-fine.day()/#sprint-2.data-fine.month()/#sprint-2.data-fine.year().]
-[Le attività dello Sprint sono riportate nel Gantt e nelle tabelle generate dai record del TSV.]
-
-==== Diagramma di Gantt
+==== Attività svolte
+#mostra-burndown(sprint-2)
 #mostra-gantt(sprint-2)
 
-=== Rischi attesi
+==== Preventivo ore per ruolo
+#mostra-preventivo-ruoli(sprint-2, ore-preventivate: ore-preventivate-sprint-2)
 
-[Indicare i rischi tecnologici, economici, organizzativi e relativi alle persone attesi durante lo Sprint, insieme alle probabilità, agli impatti e alle azioni preventive.]
+==== Consuntivo ore per ruolo
+#mostra-consuntivo-ruoli(sprint-2)
 
-=== Preventivo
-#mostra-preventivo(sprint-2)
+#pagebreak()
+==== Aggiornamento delle risorse rimanenti
+#mostra-aggiornamento-risorse(sprint-2, ore-preventivate: ore-preventivate-sprint-2)
 
-==== Ore preventivate per ruolo
-#mostra-preventivo-ruoli(sprint-2)
+#pagebreak()
+==== Rischi attesi
+- *RT2:* dati incompleti o con schema variabile; probabilità media, impatto elevato; usare dataset sintetici e controlli automatici di qualità.
+- *RA2:* indisponibilità di API o servizi esterni; probabilità media, impatto elevato; predisporre mock locali e adapter sostituibili.
 
-=== Aggiornamento delle risorse rimanenti
-#mostra-consuntivo(sprint-2)
-#mostra-aggiornamento-risorse(sprint-2)
+==== Rischi incontrati
+- *RO1:* rischio da compilare a consuntivo con riferimento alla tracciabilità tra requisiti, issue e prodotti.
 
-==== Diagramma di Burndown
-#mostra-burndown(sprint-2)
+==== Efficacia delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
-=== Efficacia delle strategie di gestione e mitigazione dei rischi
+==== Migliorie da attuare per le attività future
+Registrare le migliorie emerse nel riesame dello Sprint.
 
-[Valutare l'efficacia delle strategie applicate nello Sprint, indicando i rischi mitigati, quelli ancora aperti e le eventuali azioni correttive.]
+==== Retrospettiva
+Registrare risultati, problemi e azioni per lo Sprint successivo.
 
-=== Migliorie da attuare per le attività future
+#pagebreak()
+=== *Sprint 3*
 
-[Raccogliere le migliorie operative, tecniche e organizzative da applicare agli Sprint successivi.]
+==== Informazioni generali e attività da svolgere
+#mostra-informazioni-sprint(sprint-3, "Definizione dell'architettura e consolidamento della Requirements and Technology Baseline.")
+- Definire l'architettura della pipeline dati, del data warehouse e della web app.
+- Documentare interfacce, flussi dati e decisioni tecnologiche.
+- Riesaminare requisiti, rischi e risultati del PoC con la proponente.
 
-=== Retrospettiva
-
-[Registrare cosa ha funzionato, cosa non ha funzionato e quali azioni concrete vengono concordate per il prossimo Sprint.]
-
-== Sprint 3
-
-[Descrivere gli obiettivi e le attività dello Sprint 3.]
-=== Informazioni generali e attività da svolgere
-
-[Periodo dello Sprint: #sprint-3.data-inizio.day()/#sprint-3.data-inizio.month()/#sprint-3.data-inizio.year() — #sprint-3.data-fine.day()/#sprint-3.data-fine.month()/#sprint-3.data-fine.year().]
-[Le attività dello Sprint sono riportate nel Gantt e nelle tabelle generate dai record del TSV.]
-
-==== Diagramma di Gantt
+==== Attività svolte
+#mostra-burndown(sprint-3)
 #mostra-gantt(sprint-3)
 
-=== Rischi attesi
+==== Preventivo ore per ruolo
+#mostra-preventivo-ruoli(sprint-3, ore-preventivate: ore-preventivate-sprint-3)
 
-[Indicare i rischi tecnologici, economici, organizzativi e relativi alle persone attesi durante lo Sprint, insieme alle probabilità, agli impatti e alle azioni preventive.]
+==== Consuntivo ore per ruolo
+#mostra-consuntivo-ruoli(sprint-3)
 
-=== Preventivo
-#mostra-preventivo(sprint-3)
+#pagebreak()
+==== Aggiornamento delle risorse rimanenti
+#mostra-aggiornamento-risorse(sprint-3, ore-preventivate: ore-preventivate-sprint-3)
 
-==== Ore preventivate per ruolo
-#mostra-preventivo-ruoli(sprint-3)
+#pagebreak()
+==== Rischi attesi
+- *RT3:* risposte AI non attendibili; probabilità media, impatto elevato; definire guardrail e test di regressione.
+- *RO3:* perdita di tracciabilità tra requisiti, architettura e verifiche; probabilità media, impatto elevato; collegare issue, pull request e documenti.
 
-=== Aggiornamento delle risorse rimanenti
-#mostra-consuntivo(sprint-3)
-#mostra-aggiornamento-risorse(sprint-3)
+==== Rischi incontrati
+- *RO1:* rischio da compilare a consuntivo.
 
-==== Diagramma di Burndown
-#mostra-burndown(sprint-3)
+==== Efficacia delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
-=== Efficacia delle strategie di gestione e mitigazione dei rischi
+==== Migliorie da attuare per le attività future
+Registrare le migliorie emerse nel riesame dello Sprint.
 
-[Valutare l'efficacia delle strategie applicate nello Sprint, indicando i rischi mitigati, quelli ancora aperti e le eventuali azioni correttive.]
+==== Retrospettiva
+Registrare risultati, problemi e azioni per lo Sprint successivo.
 
-=== Migliorie da attuare per le attività future
+#pagebreak()
+=== *Sprint 4*
 
-[Raccogliere le migliorie operative, tecniche e organizzative da applicare agli Sprint successivi.]
+==== Informazioni generali e attività da svolgere
+#mostra-informazioni-sprint(sprint-4, "Completamento dei documenti RTB e preparazione del riesame della baseline.")
+- Completare architettura, piano di qualifica e norme di progetto.
+- Integrare i risultati del PoC nella documentazione.
+- Preparare criteri e materiale per il riesame RTB.
 
-=== Retrospettiva
-
-[Registrare cosa ha funzionato, cosa non ha funzionato e quali azioni concrete vengono concordate per il prossimo Sprint.]
-
-== Sprint 4
-
-[Descrivere gli obiettivi e le attività dello Sprint 4.]
-=== Informazioni generali e attività da svolgere
-
-[Periodo dello Sprint: #sprint-4.data-inizio.day()/#sprint-4.data-inizio.month()/#sprint-4.data-inizio.year() — #sprint-4.data-fine.day()/#sprint-4.data-fine.month()/#sprint-4.data-fine.year().]
-[Le attività dello Sprint sono riportate nel Gantt e nelle tabelle generate dai record del TSV.]
-
-==== Diagramma di Gantt
+==== Attività svolte
+#mostra-burndown(sprint-4)
 #mostra-gantt(sprint-4)
 
-=== Rischi attesi
+==== Preventivo ore per ruolo
+#mostra-preventivo-ruoli(sprint-4, ore-preventivate: ore-preventivate-sprint-4)
 
-[Indicare i rischi tecnologici, economici, organizzativi e relativi alle persone attesi durante lo Sprint, insieme alle probabilità, agli impatti e alle azioni preventive.]
+==== Consuntivo ore per ruolo
+#mostra-consuntivo-ruoli(sprint-4)
 
-=== Preventivo
-#mostra-preventivo(sprint-4)
+#pagebreak()
+==== Aggiornamento delle risorse rimanenti
+#mostra-aggiornamento-risorse(sprint-4, ore-preventivate: ore-preventivate-sprint-4)
 
-==== Ore preventivate per ruolo
-#mostra-preventivo-ruoli(sprint-4)
+#pagebreak()
+==== Rischi attesi
+- *RT5:* prestazioni o costi superiori alle attese; probabilità media, impatto elevato; eseguire benchmark e monitorare soglie.
+- *RP2:* conoscenza concentrata su pochi componenti; probabilità media, impatto elevato; effettuare pair working e code review.
 
-=== Aggiornamento delle risorse rimanenti
-#mostra-consuntivo(sprint-4)
-#mostra-aggiornamento-risorse(sprint-4)
+==== Rischi incontrati
+- *RO1:* rischio da compilare a consuntivo.
 
-==== Diagramma di Burndown
-#mostra-burndown(sprint-4)
+==== Efficacia delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
-=== Efficacia delle strategie di gestione e mitigazione dei rischi
+==== Migliorie da attuare per le attività future
+Registrare le migliorie emerse nel riesame dello Sprint.
 
-[Valutare l'efficacia delle strategie applicate nello Sprint, indicando i rischi mitigati, quelli ancora aperti e le eventuali azioni correttive.]
+==== Retrospettiva
+Registrare risultati, problemi e azioni per lo Sprint successivo.
 
-=== Migliorie da attuare per le attività future
+#pagebreak()
+=== *Sprint 5*
 
-[Raccogliere le migliorie operative, tecniche e organizzative da applicare agli Sprint successivi.]
+==== Informazioni generali e attività da svolgere
+#mostra-informazioni-sprint(sprint-5, "Riesame e chiusura della RTB, con decisioni per la Product Baseline.")
+- Verificare coerenza tra requisiti, architettura, PoC e piano di qualifica.
+- Consolidare la baseline e registrare le decisioni aperte.
+- Pianificare la Product Baseline sulla base dei consuntivi RTB.
 
-=== Retrospettiva
-
-[Registrare cosa ha funzionato, cosa non ha funzionato e quali azioni concrete vengono concordate per il prossimo Sprint.]
-
-== Sprint 5
-
-[Descrivere gli obiettivi e le attività dello Sprint 5.]
-=== Informazioni generali e attività da svolgere
-
-[Periodo dello Sprint: #sprint-5.data-inizio.day()/#sprint-5.data-inizio.month()/#sprint-5.data-inizio.year() — #sprint-5.data-fine.day()/#sprint-5.data-fine.month()/#sprint-5.data-fine.year().]
-[Le attività dello Sprint sono riportate nel Gantt e nelle tabelle generate dai record del TSV.]
-
-==== Diagramma di Gantt
+==== Attività svolte
+#mostra-burndown(sprint-5)
 #mostra-gantt(sprint-5)
 
-=== Rischi attesi
+==== Preventivo ore per ruolo
+#mostra-preventivo-ruoli(sprint-5, ore-preventivate: ore-preventivate-sprint-5)
 
-[Indicare i rischi tecnologici, economici, organizzativi e relativi alle persone attesi durante lo Sprint, insieme alle probabilità, agli impatti e alle azioni preventive.]
+==== Consuntivo ore per ruolo
+#mostra-consuntivo-ruoli(sprint-5)
 
-=== Preventivo
-#mostra-preventivo(sprint-5)
+#pagebreak()
+==== Aggiornamento delle risorse rimanenti
+#mostra-aggiornamento-risorse(sprint-5, ore-preventivate: ore-preventivate-sprint-5)
 
-==== Ore preventivate per ruolo
-#mostra-preventivo-ruoli(sprint-5)
+#pagebreak()
+==== Rischi attesi
+- *RA3:* ritardo nei chiarimenti sui requisiti; probabilità media, impatto elevato; calendarizzare il SAL e mantenere attività a basso rischio in attesa delle decisioni.
+- *RO2:* scostamento tra ore preventivate e consuntive; probabilità media, impatto elevato; aggiornare il ricalcolo a finire e motivare ogni variazione.
 
-=== Aggiornamento delle risorse rimanenti
-#mostra-consuntivo(sprint-5)
-#mostra-aggiornamento-risorse(sprint-5)
+==== Rischi incontrati
+- *RO1:* rischio da compilare a consuntivo.
 
-==== Diagramma di Burndown
-#mostra-burndown(sprint-5)
+==== Efficacia delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
-=== Efficacia delle strategie di gestione e mitigazione dei rischi
+==== Migliorie da attuare per le attività future
+Registrare le migliorie emerse nel riesame della RTB e applicarle alla PB.
 
-[Valutare l'efficacia delle strategie applicate nello Sprint, indicando i rischi mitigati, quelli ancora aperti e le eventuali azioni correttive.]
+==== Retrospe sttiva
+Registrare risultati, problemi e azioni concordate per l'avvio della PB.
 
-=== Migliorie da attuare per le attività future
+#pagebreak()
+== Riepilogo RTB
 
-[Raccogliere le migliorie operative, tecniche e organizzative da applicare agli Sprint successivi.]
+Il riepilogo confronta automaticamente le ore e i costi consuntivati nel TSV con il budget RTB preventivato per ruolo. Il saldo è calcolato sul budget massimo approvato e comprende tutti gli Sprint della RTB.
 
-=== Retrospettiva
-
-[Registrare cosa ha funzionato, cosa non ha funzionato e quali azioni concrete vengono concordate per il prossimo Sprint.]
+#mostra-riepilogo-rtb((sprint-1, sprint-2, sprint-3, sprint-4, sprint-5))

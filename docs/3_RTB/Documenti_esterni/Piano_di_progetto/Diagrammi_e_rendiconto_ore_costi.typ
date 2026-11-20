@@ -82,11 +82,6 @@
   }
 }
 
-#let giorno-data(data) = {
-  let valore = parse-data(data)
-  if valore == none { 1 } else { valore.day() - 10 }
-}
-
 #let milestone(nome, data) = {
   let valore = parse-data(data, origine: "milestone " + nome)
   if valore == none { panic("La milestone " + nome + " richiede una data") }
@@ -111,7 +106,6 @@
     gantt: (giorni: giorni, etichette: etichette),
   )
 }
-
 #let nome-mese(numero) = (
   "Gennaio", "Febbraio", "Marzo", "Aprile", "Maggio", "Giugno",
   "Luglio", "Agosto", "Settembre", "Ottobre", "Novembre", "Dicembre",
@@ -195,7 +189,7 @@
     durata_prevista: 1,
     effettivo_inizio: 1,
     durata_effettiva: 1,
-    ore: if ore-testo == "" { 0 } else { int(ore-testo) },
+    ore: if ore-testo == "" { 0 } else { float(ore-testo.replace(",", ".")) },
   )
 }
 
@@ -207,19 +201,23 @@
 // ORE E COSTI
 // ============================================================================
 
-#let costo-orario(ruolo) = if ruolo == "Responsabile" {
-  30
-} else if ruolo == "Amministratore" {
-  20
-} else if ruolo == "Analista" or ruolo == "Progettista" {
-  25
-} else if ruolo == "Programmatore" or ruolo == "Verificatore" {
-  15
-} else {
-  0
+#let ruoli-report = ("Responsabile", "Amministratore", "Analista", "Progettista", "Programmatore", "Verificatore")
+#let abbreviazioni-ruolo = ("Resp.", "Amm.", "Anal.", "Prog.", "Program.", "Verif.")
+#let costi-ruolo = (30, 20, 25, 25, 15, 15)
+#let budget-rtb-ruolo = (30, 30, 60, 36, 48, 48)
+#let componenti-report = (brunoGrimaldi, elicoHuang, mattiaMilan, margheritaMonaco, riccardoPontello, lorencaShiroka)
+#let colori-risorse = rgb("#C62828")
+#let numero-testo(valore) = if valore == int(valore) { str(int(valore)) } else { str(valore) }
+#let somma-ore(records, ruolo) = records.filter(record => record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+#let ore-per-ruolo(records) = ruoli-report.map(ruolo => somma-ore(records, ruolo))
+#let costi-per-ruolo(ore) = ore.zip(costi-ruolo).map(((ore-ruolo, costo)) => ore-ruolo * costo)
+#let records-fino-a(numero) = issue-records.filter(record => record.sprint <= numero)
+#let fine-reale-sprint(dati) = {
+  let date = records-sprint-calcolati(dati).filter(record => record.stato == "Done" and record.fine-data != none).map(record => record.fine-data)
+  if date.len() == 0 { none } else { date.slice(1).fold(date.at(0), (ultimo, valore) => if valore > ultimo { valore } else { ultimo }) }
 }
-
-#let costo-record(record) = record.ore * costo-orario(record.ruolo)
+#let due-cifre(valore) = if valore < 10 { "0" + str(valore) } else { str(valore) }
+#let data-testo(data) = if data == none { "—" } else { str(data.year()) + "-" + due-cifre(data.month()) + "-" + due-cifre(data.day()) }
 
 // ============================================================================
 // CONFIGURAZIONE DELLA TIMELINE
@@ -227,25 +225,11 @@
 
 #let colonne-timeline(giorni) = range(1, giorni + 1).map(giorno => 1fr)
 
-// Configurazione predefinita, sovrascrivibile dal documento Piano di progetto.
-#let etichette-placeholder = range(1, 18).map(giorno => "MM-DD")
-#let gantt-1 = (giorni: 17, etichette: etichette-placeholder)
-#let gantt-2 = (giorni: 17, etichette: etichette-placeholder)
-#let gantt-3 = (giorni: 17, etichette: etichette-placeholder)
-#let gantt-4 = (giorni: 17, etichette: etichette-placeholder)
-#let gantt-5 = (giorni: 17, etichette: etichette-placeholder)
-
-#let sprint-1 = crea-sprint(1, "2026-11-11", "2026-11-27")
-#let sprint-2 = crea-sprint(2, "2026-11-28", "2026-12-14")
-#let sprint-3 = crea-sprint(3, "2026-12-15", "2026-12-31")
-#let sprint-4 = crea-sprint(4, "2027-01-01", "2027-01-17")
-#let sprint-5 = crea-sprint(5, "2027-01-18", "2027-02-03")
-
 // ============================================================================
 // TABELLE DI SUPPORTO
 // ============================================================================
 
-#let tabella-report(titolo, colonne, intestazioni, righe) = figure(
+#let tabella-report(titolo, colonne, intestazioni, righe, riga-totale: none) = figure(
   kind: table,
   table(
     columns: colonne,
@@ -253,6 +237,8 @@
     stroke: 0.5pt,
     fill: (x, y) => if y == 0 {
       tabellaHeader
+    } else if riga-totale != none and y == riga-totale {
+      tabellaTotale
     } else if calc.rem(y, 2) == 0 {
       tabellaRigaPari
     } else {
@@ -299,32 +285,14 @@
   caption: [#codice — #titolo],
 )
 
-#let righe-report(dati) = records-sprint-calcolati(dati).map(record => (
-  record.id,
-  record.assegnatari,
-  record.stato,
-  record.ruolo,
-  record.inizio + " - " + if record.fine == "" { "in corso" } else { record.fine },
-  str(record.ore),
-  str(costo-record(record)),
-))
-
-#let mostra-preventivo(dati) = tabella-report(
-  "Sprint " + str(dati.numero) + ": Preventivo importato da GitHub Project",
-  (1fr, 2fr, 1fr, 1fr, 2fr, 1fr, 1fr),
-  ("ID", "Assegnatari", "Stato", "Ruolo", "Periodo", "Ore", "Costo"),
-  righe-report(dati),
-)
-
-#let mostra-preventivo-ruoli(dati) = {
-  let records = records-sprint-calcolati(dati)
-  let ruoli = ("Responsabile", "Amministratore", "Analista", "Progettista", "Programmatore", "Verificatore")
-  let ore-ruolo(ruolo) = records.filter(record => record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
-  let valori = ruoli.map(ruolo => ore-ruolo(ruolo))
-  let massimo = calc.max(1, valori.fold(0, (massimo, valore) => calc.max(massimo, valore)))
+#let grafico-colonne(valori, etichette, colore, titolo) = {
+  // L'asse usa range, quindi il suo massimo deve essere un intero anche
+  // quando il consuntivo contiene ore frazionarie.
+  let massimo-reale = valori.fold(0, (massimo, valore) => calc.max(massimo, valore))
+  let massimo = calc.max(1, calc.ceil(massimo-reale))
   let larghezza = 13cm
   let altezza = 5cm
-  let spazio = larghezza / ruoli.len()
+  let spazio = larghezza / etichette.len()
   let larghezza-colonna = spazio * 0.58
 
   figure(
@@ -364,9 +332,9 @@
         let ore = elemento.at(1)
         let x = indice * spazio + (spazio - larghezza-colonna) / 2
         let h = ore / massimo * altezza
-        place(left + top, dx: x, dy: altezza - h, box(width: larghezza-colonna, height: h, fill: rgb("#8651FF"))[])
+        place(left + top, dx: x, dy: altezza - h, box(width: larghezza-colonna, height: h, fill: colore)[])
         place(left + top, dx: indice * spazio, dy: altezza + 5pt)[
-          #box(width: spazio)[#align(center)[#text(size: 5.5pt, fill: rgb("#526071"), ruoli.at(indice))]]
+          #box(width: spazio)[#align(center)[#text(size: 5.5pt, fill: rgb("#526071"), etichette.at(indice))]]
         ]
       }
       #place(left + top, dx: -1cm, dy: 1.8cm)[
@@ -376,28 +344,152 @@
         #box(width: 2.8cm)[#align(center)[#text(size: 7pt, fill: rgb("#07051C"), "Ruolo")]]
       ]
     ],
-    caption: [Preventivo ore per ruolo dello Sprint #dati.numero],
+    caption: [#titolo],
   )
 }
 
-#let mostra-consuntivo(dati) = tabella-report(
-  "Sprint " + str(dati.numero) + ": Consuntivo importato da GitHub Project",
-  (1fr, 2fr, 1fr, 1fr, 2fr, 1fr, 1fr),
-  ("ID", "Assegnatari", "Stato", "Ruolo", "Periodo", "Ore", "Costo"),
-  righe-report(dati),
+#let mostra-preventivo-ruoli(dati, ore-preventivate: budget-rtb-ruolo) = grafico-colonne(
+  ore-preventivate,
+  abbreviazioni-ruolo,
+  rgb("#0F9D8A"),
+  "Preventivo ore per ruolo dello Sprint " + str(dati.numero),
 )
 
-#let mostra-aggiornamento-risorse(dati) = tabella-report(
-  "Sprint " + str(dati.numero) + ": Aggiornamento risorse",
-  (1fr, 2fr, 1fr, 1fr),
-  ("ID", "Assegnatari", "Stato", "Ruolo"),
-  records-sprint-calcolati(dati).map(record => (
-    record.id,
-    record.assegnatari,
-    record.stato,
-    record.ruolo,
-  )),
+#let mostra-consuntivo-ruoli(dati) = grafico-colonne(
+  ore-per-ruolo(records-sprint-calcolati(dati)),
+  abbreviazioni-ruolo,
+  rgb("#8651FF"),
+  "Consuntivo ore per ruolo dello Sprint " + str(dati.numero),
 )
+
+#let mostra-informazioni-sprint(dati, descrizione) = {
+  let fine-reale = fine-reale-sprint(dati)
+  let ritardo = if fine-reale == none { "—" } else { numero-testo(calc.max(0, int((fine-reale - dati.data-fine).days()))) }
+  tabella-report(
+    "Sprint " + str(dati.numero) + ": periodo e avanzamento",
+    (1.5fr, 1fr, 1fr, 1fr),
+    ("Inizio", "Fine prevista", "Fine reale", "Giorni di ritardo"),
+    ((data-testo(dati.data-inizio), data-testo(dati.data-fine), data-testo(fine-reale), ritardo),),
+  )
+  [*Descrizione:* #descrizione]
+}
+
+#let mostra-aggiornamento-risorse(dati, ore-preventivate: (0, 0, 0, 0, 0, 0)) = {
+  let precedenti = records-fino-a(dati.numero - 1)
+  let correnti = records-sprint-calcolati(dati)
+  let righe = componenti-report.enumerate().map(((indice, componente)) => {
+    let username = ("BrunoGrimaldi", "ElicoPro", "PitinPitan", "mimi8017", "rpontell", "lololoren").at(indice)
+    let valori = ruoli-report.enumerate().map(((ruolo-indice, ruolo)) => {
+      let budget = budget-rtb-ruolo.at(ruolo-indice) / componenti-report.len()
+      let gia-speso = precedenti.filter(record => record.assegnatari.contains(username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+      let sprint-speso = correnti.filter(record => record.assegnatari.contains(username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+      let residuo = numero-testo(calc.max(0, budget - gia-speso - sprint-speso))
+      let sottrazione = if sprint-speso == 0 {
+        [(-#numero-testo(sprint-speso))]
+      } else {
+        text(fill: colori-risorse)[(-#numero-testo(sprint-speso))]
+      }
+      [#residuo #sottrazione]
+    })
+    (componente,) + valori
+  })
+  tabella-report(
+    "Sprint " + str(dati.numero) + ": Aggiornamento delle risorse rimanenti (ore)",
+    (1.5fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 0.8fr),
+    ("Componente",) + abbreviazioni-ruolo,
+    righe,
+  )
+  let spese = ore-per-ruolo(correnti)
+  let spese-precedenti = ore-per-ruolo(precedenti)
+  let spese-cumulative = spese-precedenti.zip(spese).map(((precedente, corrente)) => precedente + corrente)
+  let ore-rimanenti = budget-rtb-ruolo.zip(spese-cumulative).map(((budget, speso)) => calc.max(0, budget - speso))
+  let preventivo = costi-per-ruolo(ore-preventivate)
+  let costo-sprint = costi-per-ruolo(spese)
+  let budget-rimanente = costi-per-ruolo(ore-rimanenti)
+  let righe-costo = ruoli-report.enumerate().map(((indice, ruolo)) => {
+    let riduzione-ore = if spese.at(indice) == 0 {
+      [(-#numero-testo(spese.at(indice)))]
+    } else {
+      text(fill: colori-risorse)[(-#numero-testo(spese.at(indice)))]
+    }
+    let riduzione-budget = if costo-sprint.at(indice) == 0 {
+      [(-0)]
+    } else {
+      text(fill: colori-risorse)[(-#numero-testo(costo-sprint.at(indice)))]
+    }
+    (
+      abbreviazioni-ruolo.at(indice),
+      numero-testo(costi-ruolo.at(indice)),
+      numero-testo(spese.at(indice)),
+      numero-testo(preventivo.at(indice)),
+      numero-testo(costo-sprint.at(indice)),
+      [#numero-testo(ore-rimanenti.at(indice)) #riduzione-ore],
+      [#numero-testo(budget-rimanente.at(indice)) #riduzione-budget],
+    )
+  })
+  let riduzione-totale-ore = if spese.sum() == 0 {
+    [(-0)]
+  } else {
+    text(fill: colori-risorse)[(-#numero-testo(spese.sum()))]
+  }
+  let riduzione-totale-budget = if costo-sprint.sum() == 0 {
+    [(-0)]
+  } else {
+    text(fill: colori-risorse)[(-#numero-testo(costo-sprint.sum()))]
+  }
+  tabella-report(
+    "Sprint " + str(dati.numero) + ": Aggiornamento delle risorse rimanenti",
+    (1.2fr, 0.7fr, 0.65fr, 1fr, 0.95fr, 1.15fr, 1.2fr),
+    ("Ruolo", "Costo orario (€/h)", "Ore (h)", "Costo Sprint preventivo (€)", "Costo effettivo (€)", "Ore rimanenti (h)", "Budget rimanente (€)"),
+    righe-costo + ((
+      strong("Totale"),
+      "—",
+      strong(numero-testo(spese.sum())),
+      strong(numero-testo(preventivo.sum())),
+      strong(numero-testo(costo-sprint.sum())),
+      strong([#numero-testo(ore-rimanenti.sum()) #riduzione-totale-ore]),
+      strong([#numero-testo(budget-rimanente.sum()) #riduzione-totale-budget]),
+    ),),
+    riga-totale: 7,
+  )
+  let scostamento = costo-sprint.sum() - preventivo.sum()
+  let valutazione = if scostamento > 0 {
+    "Il costo consuntivo è aumentato di " + numero-testo(scostamento) + " € rispetto al preventivo dello Sprint."
+  } else if scostamento == 0 {
+    "Il costo consuntivo è rimasto uguale a quello previsto per lo Sprint."
+  } else {
+    "Il costo consuntivo è diminuito di " + numero-testo(0 - scostamento) + " € rispetto al preventivo dello Sprint."
+  }
+  let budget-massimo = costi-per-ruolo(budget-rtb-ruolo).sum()
+  let budget-massimo-rimanente = budget-massimo - costo-sprint.sum()
+  [#valutazione Il budget massimo RTB residuo al termine dello Sprint #dati.numero è di #numero-testo(budget-massimo-rimanente) €.]
+}
+
+#let mostra-riepilogo-rtb(sprints) = {
+  let spese = sprints.map(sprint => ore-per-ruolo(records-sprint-calcolati(sprint))).fold((0, 0, 0, 0, 0, 0), (acc, valori) => acc.zip(valori).map(((totale, valore)) => totale + valore))
+  let costi = costi-per-ruolo(spese)
+  let righe-riepilogo = ruoli-report.enumerate().map(((indice, ruolo)) => (
+    abbreviazioni-ruolo.at(indice),
+    numero-testo(spese.at(indice)),
+    numero-testo(costi.at(indice)),
+    numero-testo(budget-rtb-ruolo.at(indice) * costi-ruolo.at(indice)),
+    numero-testo(budget-rtb-ruolo.at(indice) * costi-ruolo.at(indice) - costi.at(indice)),
+  ))
+  tabella-report(
+    "Riepilogo RTB: consuntivo e budget massimo",
+    (1.3fr, 0.8fr, 1fr, 1fr, 1fr),
+    ("Ruolo", "Ore consuntive (h)", "Costo consuntivo (€)", "Budget RTB (€)", "Saldo (€)"),
+    righe-riepilogo + ((
+      strong("Totale"),
+      strong(numero-testo(spese.sum())),
+      strong(numero-testo(costi.sum())),
+      strong(numero-testo(costi-per-ruolo(budget-rtb-ruolo).sum())),
+      strong(numero-testo(costi-per-ruolo(budget-rtb-ruolo).sum() - costi.sum())),
+    ),),
+    riga-totale: 7,
+  )
+  [*Totale RTB:* #numero-testo(costi.sum()) € spesi su #numero-testo(costi-per-ruolo(budget-rtb-ruolo).sum()) € preventivati.]
+}
 
 // ============================================================================
 // BURNDOWN
@@ -417,24 +509,41 @@
 
 #let mostra-burndown(dati) = {
   let records = records-sprint-calcolati(dati)
-  let totale = calc.max(1, records.len())
-  let rimanenti = records.filter(record => record.stato != "Done").len()
-  let punti = (
-    (giorno: 0, valore: totale),
-    (giorno: 6, valore: rimanenti),
-    (giorno: dati.gantt.giorni, valore: rimanenti),
-  )
+  // Il numero di issue resta zero quando lo Sprint non ne contiene.
+  // La scala minima serve solo a evitare una divisione per zero nel grafico.
+  let totale = records.len()
+  let scala = calc.max(1, totale)
+  // Le osservazioni effettive sono costruite solo nei giorni in cui una o più
+  // card vengono chiuse. La coordinata conserva comunque la distanza reale
+  // tra i giorni, quindi le etichette non comprimono la timeline.
+  let giorni-chiusura = range(1, dati.gantt.giorni + 1).filter(giorno => records.filter(record => {
+    record.stato == "Done" and record.fine-data != none and int((record.fine-data - dati.data-inizio).days()) + 1 == giorno
+  }).len() > 0)
+  let punti = if totale == 0 or giorni-chiusura.len() == 0 {
+    ()
+  } else {
+    giorni-chiusura.fold(((giorno: 0, valore: totale),), (acc, giorno) => {
+      let chiuse = records.filter(record => {
+        record.stato == "Done" and record.fine-data != none and int((record.fine-data - dati.data-inizio).days()) + 1 == giorno
+      }).len()
+      acc + ((giorno: giorno, valore: acc.last().valore - chiuse),)
+    })
+  }
   // Il burndown ideale parte dal totale iniziale e arriva a zero
   // nell'ultimo giorno: valore(giorno) = totale * (1 - giorno / giorni).
   let ideali = (
     (giorno: 0, valore: totale),
     (giorno: dati.gantt.giorni, valore: 0),
   )
+  let giorni-etichetta = (0,) + giorni-chiusura + (dati.gantt.giorni,)
   let altezza = burndown-altezza
   let larghezza = burndown-larghezza
-  let effettivi = punti.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
-  let teorici = ideali.map(punto => posizione-punto(punto, totale, dati.gantt.giorni, altezza, larghezza: larghezza))
-  let passo-x = calc.max(1, calc.ceil(dati.gantt.giorni / 8))
+  let effettivi = if totale == 0 {
+    ()
+  } else {
+    punti.map(punto => posizione-punto(punto, scala, dati.gantt.giorni, altezza, larghezza: larghezza))
+  }
+  let teorici = ideali.map(punto => posizione-punto(punto, scala, dati.gantt.giorni, altezza, larghezza: larghezza))
   // Mostra le tacche dell'asse Y ogni cinque issue, mantenendo comunque
   // sempre visibili il valore iniziale e lo zero.
   let passo-y = 5
@@ -447,9 +556,9 @@
       stroke: 0.5pt,
       inset: (left: 1.35cm, right: 0.5cm, top: 0.45cm, bottom: 0.45cm),
     )[
-      #for valore in range(0, totale + 1) {
+      #for valore in range(0, scala + 1) {
         if valore == 0 or valore == totale or calc.rem(valore, passo-y) == 0 {
-          let y = altezza - valore / totale * altezza
+          let y = altezza - valore / scala * altezza
           place(left + top, line(
             start: (0pt, y),
             end: (larghezza, y),
@@ -461,7 +570,7 @@
         }
       }
       #for giorno in range(0, dati.gantt.giorni + 1) {
-        if giorno == 0 or giorno == dati.gantt.giorni or calc.rem(giorno, passo-x) == 0 {
+        if giorni-etichetta.contains(giorno) {
           let x = giorno / calc.max(1, dati.gantt.giorni) * larghezza
           place(left + top, line(
             start: (x, 0pt),
@@ -490,12 +599,14 @@
           stroke: 1.5pt + burndown-fucsia,
         ))
       }
-      #for segmento in range(0, effettivi.len() - 1).map(i => (effettivi.at(i), effettivi.at(i + 1))) {
-        place(left + top, line(
-          start: (segmento.at(0).x, segmento.at(0).y),
-          end: (segmento.at(1).x, segmento.at(1).y),
-          stroke: 1.5pt + burndown-viola-scuro,
-        ))
+      #if effettivi.len() > 1 {
+        for segmento in range(0, effettivi.len() - 1).map(i => (effettivi.at(i), effettivi.at(i + 1))) {
+          place(left + top, line(
+            start: (segmento.at(0).x, segmento.at(0).y),
+            end: (segmento.at(1).x, segmento.at(1).y),
+            stroke: 1.5pt + burndown-viola-scuro,
+          ))
+        }
       }
       #for punto in effettivi {
         place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: burndown-viola-scuro))
@@ -530,7 +641,6 @@
 #let gantt-testo = rgb("#07051C")
 #let gantt-testo-secondario = rgb("#526071")
 #let gantt-bordo = rgb("#EAEAEA")
-#let gantt-griglia = rgb("#EEF1F5")
 #let gantt-blu = rgb("#2877FF")
 #let gantt-ciano = rgb("#00C7DD")
 #let gantt-viola = rgb("#8651FF")
@@ -539,8 +649,6 @@
 #let gantt-ambra = rgb("#F59E0B")
 #let gantt-corallo = rgb("#E45756")
 #let gantt-grigio = rgb("#94A3B8")
-
-#let giorno-milestone = 17
 
 #let colore-milestone(milestone) = if milestone.nome == "M2" {
   gantt-ambra
@@ -570,8 +678,6 @@
   circle(radius: 4pt, fill: gantt-sfondo-secondario, stroke: 0.6pt + gantt-grigio)
 }
 
-#let icona-elemento(record) = []
-
 #let contenuto-chip(record) = grid(
   columns: (auto, auto),
   column-gutter: 3pt,
@@ -596,16 +702,6 @@
   height: 0.54cm,
   inset: (x: 5pt, y: 2pt),
 )[ #contenuto-chip(record) ]
-
-#let chip-issue-legacy(record, larghezza: none) = if larghezza == none {
-  box(
-    height: 0.54cm,
-    radius: 4pt,
-    fill: gantt-sfondo-secondario,
-    stroke: 0.8pt + gantt-bordo,
-    inset: (x: 5pt, y: 2pt),
-  )[ #contenuto-chip(record) ]
-} else { chip-fondo(record, larghezza) }
 
 #let e-settimana(giorno) = giorno == 1 or calc.rem(giorno - 1, 7) == 0
 
@@ -793,12 +889,4 @@
     ],
     caption: [Diagramma di Gantt dello Sprint #dati.numero],
   )
-}
-
-#let mostra-sprint(dati) = {
-  mostra-preventivo(dati)
-  mostra-consuntivo(dati)
-  mostra-aggiornamento-risorse(dati)
-  mostra-burndown(dati)
-  mostra-gantt(dati)
 }
