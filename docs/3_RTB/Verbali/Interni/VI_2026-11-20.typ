@@ -11,7 +11,7 @@
   redattore: EH,
   verificatore: LS,
   uso: "Interno",
-  stato: "Approvato",
+  stato: "Da verificare",
 
   tipoRiunione: "Riunione interna",
   luogo: "Canale vocale Discord",
@@ -38,7 +38,7 @@
       descrizione: [
         Riunione interna a metà del primo sprint, con analisi e condivisione della situazione:
         - Il ritardo di consegna delle chiavi API e dei dataset di test da parte dell'azienda proponente ha rallentato i progressi per la fase di test e studio delle tecnologie.
-        - L'indisponibilità 
+        - L'indisponibilità di un componente del gruppo per la sua partecipazione a eventi all'estero per rappresentare l'ateneo hanno rallentato la progressione del progetto, specialmente nelle fasi di verifica.
         - Buona parte dell'attività sono in attesa di revisione proprio a causa del punto menzionato sopra.
         - La redazione delle bozze dei vari documenti è completa ma in attesa di verifiche sostanziali.
       ],
@@ -62,20 +62,37 @@
         - Ruolo (viene inserito per ogni issue il ruolo che ne è stato incaricato),
         - Data inizio (la data di inizio del completamento della issue, non la data della creazione),
         - Data fine (la data di fine della issue, compresa la revisione, normalmente con anche chiusura della PR),
-        - Priorità (Alta, Media, Bassa),
+        - Priorità (Critica, Alta, Media, Bassa),
         - Ore impiegate (alla chiusura della issue si inserisce le ore impiegate al fine del monitoraggio),
         - Sviluppo (la PR che chiude la issue).
       ],
-      decisione: "",
+      decisione: "Ogni membro si impegna a inserire ogni parametro richiesto alla chiusura di una issue, in modo da tenere sempre sotto controllo l'andamento del progetto e il tempo impiegato.",
     ),
     (
       id: 23,
       titolo: "Sistema conteggio ore",
       descrizione: [
-
+        Viene creato un foglio excel condiviso a tutti i membri del gruppo che viene usato per aggiornare il Piano di progetto di volta in volta, il foglio excel si aggiorna con i dati esportati dalla project board. In questo modo vengono tenute conto le ore usate da ogni ruolo e le rispettive ore rimanenti.
       ],
       decisione: "Alla fine di ogni sprint verrà fatto un aggiornamento del conteggio del monte ore e per se ne terrà conto per l'inizio dello sprint successivo."
     ),
+    (
+      id: 24,
+      titolo: "Modalità di uso delle chiavi API",
+      descrizione: [
+        Dopo il primo incontro la proponente ci ha fornito due chiavi API, una per OpenAI e una per Antropic, queste verranno utilizzate per lo sviluppo del PoC e anche del prodotto finale. Per utilizzarle ogni componente dovrà creare un file .env che contenga queste chiavi, siccome sono informazioni riservate il file .env non deve essere pubblicato nella repository, per tenere traccia di dove inserire il file viene creato un placeholder ".env.example" che *non* contiene e *non* deve contenere le effettive chiavi ma solo un template. \
+        Per utilizzare le chiavi nel workflow quando necessario vengono utilizzati i *github action secrets*, molto versatili da questo punto di vista e facili da implementare.
+      ],
+      decisione: "Ogni membro si impegna a usare le chiavi API lo stretto necessario e a non condividerle o renderle pubbliche in alcun modo.",
+    ),
+    (
+      id: 25,
+      titolo: "Popolamento e utilizzo del Glossario",
+      descrizione: [
+        Una volta che il glossario viene pubblicato nel sito web e ha un link bisogna evidenziare tutti i termini da glossario per qualsiasi documento, ciò è fattibile attraverso una macro che assegna la marcatura ad ogni istanza di un termine da glossario. Inoltre tramite l'utilizzo di un plugin di typst si può linkare direttamente il termine alla rispettiva definizione all'interno del glossario. Tutto ciò ha bisogno però di un aggiornamento dei template.
+      ],
+      decisione: "Ogni file che viene redatto deve evidenziare i termini da glossario e riportare alla sua definizione, inoltre il Glossario deve essere continuamente aggiornato inserendo qualsiasi nuovo termine necessario."
+    )
   ),
 
   statoAzioni: (
@@ -196,21 +213,35 @@
       [Evidenziare termini da glossario nel Piano di Progetto],
       RP,
       [2026-11-27],
-      []
+      [D25]
     ),
     (
       [A31],
       [Evidenziare termini da glossario nelle Norme di Progetto],
       EH,
       [2026-11-27],
-      []
+      [D25]
     ),
     (
       [A32],
       [Evidenziare termini da glossario nell'Analisi dei requisiti],
       BG,
       [2026-11-27],
-      []
+      [D25]
+    ),
+    (
+      [A33],
+      [Aggiornare i template in modo da supportare i termini da glossario],
+      BG,
+      [2026-11-27],
+      [D25]
+    ),
+    (
+      [A33],
+      [Inserire il file .env.example come placeholder per il file delle chiavi API],
+      EH,
+      [2026-11-27],
+      [D24]
     )
   ),
 
