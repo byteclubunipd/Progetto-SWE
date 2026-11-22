@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
   const milestoneIssues = document.getElementById('milestone-issues');
   const dataAggiornamento = document.getElementById('data-aggiornamento');
   const desktopQuery = window.matchMedia('(min-width: 880px)');
+  const chiaveCache = 'byteclub-milestone-v1';
+  const durataCache = 10 * 60 * 1000;
 
   async function leggiDatiGitHub(url) {
     const response = await fetch(url, {
@@ -62,8 +64,54 @@ document.addEventListener("DOMContentLoaded", function() {
     return svg;
   }
 
-  function creaVoceIssue(issue, inRevisione) {
-    const stato = statoIssue(issue, inRevisione);
+  function leggiCache() {
+    try {
+      const dati = JSON.parse(localStorage.getItem(chiaveCache));
+      return dati && Array.isArray(dati.issues) ? dati : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function salvaCache(dati) {
+    try {
+      localStorage.setItem(chiaveCache, JSON.stringify(dati));
+    } catch (error) {
+      console.warn('Impossibile salvare i dati della milestone.', error);
+    }
+  }
+
+  async function scaricaDati(url, issuesUrl, reviewUrl) {
+    const milestones = await leggiDatiGitHub(url);
+    const current = milestones
+      .filter(milestone => milestone.state === 'open')
+      .sort((left, right) => left.number - right.number)[0]
+      || milestones.sort((left, right) => right.number - left.number)[0];
+
+    if (!current) {
+      throw new Error('Nessuna milestone disponibile');
+    }
+
+    const [risposta, inRevisione] = await Promise.all([
+      leggiDatiGitHub(`${issuesUrl}?milestone=${current.number}&state=all&per_page=100`),
+      leggiIssueInRevisione(reviewUrl),
+    ]);
+    const issues = risposta
+      .filter(issue => !issue.pull_request && issue.state_reason !== 'not_planned')
+      .map(issue => ({
+        numero: issue.number,
+        titolo: issue.title,
+        url: issue.html_url,
+        stato: statoIssue(issue, inRevisione),
+      }))
+      .sort((left, right) => statiIssue[left.stato].ordine - statiIssue[right.stato].ordine
+        || right.numero - left.numero);
+
+    return { ora: Date.now(), milestone: current.title, issues };
+  }
+
+  function creaVoceIssue(issue) {
+    const stato = issue.stato;
     const voce = document.createElement('li');
     voce.className = `issue-${stato}`;
 
@@ -77,10 +125,10 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const link = document.createElement('a');
-    link.href = issue.html_url;
+    link.href = issue.url;
     link.target = '_blank';
     link.rel = 'noopener noreferrer';
-    link.textContent = issue.title;
+    link.textContent = issue.titolo;
 
     const testoStato = document.createElement('span');
     testoStato.className = 'sr-only';
@@ -91,8 +139,8 @@ document.addEventListener("DOMContentLoaded", function() {
     return voce;
   }
 
-  function mostraIssue(issues, inRevisione) {
-    const voci = issues.map(issue => creaVoceIssue(issue, inRevisione));
+  function mostraIssue(issues) {
+    const voci = issues.map(creaVoceIssue);
     if (!voci.length) {
       const voceVuota = document.createElement('li');
       voceVuota.className = 'issue-vuota';
@@ -103,17 +151,37 @@ document.addEventListener("DOMContentLoaded", function() {
     milestoneIssues.hidden = false;
   }
 
-  // Sostituisce la data della build con il momento in cui i dati sono stati letti.
-  function mostraOraDati() {
+  function mostraOraDati(momento) {
     if (!dataAggiornamento) {
       return;
     }
-    const adesso = new Date();
+    const data = new Date(momento);
     const ora = document.createElement('time');
-    ora.dateTime = adesso.toISOString();
-    ora.textContent = `${adesso.toLocaleDateString('it-IT')} alle `
-      + adesso.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
+    ora.dateTime = data.toISOString();
+    ora.textContent = `${data.toLocaleDateString('it-IT')} alle `
+      + data.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
     dataAggiornamento.replaceChildren('Dati aggiornati il ', ora);
+  }
+
+  function mostraDati(dati, barra) {
+    const conta = stato => dati.issues.filter(issue => issue.stato === stato).length;
+    const completate = conta('chiusa');
+    const revisione = conta('revisione');
+    const aperte = conta('aperta');
+    const totale = dati.issues.length;
+    const progress = totale ? Math.round((completate / totale) * 100) : 0;
+
+    milestoneName.textContent = dati.milestone;
+    milestoneProgress.style.width = `${progress}%`;
+    barra.setAttribute('aria-valuenow', String(progress));
+    barra.removeAttribute('aria-valuetext');
+    milestoneSummary.textContent = [
+      `${completate} ${completate === 1 ? 'completata' : 'completate'}`,
+      revisione ? `${revisione} in revisione` : null,
+      `${aperte} ${aperte === 1 ? 'aperta' : 'aperte'}`,
+    ].filter(Boolean).join(' · ');
+    mostraIssue(dati.issues);
+    mostraOraDati(dati.ora);
   }
 
   async function aggiornaMilestone() {
@@ -130,46 +198,23 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     const barra = milestoneProgress.parentElement;
+    const cache = leggiCache();
+
+    if (cache && Date.now() - cache.ora < durataCache) {
+      mostraDati(cache, barra);
+      return;
+    }
 
     try {
-      const milestones = await leggiDatiGitHub(url);
-      const current = milestones
-        .filter(milestone => milestone.state === 'open')
-        .sort((left, right) => left.number - right.number)[0]
-        || milestones.sort((left, right) => right.number - left.number)[0];
-
-      if (!current) {
-        throw new Error('Nessuna milestone disponibile');
-      }
-
-      const [risposta, inRevisione] = await Promise.all([
-        leggiDatiGitHub(`${issuesUrl}?milestone=${current.number}&state=all&per_page=100`),
-        leggiIssueInRevisione(reviewUrl),
-      ]);
-      const ordine = issue => statiIssue[statoIssue(issue, inRevisione)].ordine;
-      const issues = risposta
-        .filter(issue => !issue.pull_request && issue.state_reason !== 'not_planned')
-        .sort((left, right) => ordine(left) - ordine(right) || right.number - left.number);
-
-      const conta = stato => issues.filter(issue => statoIssue(issue, inRevisione) === stato).length;
-      const completate = conta('chiusa');
-      const revisione = conta('revisione');
-      const aperte = conta('aperta');
-      const progress = issues.length ? Math.round((completate / issues.length) * 100) : 0;
-
-      milestoneName.textContent = current.title;
-      milestoneProgress.style.width = `${progress}%`;
-      barra.setAttribute('aria-valuenow', String(progress));
-      barra.removeAttribute('aria-valuetext');
-      milestoneSummary.textContent = [
-        `${completate} ${completate === 1 ? 'completata' : 'completate'}`,
-        revisione ? `${revisione} in revisione` : null,
-        `${aperte} ${aperte === 1 ? 'aperta' : 'aperte'}`,
-      ].filter(Boolean).join(' · ');
-      mostraIssue(issues, inRevisione);
-      mostraOraDati();
+      const dati = await scaricaDati(url, issuesUrl, reviewUrl);
+      salvaCache(dati);
+      mostraDati(dati, barra);
     } catch (error) {
       console.error('Impossibile aggiornare la milestone GitHub.', error);
+      if (cache) {
+        mostraDati(cache, barra);
+        return;
+      }
       milestoneName.textContent = 'Non disponibile';
       barra.hidden = true;
       milestoneIssues.hidden = true;
