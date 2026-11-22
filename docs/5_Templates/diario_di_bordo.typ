@@ -302,7 +302,7 @@
     itemList((activityDeadline(item, data),), size: 22pt, top: 0in, indent: -0.32in),
   )).flatten()
   grid(
-    columns: (1fr, 1fr),
+    columns: (3fr, 1fr),
     column-gutter: 0.55in,
     row-gutter: 0.14in,
     text(font: bodyFont, size: 24pt, weight: "bold", fill: whiteText)[ATTIVITÀ],
