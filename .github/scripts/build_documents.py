@@ -84,16 +84,24 @@ def approvedOutputs(
 ) -> list[str]:
     approved = []
 
-    for relative, document in metadata.items():
-        if document.get("stato", "").strip().casefold() != "approvato":
+    for pdf in candidate.rglob("*.pdf"):
+        relative = pdf.relative_to(candidate).as_posix()
+
+        # Pubblica esclusivamente le directory gestite.
+        if not relative.split("/", 1)[0] in SOURCE_DIRS:
             continue
 
-        pdf = candidate / managedRelative(relative)
+        document = metadata.get(relative, {})
+        stato = document.get("stato", "").strip().casefold()
 
-        if pdf.is_file():
-            approved.append(relative)
+        # Se lo stato è specificato, deve essere Approvato.
+        # Se manca, il documento può comunque essere pubblicato.
+        if stato and stato != "approvato":
+            continue
 
-    return approved
+        approved.append(relative)
+
+    return sorted(approved, key=naturalKey)
 
 
 def catalog(directory: Path, outputRoot: Path, prefix: str,
@@ -112,8 +120,11 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
     for file in files:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
-        if document.get("stato", "").strip().casefold() != "approvato":
+
+        stato = document.get("stato", "").strip().casefold()
+        if stato and stato != "approvato":
             continue
+
         isDiary = directory.name == "1_Diario_di_bordo"
         isExternalMinutes = directory.name == "Esterni" and directory.parent.name == "Verbali"
         isInternalMinutes = directory.name == "Interni" and directory.parent.name == "Verbali"
@@ -123,11 +134,14 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         details = []
         if document.get("data"):
             details.append(document["data"])
-        if (not isDiary and not isMinutes and document.get("versione")
-                and document["versione"].lower() != "false"):
-            details.append(f'Versione {document["versione"]}')
-        if document.get("stato"):
-            details.append(document["stato"])
+        if not isDiary and not isMinutes:
+            if (document.get("versione")
+                    and document["versione"].lower() != "false"):
+                details.append(f'Versione {document["versione"]}')
+
+            if document.get("stato"):
+                details.append(document["stato"])
+
         if isExternalMinutes:
             details.append("Firmato" if document.get("firma") == "true" else "Non firmato")
         elif not isInternalMinutes and document.get("firma") == "true":
@@ -157,25 +171,10 @@ def render(template: str, outputRoot: Path, prefix: str,
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
         "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix, metadata),
-        "[RTB_DOCUMENTI_ESTERNI]": catalog(
-            outputRoot / "3_RTB/Documenti_esterni",
-            outputRoot, prefix, metadata
-        ),
-
-        "[RTB_DOCUMENTI_INTERNI]": catalog(
-            outputRoot / "3_RTB/Documenti_interni",
-            outputRoot, prefix, metadata
-        ),
-
-        "[RTB_VERBALI_ESTERNI]": catalog(
-            outputRoot / "3_RTB/Verbali/Esterni",
-            outputRoot, prefix, metadata
-        ),
-
-        "[RTB_VERBALI_INTERNI]": catalog(
-            outputRoot / "3_RTB/Verbali/Interni",
-            outputRoot, prefix, metadata
-        ),
+        "[RTB_DOCUMENTI_ESTERNI]": "",
+        "[RTB_DOCUMENTI_INTERNI]": "",
+        "[RTB_VERBALI_ESTERNI]": "",
+        "[RTB_VERBALI_INTERNI]": "",
         "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix, metadata),
         "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
         "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
@@ -343,12 +342,13 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
         publicOutput = Path(temporary) / "public_output"
         publicOutput.mkdir()
 
-        for name in approved:
-            source = candidate / managedRelative(name)
-            target = publicOutput / managedRelative(name)
+        # Pubblica tutti i PDF esistenti, anche quelli non gestiti.
+        for pdf in candidate.rglob("*.pdf"):
+            relative = pdf.relative_to(candidate)
+            target = publicOutput / relative
 
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source, target)
+            shutil.copyfile(pdf, target)
 
         # Signed PDFs are maintained manually, so cleanup must no longer own them.
         generated = [name for name in outputs if name not in signed]
