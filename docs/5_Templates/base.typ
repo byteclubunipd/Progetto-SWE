@@ -23,8 +23,13 @@
 
 #let logo(larghezza: 2cm) = image("assets/logo.png", width: larghezza)
 
-// Equivalente di lightgray definito con gray=0.95.
+// Palette comune delle tabelle, coerente con i colori del logo ByteClub.
+// L'header mantiene il grigio del template; le righe pari usano un azzurro molto chiaro.
 #let lightgray = luma(95%)
+#let tabellaHeader = lightgray
+#let tabellaRigaPari = rgb("#f4fafb")
+#let tabellaRigaDispari = white
+#let tabellaTotale = rgb("#eee7ee")
 #let profonditaDocumento = 5
 
 // hyperref con hidelinks: i normali link Typst restano senza cornici.
@@ -142,18 +147,36 @@
 // L'indice definisce solo la propria resa; il template decide dove inserirlo.
 #let indiceDocumento() = {
   show outline.entry: set block(above: 0.75em, below: 0.75em)
+  show outline.entry.where(level: 1): set text(weight: "bold")
   set outline.entry(fill: repeat[.])
   outline(title: [Indice], indent: 1em, depth: profonditaDocumento)
 }
 
 // Tabelle con intestazione comune a registri, attività e altri dati.
-#let tabellaDati(colonne: auto, intestazioni: (), righe: ()) = block(
+#let tabellaDati(
+  colonne: auto,
+  intestazioni: (),
+  righe: (),
+  raggruppaRighe: 1,
+  rigaTotale: none,
+) = block(
   above: 0.5cm,
   table(
     columns: colonne,
     inset: 4pt,
     stroke: 0.5pt,
-    fill: (x, y) => if y == 0 { lightgray },
+    fill: (x, y) => {
+      let indiceGruppo = if raggruppaRighe == 1 { y } else { calc.ceil(y / raggruppaRighe) }
+      if y == 0 {
+        tabellaHeader
+      } else if rigaTotale != none and y == rigaTotale {
+        tabellaTotale
+      } else if calc.rem(indiceGruppo, 2) == 0 {
+        tabellaRigaPari
+      } else {
+        tabellaRigaDispari
+      }
+    },
     table.header(..intestazioni.map(cella => align(center, strong(cella)))),
     ..righe.flatten(),
   ),
