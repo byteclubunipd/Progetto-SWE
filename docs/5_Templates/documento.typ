@@ -1,4 +1,5 @@
 #import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS, tabellaRigaPari, tabellaRigaDispari
+#import "@preview/glossy:0.9.2": *
 
 #let documento(
   titolo: "Documento",
@@ -14,6 +15,8 @@
   destinatari: "",
   registroModifiche: (),
   indice: true,
+  glossario: none,
+  urlGlossario: "https://byteclub.github.io/docs/Glossario.pdf",
   body,
 ) = {
   set document(title: titolo, author: redazione)
@@ -70,7 +73,21 @@
         #indiceDocumento()
         #pagebreak()
       ]
-      #body
+      
+      #if glossario != none [
+        #show: init-glossary.with(glossario)
+        #show ref: it => {
+          let key = str(it.target).split(":").first()
+          if key in glossario {
+            link(urlGlossario + "#" + key)[#it#super[G]]
+          } else {
+            it
+          }
+        }
+        #body
+      ] else [
+        #body
+      ]
     ],
   )
 }
