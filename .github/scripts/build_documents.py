@@ -53,15 +53,21 @@ def naturalKey(value: str) -> tuple:
 
 
 def documentMetadata(source: Path) -> dict[str, str]:
-    content = source.read_text(encoding="utf-8")
+    content = source.read_text(encoding="utf-8-sig")
     values = {}
+
     for field in ("titolo", "versione", "stato", "data", "tipoRiunione"):
-        match = re.search(rf'\b{field}\s*:\s*"([^"]*)"', content)
+        match = re.search(
+            rf'\b{field}\s*(?::|=)\s*"([^"]*)"',
+            content
+        )
         if match:
             values[field] = match.group(1).strip()
+
     signature = re.search(r"\bfirma\s*:\s*(true|false)", content)
     if signature:
         values["firma"] = signature.group(1)
+
     return values
 
 
@@ -71,6 +77,23 @@ def collectMetadata(root: Path, sources: list[Path]) -> dict[str, dict[str, str]
         relative = source.relative_to(root / "docs").with_suffix(".pdf").as_posix()
         metadata[relative] = documentMetadata(source)
     return metadata
+
+def approvedOutputs(
+    candidate: Path,
+    metadata: dict[str, dict[str, str]]
+) -> list[str]:
+    approved = []
+
+    for relative, document in metadata.items():
+        if document.get("stato", "").strip().casefold() != "approvato":
+            continue
+
+        pdf = candidate / managedRelative(relative)
+
+        if pdf.is_file():
+            approved.append(relative)
+
+    return approved
 
 
 def catalog(directory: Path, outputRoot: Path, prefix: str,
@@ -89,7 +112,7 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
     for file in files:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
-        if document.get("stato") and document["stato"].casefold() != "approvato":
+        if document.get("stato", "").strip().casefold() != "approvato":
             continue
         isDiary = directory.name == "1_Diario_di_bordo"
         isExternalMinutes = directory.name == "Esterni" and directory.parent.name == "Verbali"
@@ -134,6 +157,25 @@ def render(template: str, outputRoot: Path, prefix: str,
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
         "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix, metadata),
+        "[RTB_DOCUMENTI_ESTERNI]": catalog(
+            outputRoot / "3_RTB/Documenti_esterni",
+            outputRoot, prefix, metadata
+        ),
+
+        "[RTB_DOCUMENTI_INTERNI]": catalog(
+            outputRoot / "3_RTB/Documenti_interni",
+            outputRoot, prefix, metadata
+        ),
+
+        "[RTB_VERBALI_ESTERNI]": catalog(
+            outputRoot / "3_RTB/Verbali/Esterni",
+            outputRoot, prefix, metadata
+        ),
+
+        "[RTB_VERBALI_INTERNI]": catalog(
+            outputRoot / "3_RTB/Verbali/Interni",
+            outputRoot, prefix, metadata
+        ),
         "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix, metadata),
         "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
         "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
@@ -290,9 +332,24 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
                 raise ValueError(f"La compilazione non ha prodotto un PDF valido: {source}")
             print(f"Compilato: {source.relative_to(root).as_posix()}")
 
-        # One self-contained site works both locally and on GitHub Pages.
-        publishedHtml = render(template, candidate, "docs/6_Output/",
-                               collectMetadata(root, sources))
+        # Collect metadata and identify approved documents.
+        metadata = collectMetadata(root, sources)
+        approved = approvedOutputs(candidate, metadata)
+
+        # Render the catalog using only approved PDFs.
+        publishedHtml = render(template, candidate, "docs/6_Output/", metadata)
+
+        # Build a public directory containing only approved PDFs.
+        publicOutput = Path(temporary) / "public_output"
+        publicOutput.mkdir()
+
+        for name in approved:
+            source = candidate / managedRelative(name)
+            target = publicOutput / managedRelative(name)
+
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+
         # Signed PDFs are maintained manually, so cleanup must no longer own them.
         generated = [name for name in outputs if name not in signed]
         manifest = json.dumps({"schema": 1, "outputs": generated},
@@ -307,7 +364,7 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
                 for entry in directory.rglob("*"):
                     ensureInside(root, entry)
                 shutil.copytree(directory, stagedSite / directoryName)
-        shutil.copytree(candidate, stagedSite / "docs/6_Output")
+        shutil.copytree(publicOutput, stagedSite / "docs/6_Output")
 
         for name in generated:
             target = output / managedRelative(name)
