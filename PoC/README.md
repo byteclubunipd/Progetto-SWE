@@ -1,0 +1,108 @@
+# PoC: database e API aziendali
+
+Primo ambiente di sperimentazione per il capitolato C7 SmartDashboard di Ergon Informatica (issue #56):
+
+- database relazionale creato con Python a partire dai CSV forniti dall'azienda;
+- test delle chiavi API di OpenAI e Anthropic tramite FastAPI.
+
+## Cosa non è nel repository
+
+Il repository è pubblico, quindi alcuni file restano solo sul proprio PC e sono esclusi da `.gitignore`:
+
+| File | Contenuto | Come ottenerlo |
+|---|---|---|
+| `data/` | dataset di Ergon (CSV, documentazione, SQL) | pacchetto `dataset_analisi_fatturato.zip`, da chiedere al gruppo |
+| `.env` | chiavi API | da chiedere al gruppo, mai su GitHub né in chat |
+| `.venv/` | ambiente Python | si crea con i comandi qui sotto |
+| `*.duckdb` | database generato | si crea dallo script del PoC |
+
+## Preparazione
+
+Requisiti: Python 3.12 o successivo, circa 10 GB liberi su disco.
+
+1. Estrarre il dataset in `PoC/data/`, in modo da avere:
+
+   ```
+   PoC/data/
+   ├── acmeOLAP/
+   ├── acmeOLAP_DWH/
+   ├── docs/documentazione_dataset.html
+   ├── sql/
+   └── README.md
+   ```
+
+2. Copiare il modello delle chiavi e inserire i valori:
+
+   ```bash
+   cd PoC
+   cp .env.example .env
+   ```
+
+   Il file `.env` deve contenere una variabile per riga, senza spazi né virgolette:
+
+   ```env
+   OPENAI_API_KEY=...
+   ANTHROPIC_API_KEY=...
+   ```
+
+3. Creare l'ambiente e installare le librerie:
+
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   ```
+
+   In VS Code selezionare l'interprete `PoC/.venv/bin/python` (`Ctrl+Shift+P` → *Python: Select Interpreter*).
+
+4. Prima di ogni commit controllare con `git status` che non compaiano file di `data/`, `.env` o `*.duckdb`.
+
+## Creazione del database
+
+Con l'ambiente attivo, dalla cartella `PoC`:
+
+```bash
+python crea_database.py
+pytest test_database.py
+```
+
+Lo script crea `acme.duckdb` con due schemi, uno per ciascun database di Ergon:
+
+| Schema | Origine | Tabelle |
+|---|---|---|
+| `raw` | `data/acmeOLAP/` | `stattab`, `stattabagg` e le anagrafiche |
+| `dwh` | `data/acmeOLAP_DWH/` | `fact_fatturato` e le dimensioni `dim_*` |
+
+Le tabelle e i tipi delle colonne vengono letti dagli SQL di Ergon in `data/sql/`. Prima di caricare ogni CSV, lo script controlla che le colonne corrispondano allo schema. Il database viene scritto in un file temporaneo e sostituisce quello vecchio solo se il caricamento va a buon fine. Su un portatile con 8 core, il caricamento richiede circa un minuto e 3 GB di RAM, e produce un file di 1,1 GB.
+
+I test verificano che:
+
+- il numero di righe di ogni tabella coincida con la documentazione di Ergon;
+- i codici siano testo e conservino gli zeri iniziali;
+- ogni chiave di `fact_fatturato` trovi la sua riga nella dimensione;
+- il fatturato netto di ogni anno sia uguale calcolato da `raw` e da `dwh`.
+
+Per aprire il database e scrivere query:
+
+```bash
+python -c "import duckdb; print(duckdb.connect('acme.duckdb', read_only=True).sql('SHOW ALL TABLES'))"
+```
+
+## Il dataset
+
+Fatturato di Acme Srl, azienda del settore caseario, con dati anonimizzati dal 2010 a novembre 2026. La documentazione completa è in `data/docs/documentazione_dataset.html`.
+
+| Cartella | Ruolo | Contenuto |
+|---|---|---|
+| `acmeOLAP/` | dati di partenza, come escono dal gestionale | 10 tabelle; `stattab` ha 10.250.000 righe |
+| `acmeOLAP_DWH/` | data warehouse con schema a fiocco di neve | `fact_fatturato` (10.250.000 righe) e 9 dimensioni `dim_*` |
+
+Formato dei CSV: codifica UTF-8, separatore `;`, punto decimale, intestazione in prima riga, campo vuoto = NULL.
+
+## Problemi e limitazioni
+
+1. **Codici con zeri iniziali.** Codici come `003`, `05` o `C01` vanno letti come testo: se i tipi vengono dedotti in automatico diventano numeri e perdono gli zeri. I tipi vanno indicati in modo esplicito, ricavandoli dagli SQL di Ergon.
+2. **SQL scritti per SQL Server.** Gli script in `data/sql/` usano `GO`, `BULK INSERT` e percorsi Windows: vanno adattati a DuckDB.
+3. **Record "N/D" ripetuti.** Le chiavi mancanti puntano al record con `sk_id = -1`, che in `dim_tabgen` e `dim_clsart` è ripetuto per ogni tipo o livello. `sk_id` da solo non può quindi essere chiave primaria, e ogni join su queste tabelle deve filtrare anche per `tipo_tab` o per livello.
+4. **Dimensioni dei file.** I CSV occupano circa 4,5 GB, di cui 2,1 GB per `stattab` e altrettanti per `fact_fatturato`: vanno caricati direttamente con DuckDB, senza passare da pandas, per non esaurire la memoria.
+5. **Valori sintetici.** I costi unitari e i campi Capo Area, Zona Vendita, Mercato, Gruppo Acquisto e Insegna sono generati da Ergon, così come le righe oltre le 231.938 reali: i risultati delle analisi non rappresentano dati reali.
