@@ -66,8 +66,6 @@
         )
       ]
       
-
-      
       #if indice [
         #pagebreak()
         #indiceDocumento()
@@ -76,9 +74,10 @@
       
       #if glossario != none [
         #show: init-glossary.with(glossario)
-        #show link: it => {
-          if type(it.dest) == label and str(it.dest) in glossario {
-            link(urlGlossario + "#" + str(it.dest))[#it.body#super[G]]
+        #show ref: it => {
+          let key = str(it.target).split(":").first()
+          if key in glossario {
+            link(urlGlossario + "#" + key)[#it#super[G]]
           } else {
             it
           }
