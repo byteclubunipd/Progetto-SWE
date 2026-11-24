@@ -440,7 +440,7 @@
   tabella-report(
     "Sprint " + str(dati.numero) + ": Aggiornamento delle risorse rimanenti",
     (1.2fr, 0.7fr, 0.65fr, 1fr, 0.95fr, 1.15fr, 1.2fr),
-    ("Ruolo", "Costo orario (€/h)", "Ore (h)", "Costo Sprint preventivo (€)", "Costo effettivo (€)", "Ore rimanenti (h)", "Budget rimanente (€)"),
+    ("Ruolo", "Costo orario (€/h)", "Ore (h)", "Costo Sprint preventivo (€)", "Costo Sprint consuntivo (€)", "Ore rimanenti (h)", "Budget rimanente (€)"),
     righe-costo + ((
       strong("Totale"),
       "—",
@@ -509,36 +509,49 @@
 
 #let mostra-burndown(dati) = {
   let records = records-sprint-calcolati(dati)
-  // Il numero di issue resta zero quando lo Sprint non ne contiene.
-  // La scala minima serve solo a evitare una divisione per zero nel grafico.
-  let totale = records.len()
-  let scala = calc.max(1, totale)
+  // Il valore viene ricalcolato per ogni giorno dello Sprint usando le date
+  // di inizio e di completamento effettivo delle issue.
+  let valore-giorno = giorno => records.filter(record => {
+    let giorno-inizio = if record.inizio-data == none {
+      1
+    } else {
+      int((record.inizio-data - dati.data-inizio).days()) + 1
+    }
+    let giorno-fine = if record.stato == "Done" and record.fine-data != none {
+      int((record.fine-data - dati.data-inizio).days()) + 1
+    } else {
+      dati.gantt.giorni + 1
+    }
+    giorno-inizio <= giorno and giorno < giorno-fine
+  }).len()
+
+  let totale-iniziale = if dati.gantt.giorni == 0 { 0 } else { valore-giorno(1) }
+  let totale-ideale = records.len()
   // Le osservazioni effettive sono costruite solo nei giorni in cui una o più
   // card vengono chiuse. La coordinata conserva comunque la distanza reale
   // tra i giorni, quindi le etichette non comprimono la timeline.
-  let giorni-chiusura = range(1, dati.gantt.giorni + 1).filter(giorno => records.filter(record => {
-    record.stato == "Done" and record.fine-data != none and int((record.fine-data - dati.data-inizio).days()) + 1 == giorno
-  }).len() > 0)
-  let punti = if totale == 0 or giorni-chiusura.len() == 0 {
+  let punti = if records.len() == 0 or dati.gantt.giorni == 0 {
     ()
   } else {
-    giorni-chiusura.fold(((giorno: 0, valore: totale),), (acc, giorno) => {
-      let chiuse = records.filter(record => {
-        record.stato == "Done" and record.fine-data != none and int((record.fine-data - dati.data-inizio).days()) + 1 == giorno
-      }).len()
-      acc + ((giorno: giorno, valore: acc.last().valore - chiuse),)
-    })
+    ((giorno: 0, valore: totale-iniziale),) + range(1, dati.gantt.giorni + 1).map(giorno => (
+      giorno: giorno,
+      valore: valore-giorno(giorno),
+    ))
   }
-  // Il burndown ideale parte dal totale iniziale e arriva a zero
-  // nell'ultimo giorno: valore(giorno) = totale * (1 - giorno / giorni).
+  let massimo = if punti.len() == 0 {
+    totale-iniziale
+  } else {
+    punti.map(punto => punto.valore).fold(totale-iniziale, (acc, valore) => calc.max(acc, valore))
+  }
+  let scala = calc.max(1, calc.max(massimo, totale-ideale))
   let ideali = (
-    (giorno: 0, valore: totale),
+    (giorno: 0, valore: totale-ideale),
     (giorno: dati.gantt.giorni, valore: 0),
   )
-  let giorni-etichetta = (0,) + giorni-chiusura + (dati.gantt.giorni,)
+  let giorni-etichetta = range(0, dati.gantt.giorni + 1)
   let altezza = burndown-altezza
   let larghezza = burndown-larghezza
-  let effettivi = if totale == 0 {
+  let effettivi = if punti.len() == 0 {
     ()
   } else {
     punti.map(punto => posizione-punto(punto, scala, dati.gantt.giorni, altezza, larghezza: larghezza))
@@ -557,7 +570,7 @@
       inset: (left: 1.35cm, right: 0.5cm, top: 0.45cm, bottom: 0.45cm),
     )[
       #for valore in range(0, scala + 1) {
-        if valore == 0 or valore == totale or calc.rem(valore, passo-y) == 0 {
+        if valore == 0 or valore == scala or valore == totale-ideale or valore == totale-iniziale or calc.rem(valore, passo-y) == 0 {
           let y = altezza - valore / scala * altezza
           place(left + top, line(
             start: (0pt, y),
@@ -678,14 +691,50 @@
   circle(radius: 4pt, fill: gantt-sfondo-secondario, stroke: 0.6pt + gantt-grigio)
 }
 
-#let contenuto-chip(record) = grid(
-  columns: (auto, auto),
-  column-gutter: 3pt,
-  icona-stato(record),
-  [#box(width: auto)[#text(size: 7pt, fill: gantt-testo, record.titolo)]
-    #h(3pt)
-    #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)],
+#let icona-stato-vuota(record) = circle(
+  radius: 4pt,
+  fill: none,
+  stroke: 0.8pt + colore-stato(record),
 )
+
+#let contenuto-chip-testo(record, titolo: none) = {
+  let titolo = if titolo == none { record.titolo } else { titolo }
+  [#box(width: auto)[#text(size: 7pt, fill: gantt-testo, titolo)]
+    #h(3pt)
+    #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)]
+}
+
+#let chip-icona(record) = box(
+  height: 0.54cm,
+  inset: (left: 5pt, y: 2pt),
+)[#icona-stato-vuota(record)]
+
+#let contenuto-chip-testo-con-inset(record, titolo: none) = {
+  let titolo = if titolo == none { record.titolo } else { titolo }
+  box(
+    inset: (right: 5pt, y: 2pt),
+  )[#contenuto-chip-testo(record, titolo: titolo)]
+}
+
+// Restituisce il titolo più lungo che può stare nello spazio disponibile.
+// Il calcolo usa la larghezza reale del contenuto, così l'eventuale
+// accorciamento dipende dal font e non da una stima del numero di caratteri.
+#let titolo-chip-adattato(record, larghezza) = {
+  let titolo = record.titolo
+  let caratteri = titolo.clusters()
+  let candidati = range(0, caratteri.len() + 1).map(limite => {
+    let prefisso = caratteri.slice(0, limite).join()
+    let testo = if limite == caratteri.len() {
+      prefisso
+    } else if limite == 0 {
+      "…"
+    } else {
+      prefisso + "…"
+    }
+    (testo: testo, larghezza: measure(contenuto-chip-testo-con-inset(record, titolo: testo)).width)
+  }).filter(candidato => candidato.larghezza <= larghezza)
+  if candidati.len() == 0 { "…" } else { candidati.last().testo }
+}
 
 // Il fondo segue il periodo previsto, mentre il contenuto resta indipendente
 // dalla larghezza del fondo e quindi non va a capo.
@@ -698,10 +747,14 @@
   inset: 0pt,
 )
 
-#let chip-issue(record) = box(
-  height: 0.54cm,
-  inset: (x: 5pt, y: 2pt),
-)[ #contenuto-chip(record) ]
+#let chip-testo(record, larghezza, titolo: none) = {
+  let titolo = if titolo == none { record.titolo } else { titolo }
+  box(
+    width: larghezza,
+    height: 0.54cm,
+    clip: true,
+  )[#contenuto-chip-testo-con-inset(record, titolo: titolo)]
+}
 
 #let e-settimana(giorno) = giorno == 1 or calc.rem(giorno - 1, 7) == 0
 
@@ -775,11 +828,22 @@
   ],
 )
 
-#let barra-gantt(record, giorni, primo: false, milestones: ()) = {
+#let barra-gantt(record, giorni, primo: false, milestones: ()) = layout(size => {
   let durata = calc.min(record.durata_prevista, giorni)
-  let contenuto-giorni = calc.max(durata, calc.ceil(record.titolo.len() / 12))
-  let inizio = calc.min(record.previsto_inizio, giorni - contenuto-giorni + 1)
-  let larghezza = durata * (100% / giorni)
+  let inizio = calc.min(record.previsto_inizio, giorni - durata + 1)
+  let larghezza-giorno = size.width / giorni
+  let larghezza = durata * larghezza-giorno
+  let posizione-inizio = (inizio - 1) * larghezza-giorno
+  let larghezza-icona = measure(chip-icona(record)).width
+  let posizione-testo-base = posizione-inizio + larghezza-icona + 3pt
+  let larghezza-contenuto = measure(contenuto-chip-testo-con-inset(record)).width
+  let spostamento-testo = calc.max(
+    -posizione-testo-base,
+    calc.min(0pt, size.width - posizione-testo-base - larghezza-contenuto - 1pt),
+  )
+  let posizione-testo = posizione-testo-base + spostamento-testo
+  let spazio-testo = calc.max(1pt, size.width - posizione-testo - 1pt)
+  let titolo = titolo-chip-adattato(record, spazio-testo)
 
   box(width: 100%, height: 0.62cm)[
     #grid(
@@ -789,18 +853,24 @@
     )
     #place(
       left + top,
-      dx: (inizio - 1) * (100% / giorni),
+      dx: posizione-inizio,
       dy: 4pt,
       chip-fondo(record, larghezza),
     )
     #place(
       left + top,
-      dx: (inizio - 1) * (100% / giorni),
+      dx: posizione-inizio,
       dy: 4pt,
-      chip-issue(record),
+      chip-icona(record),
+    )
+    #place(
+      left + top,
+      dx: posizione-testo,
+      dy: 4pt,
+      chip-testo(record, spazio-testo, titolo: titolo),
     )
   ]
-}
+})
 
 #let intestazione-giorni(dati) = grid(
   columns: colonne-timeline(dati.gantt.giorni),
