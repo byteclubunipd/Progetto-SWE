@@ -24,10 +24,10 @@
 
   ordineDelGiorno: (
     [Allineamento situazione primo sprint],
-    [Sistema di conteggio ore],
     [Creazione nuova visione project board],
-    [Aggiornamento parametri issue e project board],
-    [Concordazione modalità di utilizzo delle chiavi API],
+    [Aggiornamento parametri issue],
+    [Sistema di conteggio ore],
+    [Definizione delle modalità di utilizzo delle chiavi API],
     [Modalità di popolamento e utilizzo del Glossario]
   ),
 
@@ -38,8 +38,8 @@
       descrizione: [
         Riunione interna a metà del primo sprint, con analisi e condivisione della situazione:
         - Il ritardo di consegna delle chiavi API e dei dataset di test da parte dell'azienda proponente ha rallentato i progressi per la fase di test e studio delle tecnologie.
-        - L'indisponibilità di un componente del gruppo per la sua partecipazione a eventi all'estero per rappresentare l'ateneo hanno rallentato la progressione del progetto, specialmente nelle fasi di verifica.
-        - Buona parte dell'attività sono in attesa di revisione proprio a causa del punto menzionato sopra.
+        - L'indisponibilità di un componente del gruppo per la sua partecipazione a eventi all'estero per rappresentare l'ateneo ha rallentato la progressione del progetto, specialmente nelle fasi di verifica.
+        - Buona parte delle attività sono in attesa di revisione proprio a causa del punto menzionato sopra.
         - La redazione delle bozze dei vari documenti è completa ma in attesa di verifiche sostanziali.
       ],
       decisione: none,
@@ -48,18 +48,18 @@
       id: 21,
       titolo: "Nuova visione project board",
       descrizione: [
-        Per garantire una vista temporale delle attività (programmate, in corso, in revisionbe e concluse), si opta per una vista simile a un diagramma di Gantt.
+        Per garantire una vista temporale delle attività (programmate, in corso, in revisione e concluse), si opta per una vista simile a un diagramma di Gantt.
         Questo permette anche di esportare in massa i dati relativi alle issue e avere una panoramica migliore del tempo impiegato per ogni fase di ogni singola attività.
       ],
-      decisione: "Ogni componente si impegna a tenere ordinata la board, inserendovi i dati necessari e aggiornardola ogni qualvolta sia necessario."
+      decisione: "Ogni componente si impegna a tenere ordinata la board, inserendovi i dati necessari e di aggiornarla ogni qualvolta sia necessario."
     ),
     (
       id: 22,
       titolo: "Aggiornamento parametri issue",
       descrizione: [
-        Oltre ai paramentri di default delle issue, quali: Assegnatario, Etichette e Milestone.
-        Vengono aggiunti altri paramentri utili, attraverso la project board, al fine del monitoraggio dell'andamento del progetto e il conteggio delle ore utilizzate:
-        - Ruolo (viene inserito per ogni issue il ruolo che ne è stato incaricato),
+        Oltre ai parametri di default delle issue, quali: Assegnatario, Etichette e Milestone.
+        Vengono aggiunti altri parametri utili, attraverso la project board, al fine del monitoraggio dell'andamento del progetto e il conteggio delle ore utilizzate:
+        - Ruolo (viene inserito per ogni issue il ruolo con cui l'attività è svolta),
         - Data inizio (la data di inizio del completamento della issue, non la data della creazione),
         - Data fine (la data di fine della issue, compresa la revisione, normalmente con anche chiusura della PR),
         - Priorità (Critica, Alta, Media, Bassa),
@@ -74,14 +74,14 @@
       descrizione: [
         Viene creato un foglio excel condiviso a tutti i membri del gruppo che viene usato per aggiornare il Piano di progetto di volta in volta, il foglio excel si aggiorna con i dati esportati dalla project board. In questo modo vengono tenute conto le ore usate da ogni ruolo e le rispettive ore rimanenti.
       ],
-      decisione: "Alla fine di ogni sprint verrà fatto un aggiornamento del conteggio del monte ore e per se ne terrà conto per l'inizio dello sprint successivo."
+      decisione: "Alla fine di ogni sprint verrà fatto un aggiornamento del conteggio del monte ore e se ne terrà conto per l'inizio dello sprint successivo."
     ),
     (
       id: 24,
       titolo: "Modalità di uso delle chiavi API",
       descrizione: [
-        Dopo il primo incontro la proponente ci ha fornito due chiavi API, una per OpenAI e una per Antropic, queste verranno utilizzate per lo sviluppo del PoC e anche del prodotto finale. Per utilizzarle ogni componente dovrà creare un file .env che contenga queste chiavi, siccome sono informazioni riservate il file .env non deve essere pubblicato nella repository, per tenere traccia di dove inserire il file viene creato un placeholder ".env.example" che *non* contiene e *non* deve contenere le effettive chiavi ma solo un template. \
-        Per utilizzare le chiavi nel workflow quando necessario vengono utilizzati i *github action secrets*, molto versatili da questo punto di vista e facili da implementare.
+        Dopo il primo incontro la proponente ci ha fornito due chiavi API, una per OpenAI e una per Anthropic, queste verranno utilizzate per lo sviluppo del PoC e anche del prodotto finale. Per utilizzarle ogni componente dovrà creare un file .env che contenga queste chiavi, siccome sono informazioni riservate il file .env non deve essere pubblicato nella repository, per tenere traccia di dove inserire il file viene creato un placeholder ".env.example" che *non* contiene e *non* deve contenere le effettive chiavi ma solo un template. \
+        Per utilizzare le chiavi nel workflow quando necessario vengono utilizzati i *Github Action secrets*, molto versatili da questo punto di vista e facili da implementare.
       ],
       decisione: "Ogni membro si impegna a usare le chiavi API lo stretto necessario e a non condividerle o renderle pubbliche in alcun modo.",
     ),
@@ -189,7 +189,7 @@
     (
       [A27],
       [Completata],
-      [Inviare il verbale alla proponente per l'approvazione e la firma], 
+      [Inviare il verbale esterno del 2026-11-13 alla proponente per l'approvazione e la firma], 
     )
   ),
 
@@ -199,7 +199,7 @@
       [Preparare diario di bordo del 2026-11-23],
       RP,
       [2026-11-22],
-      [D7],
+      [---],
     ),
     (
       [A29],
@@ -237,7 +237,7 @@
       [D25]
     ),
     (
-      [A33],
+      [A34],
       [Inserire il file .env.example come placeholder per il file delle chiavi API],
       EH,
       [2026-11-27],
