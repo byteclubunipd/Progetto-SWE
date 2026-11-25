@@ -88,6 +88,50 @@ Per aprire il database e scrivere query:
 python -c "import duckdb; print(duckdb.connect('acme.duckdb', read_only=True).sql('SHOW ALL TABLES'))"
 ```
 
+## Avvio di FastAPI
+
+Con l'ambiente attivo, dalla cartella `PoC`:
+
+```bash
+uvicorn app:app --reload
+```
+
+Il servizio risponde su `http://127.0.0.1:8000`. La pagina `http://127.0.0.1:8000/docs` elenca gli endpoint e permette di provarli dal browser.
+
+| Endpoint | Cosa fa | Costo |
+|---|---|---|
+| `GET /salute` | stato del servizio, presenza del database e delle chiavi (senza mostrarle) | gratuito |
+| `GET /db/tabelle` | tabelle del database con il numero di righe | gratuito |
+| `GET /db/fatturato?anno=2025` | fatturato netto per canale calcolato sul DWH | gratuito |
+| `GET /llm/anthropic/modelli` | modelli disponibili con la chiave Anthropic | gratuito |
+| `GET /llm/openai/modelli` | modelli disponibili con la chiave OpenAI | gratuito |
+| `POST /llm/anthropic/prova` | invia una domanda breve a Claude e restituisce risposta, tempo e token | consuma credito |
+| `POST /llm/openai/prova` | invia una domanda breve a OpenAI e restituisce risposta, tempo e token | consuma credito |
+
+Per verificare che una chiave sia valida bastano gli endpoint `modelli`, che non consumano credito. Gli endpoint `prova` accettano facoltativamente un corpo `{"domanda": "..."}` di al massimo 500 caratteri.
+
+I modelli usati sono `claude-opus-5-5` e `gpt-5-mini`. Si possono cambiare aggiungendo al file `.env` le variabili `ANTHROPIC_MODEL` e `OPENAI_MODEL`.
+
+Se una chiave manca, l'endpoint risponde `503`. Se il provider rifiuta la richiesta, risponde `502` indicando il motivo: chiave non valida, permesso negato, modello non disponibile, limite di richieste o credito esaurito, errore del provider, tempo scaduto o connessione non riuscita.
+
+Per i test:
+
+```bash
+pytest
+```
+
+`test_app.py` simula le risposte dei provider, quindi non consuma credito e funziona anche senza chiavi.
+
+### Risultati della prova del 2026-11-25
+
+| | Anthropic | OpenAI |
+|---|---|---|
+| Chiave | valida, 14 modelli disponibili | valida, 103 modelli disponibili |
+| Modello | `claude-opus-5-5` | `gpt-5-mini` |
+| Risposta a "Rispondi soltanto con la parola: funziona" | `funziona` | `funziona` |
+| Tempo | 0,8 s | 4,9 s |
+| Token in ingresso / in uscita | 25 / 5 | 17 / 109 |
+
 ## Il dataset
 
 Fatturato di Acme Srl, azienda del settore caseario, con dati anonimizzati dal 2010 a novembre 2026. La documentazione completa è in `data/docs/documentazione_dataset.html`.
@@ -106,3 +150,7 @@ Formato dei CSV: codifica UTF-8, separatore `;`, punto decimale, intestazione in
 3. **Record "N/D" ripetuti.** Le chiavi mancanti puntano al record con `sk_id = -1`, che in `dim_tabgen` e `dim_clsart` è ripetuto per ogni tipo o livello. `sk_id` da solo non può quindi essere chiave primaria, e ogni join su queste tabelle deve filtrare anche per `tipo_tab` o per livello.
 4. **Dimensioni dei file.** I CSV occupano circa 4,5 GB, di cui 2,1 GB per `stattab` e altrettanti per `fact_fatturato`: vanno caricati direttamente con DuckDB, senza passare da pandas, per non esaurire la memoria.
 5. **Valori sintetici.** I costi unitari e i campi Capo Area, Zona Vendita, Mercato, Gruppo Acquisto e Insegna sono generati da Ergon, così come le righe oltre le 231.938 reali: i risultati delle analisi non rappresentano dati reali.
+6. **Nome della variabile della chiave Anthropic.** La libreria ufficiale di Anthropic cerca la chiave in `ANTHROPIC_API_KEY`: con un altro nome, come `CLAUDE_API_KEY`, non la trova.
+7. **Token di ragionamento di OpenAI.** Per una risposta di una sola parola, `gpt-5-mini` ha conteggiato 109 token in uscita e ha impiegato quasi 5 secondi, perché i token del ragionamento interno sono fatturati come output. Nel progetto andrà valutato il compromesso tra costo, tempi di risposta e qualità dei due provider.
+8. **Ragionamento sempre attivo su Claude Opus 5.5.** Su questo modello il ragionamento non si può disattivare: la prova usa il livello di impegno più basso (`effort: low`) per contenere costi e tempi. Le richieste usano anche il fallback automatico lato server (`fallbacks: "default"`), che in caso di rifiuto ripete la richiesta su un altro modello.
+9. **Nessuna autenticazione.** Gli endpoint `prova` consumano il credito messo a disposizione da Ergon e non richiedono login: il servizio va avviato solo in locale e non va esposto in rete.
