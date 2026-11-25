@@ -7,7 +7,7 @@
 #show: documento.with(
   titolo: "Norme di Progetto",
   mostraRegistro: true,
-  versione: "0.1.0",
+  versione: "0.3.0",
   stato: "In redazione",
   redazione: EH,
   verifica: LS,
@@ -16,6 +16,7 @@
   destinatari: "Tutti i componenti del gruppo ByteClub",
   proprietario: "ByteClub",
   registroModifiche: (
+    ("0.3.0", "2026-11-20", "Aggiornamento delle norme per project board, issue, conteggio ore, gestione delle chiavi API e utilizzo del Glossario.", EH, LS),
     ("0.2.0", "2026-11-16", "Integrazione delle norme relative a Gitflow, gestione della documentazione, Typst, build, testing e nomenclatura dei commit.", EH, LS),
     ("0.1.0", "2026-11-13", "Prima stesura del documento", EH, LS),
   ),
@@ -113,7 +114,9 @@ Le attività devono essere sufficientemente definite da permettere di individuar
 - il prodotto atteso;
 - eventuali dipendenze da altre attività.
 
-La pianificazione viene mantenuta aggiornata attraverso gli strumenti condivisi dal gruppo.
+La pianificazione viene mantenuta aggiornata attraverso gli strumenti condivisi dal gruppo. La project board di GitHub costituisce il riferimento operativo per visualizzare l'andamento temporale delle attività, distinguendo quelle programmate, in corso, in revisione e concluse.
+
+La board deve essere mantenuta ordinata e aggiornata da tutti i componenti ogni qualvolta si verifichino variazioni nello stato o nelle informazioni delle attività. La vista adottata deve consentire una panoramica temporale delle issue, in modo analogo a un diagramma di Gantt, e permettere l'esportazione dei dati necessari al monitoraggio del progetto.
 
 == Gestione delle milestone
 
@@ -132,18 +135,32 @@ Le milestone vengono gestite attraverso GitHub.
 
 Le attività operative vengono rappresentate mediante issue su GitHub.
 
-Ogni issue dovrebbe contenere:
+Ogni issue deve contenere le informazioni necessarie a identificare e monitorare l'attività. Oltre ai parametri standard di GitHub, quali assegnatario, etichette e milestone, la project board prevede i seguenti campi:
 
-- un titolo breve e descrittivo;
-- una descrizione dell'attività;
-- il risultato atteso;
-- il componente o i componenti responsabili;
-- la scadenza, quando prevista;
-- la milestone di riferimento, se applicabile.
+- *Ruolo:* ruolo con cui viene svolta l'attività;
+- *Data inizio:* data in cui il componente inizia effettivamente a lavorare sull'attività, non la data di creazione dell'issue;
+- *Data fine:* data di completamento dell'attività, comprensiva della revisione e, normalmente, della chiusura della Pull Request;
+- *Priorità:* livello di urgenza dell'attività, scegliendo tra Critica, Alta, Media e Bassa;
+- *Conteggio*: indica se le ore impiegate nell'attività sono considerate ore produttive ai fini del conteggio del monte ore oppure se non sono considerate produttive;
+- *Ore impiegate:* tempo effettivamente dedicato all'attività, da registrare alla chiusura dell'issue;
+- *Sprint*: periodo di lavoro al quale viene associata l'attività;
+- *Ruolo*: ruolo con cui viene svolta l'attività, scegliendo tra Responsabile, Amministratore, Analista, Progettista, Programmatore e Verificatore;
+- *Sviluppo:* Pull Request che realizza e chiude l'issue.
 
-Le issue devono essere aggiornate durante lo svolgimento dell'attività, in modo da rendere visibile lo stato di avanzamento.
+=== Stati delle issue
 
-Quando un'attività è completata, la relativa issue deve essere chiusa.
+Ogni issue può assumere uno dei seguenti cinque stati, che rappresentano il relativo avanzamento:
+- *Waiting Requirements*: l'attività è in attesa della definizione o del completamento dei requisiti necessari per poter procedere;
+- *Todo*: l'attività è stata pianificata, ma non è ancora iniziata;
+- *In Progress*: l'attività è attualmente in corso;
+- *Waiting Review*: l'attività è stata completata ed è in attesa di revisione o verifica;
+- *Done*: l'attività è stata completata e le verifiche previste sono state concluse.
+
+Lo stato delle issue deve essere aggiornato tempestivamente dai componenti responsabili, in modo da mantenere la project board coerente con l'effettivo avanzamento delle attività.
+
+Ogni componente è responsabile dell'inserimento e dell'aggiornamento dei dati di propria competenza. Alla chiusura di un'issue devono essere compilati tutti i campi richiesti, così da mantenere aggiornati il monitoraggio dell'avanzamento e il conteggio delle ore.
+
+Quando un'attività è completata e le relative verifiche sono concluse, la issue deve essere chiusa.
 
 == Periodi di lavoro
 
@@ -167,16 +184,16 @@ Eventuali ritardi o difficoltà devono essere comunicati tempestivamente al resp
 
 == Conteggio delle ore
 
-Ogni componente deve registrare il tempo effettivamente dedicato alle attività di progetto.
+Ogni componente deve registrare il tempo effettivamente dedicato alle attività di progetto, compilando il campo *Ore impiegate* delle issue al momento della loro chiusura.
 
-Il conteggio delle ore ha lo scopo di:
+I dati relativi alle issue vengono esportati dalla project board e riportati in un foglio Excel condiviso con tutti i componenti. Il foglio consente di monitorare le ore impiegate per ciascun ruolo e le rispettive ore rimanenti, fornendo i dati necessari per l'aggiornamento del Piano di Progetto.
 
-- monitorare l'impegno dei singoli componenti;
+Al termine di ogni sprint il gruppo aggiorna il conteggio del monte ore e utilizza i risultati per pianificare lo sprint successivo. Il conteggio ha lo scopo di:
+
+- monitorare l'impegno dei singoli componenti e dei diversi ruoli;
 - confrontare le ore effettive con quelle preventivate;
 - individuare eventuali scostamenti;
-- fornire informazioni utili per aggiornare la pianificazione.
-
-Le modalità operative di registrazione, aggiornamento e consultazione del conteggio devono essere definite e condivise dal gruppo.
+- aggiornare il Piano di Progetto sulla base dell'avanzamento effettivo.
 
 = Strumenti di collaborazione
 
@@ -192,6 +209,11 @@ In particolare, vengono utilizzati:
 - *Milestone:* per organizzare le attività in funzione degli obiettivi.
 - *Pull Request:* per proporre e revisionare modifiche prima della loro integrazione.
 - *GitHub Pages:* per pubblicare e rendere consultabile la documentazione del progetto.
+- *GitHub Projects (project board):* per visualizzare e monitorare le attività nel tempo, gestire i relativi parametri e ricavare i dati necessari al conteggio delle ore.
+
+== Foglio di calcolo condiviso
+
+Il gruppo utilizza un foglio Excel condiviso per raccogliere i dati relativi alle ore di lavoro, elaborati a partire dalle informazioni esportate dalla project board. Il foglio viene aggiornato al termine di ogni sprint e costituisce un supporto per il monitoraggio del monte ore e per l'aggiornamento del Piano di Progetto.
 
 == Discord
 
@@ -208,6 +230,18 @@ La documentazione del progetto viene redatta utilizzando Typst.
 Per mantenere uniformità grafica e strutturale, i documenti devono fare riferimento ai template condivisi nella cartella `docs/5_Templates`.
 
 I template costituiscono il riferimento comune per la produzione dei documenti e devono essere riutilizzati evitando modifiche non concordate alla loro struttura generale.
+
+== Gestione delle chiavi API e delle informazioni riservate
+
+Le chiavi API fornite dal proponente per i servizi OpenAI e Anthropic sono informazioni riservate e possono essere utilizzate per le attività di sviluppo del PoC e del prodotto finale.
+
+Ogni componente che necessita di utilizzare tali chiavi deve configurarle localmente tramite un file `.env`. Il file contenente le credenziali effettive non deve essere inserito nel repository, condiviso o reso pubblico in alcun modo.
+
+Per documentare le variabili necessarie alla configurazione dell'ambiente, il repository deve contenere un file `.env.example`. Questo file ha esclusivamente funzione di modello: può riportare i nomi delle variabili e valori segnaposto, ma non deve contenere le chiavi API effettive.
+
+Quando le credenziali sono necessarie all'interno dei workflow automatizzati, devono essere configurate tramite i GitHub Actions secrets, evitando di inserirle direttamente nei file del repository o nei sorgenti dei workflow.
+
+Tutti i componenti devono limitare l'utilizzo delle chiavi API a quanto strettamente necessario e adottare le precauzioni necessarie a impedirne la divulgazione.
 
 = Gestione della configurazione
 
@@ -357,7 +391,12 @@ La redazione deve rispettare:
 - la terminologia condivisa nel Glossario;
 - la coerenza con gli altri documenti del progetto;
 - la correttezza delle informazioni riportate;
-- la tracciabilità delle modifiche effettuate.
+- la tracciabilità delle modifiche effettuate;
+- l'utilizzo coerente dei termini definiti nel Glossario.
+
+Ogni documento redatto deve evidenziare le occorrenze dei termini presenti nel Glossario e, quando il collegamento è disponibile, rimandare direttamente alla relativa definizione. I template Typst devono supportare questa modalità di marcatura e collegamento.
+
+Il Glossario deve essere mantenuto aggiornato durante il progetto, inserendo i nuovi termini tecnici o organizzativi che risultino necessari. Chi redige un documento deve quindi verificare la presenza nel Glossario dei termini utilizzati e segnalare o predisporre l'inserimento di quelli mancanti.
 
 I documenti devono essere aggiornati quando cambiano le decisioni progettuali o le informazioni in essi contenute.
 
@@ -517,9 +556,9 @@ Ogni modifica deve essere condivisa con il gruppo e sottoposta a verifica prima 
 
 Alcuni aspetti organizzativi e operativi richiedono ulteriori decisioni da parte del gruppo. Tali aspetti saranno integrati nelle successive versioni del documento.
 
-In particolare, devono essere definiti:
+In particolare, restano da definire o approfondire:
 
-- lo strumento e la frequenza di aggiornamento del conteggio delle ore;
-- le modalità di gestione delle priorità delle issue;
 - i criteri di verifica specifici per il codice e per gli altri prodotti;
-- la procedura dettagliata per la gestione delle versioni e dei rilasci.
+- la procedura dettagliata per la gestione delle versioni e dei rilasci;
+- le modalità operative di esportazione dei dati dalla project board e di aggiornamento del foglio Excel condiviso;
+- le modalità tecniche definitive per evidenziare e collegare automaticamente i termini del Glossario nei documenti Typst.
