@@ -96,7 +96,7 @@ def approvedOutputs(
 
         # Se lo stato è specificato, deve essere Approvato.
         # Se manca, il documento può comunque essere pubblicato.
-        if stato and stato != "Approvato":
+        if stato and stato != "approvato":
             continue
 
         approved.append(relative)
@@ -122,14 +122,15 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
 
         stato = document.get("stato", "").strip().casefold()
-        if stato and stato != "Approvato":
+        if stato and stato != "approvato":
             continue
 
         isDiary = directory.name == "1_Diario_di_bordo"
+        isLetter = directory.name == "Lettera_di_presentazione"
         isExternalMinutes = directory.name == "Esterni" and directory.parent.name == "Verbali"
         isInternalMinutes = directory.name == "Interni" and directory.parent.name == "Verbali"
         isMinutes = isExternalMinutes or isInternalMinutes
-        title = "Diario di bordo" if isDiary else document.get(
+        title = "Diario di bordo" if isDiary else "Lettera di presentazione" if isLetter else document.get(
             "titolo", file.stem.replace("_", " "))
         details = []
         if document.get("data"):
@@ -171,10 +172,10 @@ def render(template: str, outputRoot: Path, prefix: str,
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
         "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix, metadata),
-        "[RTB_DOCUMENTI_ESTERNI]": "",
-        "[RTB_DOCUMENTI_INTERNI]": "",
-        "[RTB_VERBALI_ESTERNI]": "",
-        "[RTB_VERBALI_INTERNI]": "",
+        "[RTB_DOCUMENTI_ESTERNI]": catalog(outputRoot / "3_RTB/Documenti_esterni", outputRoot, prefix, metadata),
+        "[RTB_DOCUMENTI_INTERNI]": catalog(outputRoot / "3_RTB/Documenti_interni", outputRoot, prefix, metadata),
+        "[RTB_VERBALI_ESTERNI]": catalog(outputRoot / "3_RTB/Verbali/Esterni", outputRoot, prefix, metadata),
+        "[RTB_VERBALI_INTERNI]": catalog(outputRoot / "3_RTB/Verbali/Interni", outputRoot, prefix, metadata),
         "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix, metadata),
         "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
         "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
