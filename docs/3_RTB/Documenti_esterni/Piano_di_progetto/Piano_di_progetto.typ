@@ -51,7 +51,7 @@
     "Ergon Informatica S.r.l.",
   ),
   registroModifiche: (
-    ("0.2.3", "2026-11-24", "Aggiornamento template con i termini presenti nel Glossario", RP, LS),
+    ("0.2.3", "2026-11-24", "Aggiornamento template e aggiunta termini presenti nel Glossario", RP, LS),
     ("0.2.2", "2026-11-20", "Prima stesura sezione 5 e sprint 1", RP, LS),
     ("0.2.1", "2026-11-19", "Prima stesura dei rischi specifici e sezione 4", RP, LS),
     ("0.2.0", "2026-11-18", "Prima stesura sezioni 1, 2 e 3", RP, LS),

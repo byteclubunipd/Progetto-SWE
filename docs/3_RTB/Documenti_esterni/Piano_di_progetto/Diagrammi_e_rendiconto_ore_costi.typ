@@ -544,7 +544,10 @@
 )
 
 #let mostra-burndown(dati) = {
-  let records = records-sprint-calcolati(dati)
+  // Il burndown misura le issue di lavoro, non le PR collegate o registrate
+  // come righe autonome nel TSV. Le PR restano invece disponibili per il Gantt
+  // e per il conteggio delle ore dei verificatori.
+  let records = records-sprint-calcolati(dati).filter(record => record.is-pull-request == false)
   // Il valore viene ricalcolato per ogni giorno dello Sprint usando le date
   // di inizio e di completamento effettivo delle issue.
   let valore-giorno = giorno => records.filter(record => {
