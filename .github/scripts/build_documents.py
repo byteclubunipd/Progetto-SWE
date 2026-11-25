@@ -106,7 +106,8 @@ def approvedOutputs(
 
 def catalog(directory: Path, outputRoot: Path, prefix: str,
             metadata: dict[str, dict[str, str]],
-            excluded: tuple[Path, ...] = ()) -> str:
+            excluded: tuple[Path, ...] = (),
+            prepend: tuple[Path, ...] = ()) -> str:
     """Render the directory tree; retain full filenames and URL-encode every path."""
     if not directory.exists():
         return EMPTY
@@ -116,8 +117,18 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
                    key=lambda p: naturalKey(p.name), reverse=True)
     folders = sorted((p for p in entries if p.is_dir()),
                      key=lambda p: naturalKey(p.name))
+    fileEntries = []
+    for sourceDirectory in prepend:
+        if sourceDirectory.exists():
+            preferred = sorted(
+                (p for p in sourceDirectory.iterdir()
+                 if p.is_file() and p.suffix.lower() == ".pdf"),
+                key=lambda p: naturalKey(p.name), reverse=True,
+            )
+            fileEntries.extend((file, sourceDirectory) for file in preferred)
+    fileEntries.extend((file, directory) for file in files)
     items = []
-    for file in files:
+    for file, titleDirectory in fileEntries:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
 
@@ -125,10 +136,10 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         if stato and stato != "approvato":
             continue
 
-        isDiary = directory.name == "1_Diario_di_bordo"
-        isLetter = directory.name == "Lettera_di_presentazione"
-        isExternalMinutes = directory.name == "Esterni" and directory.parent.name == "Verbali"
-        isInternalMinutes = directory.name == "Interni" and directory.parent.name == "Verbali"
+        isDiary = titleDirectory.name == "1_Diario_di_bordo"
+        isLetter = titleDirectory.name == "Lettera_di_presentazione"
+        isExternalMinutes = titleDirectory.name == "Esterni" and titleDirectory.parent.name == "Verbali"
+        isInternalMinutes = titleDirectory.name == "Interni" and titleDirectory.parent.name == "Verbali"
         isMinutes = isExternalMinutes or isInternalMinutes
         title = "Diario di bordo" if isDiary else "Lettera di presentazione" if isLetter else document.get(
             "titolo", file.stem.replace("_", " "))
@@ -168,15 +179,19 @@ def render(template: str, outputRoot: Path, prefix: str,
            metadata: dict[str, dict[str, str]] | None = None) -> str:
     metadata = metadata or {}
     candidature = outputRoot / "2_Candidatura"
+    candidaturaLetter = candidature / "Lettera_di_presentazione"
     replacements = {
         "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
         "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
-        "[LETTERA]": catalog(candidature / "Lettera_di_presentazione", outputRoot, prefix, metadata),
+        "[LETTERA]": catalog(outputRoot / "3_RTB/Lettera_di_presentazione", outputRoot, prefix, metadata),
         "[RTB_DOCUMENTI_ESTERNI]": catalog(outputRoot / "3_RTB/Documenti_esterni", outputRoot, prefix, metadata),
         "[RTB_DOCUMENTI_INTERNI]": catalog(outputRoot / "3_RTB/Documenti_interni", outputRoot, prefix, metadata),
         "[RTB_VERBALI_ESTERNI]": catalog(outputRoot / "3_RTB/Verbali/Esterni", outputRoot, prefix, metadata),
         "[RTB_VERBALI_INTERNI]": catalog(outputRoot / "3_RTB/Verbali/Interni", outputRoot, prefix, metadata),
-        "[DOCUMENTI_ESTERNI]": catalog(candidature / "Documenti_esterni", outputRoot, prefix, metadata),
+        "[DOCUMENTI_ESTERNI]": catalog(
+            candidature / "Documenti_esterni", outputRoot, prefix, metadata,
+            prepend=(candidaturaLetter,),
+        ),
         "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
         "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
         "[VERBALI_ESTERNI]": catalog(candidature / "Verbali/Esterni", outputRoot, prefix, metadata),

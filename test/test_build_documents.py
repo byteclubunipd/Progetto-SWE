@@ -335,9 +335,10 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(len(pdfReferences), 6)
         self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
-        self.assertIn('id="lettera-presentazione"', content)
-        self.assertLess(content.index('id="lettera-presentazione"'),
-                        content.index('id="candidatura"'))
+        self.assertIn('id="lettera-presentazione-rtb"', content)
+        self.assertLess(content.index('id="lettera-presentazione-rtb"'),
+                        content.index('id="RTB"'))
+        self.assertLess(content.index("Lettera.pdf"), content.index("Piano.pdf"))
         self.assertNotIn('class="quick-links"', content)
         self.assertNotIn("Portale della documentazione", content)
         self.assertIn("milestone-name", content)
