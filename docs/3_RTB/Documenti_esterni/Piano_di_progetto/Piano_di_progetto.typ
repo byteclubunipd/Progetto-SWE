@@ -1,21 +1,17 @@
 #import "/docs/5_Templates/documento.typ": *
 #import "Diagrammi_e_rendiconto_ore_costi.typ": *
-/*
+
 #import "../../Documenti_interni/Glossario.typ": termini
 #import "@preview/glossy:0.9.2": *
-
-#let percorso-glossario = "../../Documenti_interni/Glossario.pdf"
-#let mostra-termine(term-body) = link(percorso-glossario)[#term-body#super[G]]
 
 // Attiva la gestione del glossario usando l'elenco dei termini importato.
 // I collegamenti automatici sono disabilitati perché vengono personalizzati
 // dalla funzione `mostra-termine` definita sopra.
 #show: init-glossary.with(
   termini,
-  term-links: false,
-  show-term: mostra-termine,
+  term-links: true,
 )
-*/
+
 // ============================================================================
 // CONFIGURAZIONE AUTOMATICA DI MILESTONE E SPRINT
 // ============================================================================
@@ -423,7 +419,7 @@ Il gruppo @pianificazione[pianifica] il lavoro con @sprint[Sprint] di due settim
 ==== Attività svolte
 #mostra-burndown(sprint-1)
 #mostra-gantt(sprint-1)
-
+#pagebreak()
 ==== Preventivo ore per ruolo
 #mostra-preventivo-ruoli(sprint-1, ore-preventivate: ore-preventivate-sprint-1)
 

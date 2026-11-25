@@ -5,7 +5,8 @@
 // ============================================================================
 //
 // Il TSV viene letto a tempo di compilazione. Le colonne utilizzate sono:
-// Title, URL, Assignees, Status, Inizio, Fine, Sprint, Ruolo.
+// Title, URL, Assignees, Status, Linked pull requests, Reviewers, Inizio,
+// Fine, Conteggio, Ore, Sprint, Ruolo.
 // Per aggiornare il Gantt basta riesportare il TSV mantenendo lo stesso nome.
 
 // ============================================================================
@@ -152,8 +153,21 @@
   )
 }
 
-#let tsv-righe = (read("@byteclubunipd's RTB - Diagramma di Gantt.tsv").split("\n").slice(1)).filter(riga => riga.trim() != "")
-#let cell(riga, indice) = if indice < riga.len() { riga.at(indice).trim() } else { "" }
+#let tsv-linee = read("@byteclubunipd's RTB - Vista a Tabella da scaricare.tsv").split("\n").filter(riga => riga.trim() != "")
+#let tsv-intestazioni = tsv-linee.at(0).split("\t").map(valore => valore.trim())
+#let tsv-righe = tsv-linee.slice(1)
+#let indice-colonna(nome) = {
+  let indice = tsv-intestazioni.position(intestazione => intestazione == nome)
+  if indice == none {
+    panic("Colonna mancante nel TSV: " + nome)
+  } else {
+    indice
+  }
+}
+#let cella-colonna(colonne, nome) = {
+  let indice = indice-colonna(nome)
+  if indice < colonne.len() { colonne.at(indice).trim() } else { "" }
+}
 
 #let id-url(url) = {
   let parti = url.split("/")
@@ -162,15 +176,21 @@
 
 #let tsv-record(riga) = {
   let colonne = riga.split("\t")
-  let titolo = cell(colonne, 0)
-  let url = cell(colonne, 1)
-  let assegnatari = cell(colonne, 2)
-  let stato = cell(colonne, 3)
-  let inizio = cell(colonne, 6)
-  let fine = cell(colonne, 7)
-  let ore-testo = cell(colonne, 8)
-  let sprint = cell(colonne, 9)
-  let ruolo = cell(colonne, 10)
+  let titolo = cella-colonna(colonne, "Title")
+  let url = cella-colonna(colonne, "URL")
+  let assegnatari = cella-colonna(colonne, "Assignees")
+  let stato = cella-colonna(colonne, "Status")
+  let reviewers = cella-colonna(colonne, "Reviewers")
+  let inizio = cella-colonna(colonne, "Inizio")
+  let fine = cella-colonna(colonne, "Fine")
+  let conteggio = cella-colonna(colonne, "Conteggio")
+  let ore-testo = if conteggio == "Ore produttive" {
+    cella-colonna(colonne, "Ore")
+  } else {
+    ""
+  }
+  let sprint = cella-colonna(colonne, "Sprint")
+  let ruolo = cella-colonna(colonne, "Ruolo")
   let inizio-data = parse-data(inizio, origine: "Inizio issue " + titolo)
   let fine-data = parse-data(fine, origine: "Fine issue " + titolo)
   (
@@ -178,6 +198,8 @@
     titolo: titolo,
     url: url,
     assegnatari: if assegnatari == "" { "-" } else { assegnatari },
+    reviewers: if reviewers == "" { "-" } else { reviewers },
+    is-pull-request: url.contains("/pull/"),
     stato: if stato == "" { "-" } else { stato },
     inizio: inizio,
     fine: fine,
@@ -185,6 +207,7 @@
     fine-data: fine-data,
     sprint: if sprint == "" { 1 } else { int(sprint) },
     ruolo: if ruolo == "" { "-" } else { ruolo },
+    conteggio: conteggio,
     previsto_inizio: 1,
     durata_prevista: 1,
     effettivo_inizio: 1,
@@ -196,6 +219,19 @@
 #let issue-records = tsv-righe.map(tsv-record)
 #let records-sprint(numero) = issue-records.filter(record => record.sprint == numero)
 #let records-sprint-calcolati(dati) = records-sprint(dati.numero).map(record => adatta-record-sprint(record, dati))
+#let persone-record(record) = {
+  let persone = if record.is-pull-request and record.ruolo == "Verificatore" {
+    record.reviewers
+  } else {
+    record.assegnatari
+  }
+  if persone == "-" {
+    ()
+  } else {
+    persone.split(",").map(persona => persona.trim()).filter(persona => persona != "")
+  }
+}
+#let persona-in-record(record, username) = persone-record(record).contains(username)
 
 // ============================================================================
 // ORE E COSTI
@@ -208,7 +244,7 @@
 #let componenti-report = (brunoGrimaldi, elicoHuang, mattiaMilan, margheritaMonaco, riccardoPontello, lorencaShiroka)
 #let colori-risorse = rgb("#C62828")
 #let numero-testo(valore) = if valore == int(valore) { str(int(valore)) } else { str(valore) }
-#let somma-ore(records, ruolo) = records.filter(record => record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+#let somma-ore(records, ruolo) = records.filter(record => record.ruolo == ruolo and record.ore > 0).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
 #let ore-per-ruolo(records) = ruoli-report.map(ruolo => somma-ore(records, ruolo))
 #let costi-per-ruolo(ore) = ore.zip(costi-ruolo).map(((ore-ruolo, costo)) => ore-ruolo * costo)
 #let records-fino-a(numero) = issue-records.filter(record => record.sprint <= numero)
@@ -381,8 +417,8 @@
     let username = ("BrunoGrimaldi", "ElicoPro", "PitinPitan", "mimi8017", "rpontell", "lololoren").at(indice)
     let valori = ruoli-report.enumerate().map(((ruolo-indice, ruolo)) => {
       let budget = budget-rtb-ruolo.at(ruolo-indice) / componenti-report.len()
-      let gia-speso = precedenti.filter(record => record.assegnatari.contains(username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
-      let sprint-speso = correnti.filter(record => record.assegnatari.contains(username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+      let gia-speso = precedenti.filter(record => persona-in-record(record, username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+      let sprint-speso = correnti.filter(record => persona-in-record(record, username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
       let residuo = numero-testo(calc.max(0, budget - gia-speso - sprint-speso))
       let sottrazione = if sprint-speso == 0 {
         [(-#numero-testo(sprint-speso))]
@@ -548,7 +584,6 @@
     (giorno: 0, valore: totale-ideale),
     (giorno: dati.gantt.giorni, valore: 0),
   )
-  let giorni-etichetta = range(0, dati.gantt.giorni + 1)
   let altezza = burndown-altezza
   let larghezza = burndown-larghezza
   let effettivi = if punti.len() == 0 {
@@ -583,17 +618,15 @@
         }
       }
       #for giorno in range(0, dati.gantt.giorni + 1) {
-        if giorni-etichetta.contains(giorno) {
-          let x = giorno / calc.max(1, dati.gantt.giorni) * larghezza
-          place(left + top, line(
-            start: (x, 0pt),
-            end: (x, altezza),
-            stroke: 0.45pt + rgb("#E5E7EB"),
-          ))
-          place(left + top, dx: x - 4pt, dy: altezza + 5pt)[
-            #text(size: 6pt, fill: burndown-testo-secondario, str(giorno))
-          ]
-        }
+        let x = giorno / calc.max(1, dati.gantt.giorni) * larghezza
+        place(left + top, line(
+          start: (x, 0pt),
+          end: (x, altezza),
+          stroke: 0.45pt + rgb("#E5E7EB"),
+        ))
+        place(left + top, dx: x - 4pt, dy: altezza + 5pt)[
+          #text(size: 6pt, fill: burndown-testo-secondario, str(giorno))
+        ]
       }
       #place(left + top, line(
         start: (0pt, altezza),
@@ -701,7 +734,10 @@
   let titolo = if titolo == none { record.titolo } else { titolo }
   [#box(width: auto)[#text(size: 7pt, fill: gantt-testo, titolo)]
     #h(3pt)
-    #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)]
+    #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)
+    #if record.is-pull-request {
+      text(size: 6pt, fill: colore-stato(record), " PR")
+    }]
 }
 
 #let chip-icona(record) = box(
@@ -807,7 +843,7 @@
   ],
 )
 
-#let cella-gantt(giorno, record: none, primo: false, milestones: ()) = cella-timeline(
+#let cella-gantt(giorno, primo: false, milestones: ()) = cella-timeline(
   giorno,
   0.62cm,
   settimanale: true,
@@ -842,6 +878,7 @@
     calc.min(0pt, size.width - posizione-testo-base - larghezza-contenuto - 1pt),
   )
   let posizione-testo = posizione-testo-base + spostamento-testo
+  let posizione-icona = posizione-inizio + spostamento-testo
   let spazio-testo = calc.max(1pt, size.width - posizione-testo - 1pt)
   let titolo = titolo-chip-adattato(record, spazio-testo)
 
@@ -859,7 +896,7 @@
     )
     #place(
       left + top,
-      dx: posizione-inizio,
+      dx: posizione-icona,
       dy: 4pt,
       chip-icona(record),
     )
@@ -916,47 +953,85 @@
   intestazione-giorni(dati),
 )
 
+#let legenda-gantt(dati) = grid(
+  columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto),
+  column-gutter: 5pt,
+  icona-stato((stato: "Done")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "Completato")],
+  icona-stato((stato: "In Progress")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "In corso")],
+  icona-stato((stato: "Waiting review")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "In revisione")],
+  icona-stato((stato: "Todo")),
+  [#text(size: 6pt, fill: gantt-testo-secondario, "Da fare")],
+  ..dati.milestones.map(milestone => (
+    box(width: 0.45cm, height: 1pt, fill: colore-milestone(milestone))[],
+    [#text(size: 6pt, fill: gantt-testo-secondario, milestone.nome)],
+  )).flatten(),
+)
+
+#let gantt-righe-prima-pagina = 33
+
+#let pagina-gantt(dati, records) = block(
+  width: 100%,
+  // La pagina è volutamente indivisibile: il punto di separazione è statico
+  // e lascia sempre alla legenda uno spazio autonomo, senza sovrapposizioni.
+  breakable: false,
+  fill: gantt-sfondo,
+  stroke: 0.6pt + gantt-bordo,
+  inset: (x: 8pt, y: 8pt),
+)[
+  #table(
+    columns: 1,
+    stroke: none,
+    inset: 0pt,
+    column-gutter: 0pt,
+    row-gutter: 0.5pt,
+    table.header(
+      repeat: false,
+      [#intestazione-temporale(dati)],
+    ),
+    ..records.enumerate().map(((indice, record)) => [
+      #barra-gantt(
+        record,
+        dati.gantt.giorni,
+        milestones: dati.milestones,
+        primo: indice == 0,
+      )
+    ]),
+  )
+  #v(5pt)
+  #align(center)[#legenda-gantt(dati)]
+]
+
+#show figure.where(kind: image): set block(breakable: true)
+
 #let mostra-gantt(dati) = {
   let records = records-sprint-calcolati(dati)
-
-  figure(
-    kind: image,
-    block(
-      width: 100%,
-      fill: gantt-sfondo,
-      stroke: 0.6pt + gantt-bordo,
-      inset: (x: 8pt, y: 8pt),
-    )[
-      #intestazione-temporale(dati)
-      #v(-10pt)
-      #stack(
-        dir: ttb,
-        spacing: 0pt,
-        ..records.enumerate().map(((indice, record)) => barra-gantt(
-          record,
-          dati.gantt.giorni,
-          milestones: dati.milestones,
-          primo: indice == 0,
-        )),
+  let prima-pagina = records.slice(0, calc.min(gantt-righe-prima-pagina, records.len()))
+  let seconda-pagina = if records.len() > gantt-righe-prima-pagina {
+    records.slice(gantt-righe-prima-pagina)
+  } else {
+    ()
+  }
+  if seconda-pagina.len() == 0 {
+    figure(
+      kind: image,
+      pagina-gantt(dati, prima-pagina),
+      caption: [Diagramma di Gantt dello Sprint #dati.numero],
+    )
+  } else {
+    // Il salto è al livello del documento, fuori dalla figura/contenitore.
+    // In questo modo la seconda parte non può rimanere nella stessa pagina.
+    [
+      #pagina-gantt(dati, prima-pagina)
+      #label("gantt-sprint-" + str(dati.numero))
+      #pagebreak()
+      #figure(
+        kind: image,
+        pagina-gantt(dati, seconda-pagina),
+        caption: [Diagramma di Gantt dello Sprint #dati.numero],
       )
-      #v(5pt)
-      #grid(
-        columns: (auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto, auto),
-        column-gutter: 5pt,
-        icona-stato((stato: "Done")),
-        [#text(size: 6pt, fill: gantt-testo-secondario, "Completato")],
-        icona-stato((stato: "In Progress")),
-        [#text(size: 6pt, fill: gantt-testo-secondario, "In corso")],
-        icona-stato((stato: "Waiting review")),
-        [#text(size: 6pt, fill: gantt-testo-secondario, "In revisione")],
-        icona-stato((stato: "Todo")),
-        [#text(size: 6pt, fill: gantt-testo-secondario, "Da fare")],
-        ..dati.milestones.map(milestone => (
-          box(width: 0.45cm, height: 1pt, fill: colore-milestone(milestone))[],
-          [#text(size: 6pt, fill: gantt-testo-secondario, milestone.nome)],
-        )).flatten(),
-      )
-    ],
-    caption: [Diagramma di Gantt dello Sprint #dati.numero],
-  )
+    ]
+  }
 }
