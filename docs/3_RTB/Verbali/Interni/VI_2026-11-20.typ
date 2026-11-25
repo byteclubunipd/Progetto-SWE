@@ -11,7 +11,7 @@
   redattore: EH,
   verificatore: LS,
   uso: "Interno",
-  stato: "Da verificare",
+  stato: "Approvato",
 
   tipoRiunione: "Riunione interna",
   luogo: "Canale vocale Discord",
