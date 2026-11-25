@@ -96,7 +96,7 @@ def approvedOutputs(
 
         # Se lo stato è specificato, deve essere Approvato.
         # Se manca, il documento può comunque essere pubblicato.
-        if stato and stato != "approvato":
+        if stato and stato != "Approvato":
             continue
 
         approved.append(relative)
@@ -122,7 +122,7 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
         document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
 
         stato = document.get("stato", "").strip().casefold()
-        if stato and stato != "approvato":
+        if stato and stato != "Approvato":
             continue
 
         isDiary = directory.name == "1_Diario_di_bordo"
