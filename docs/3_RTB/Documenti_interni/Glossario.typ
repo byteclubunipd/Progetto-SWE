@@ -8,9 +8,13 @@
     short: "Agile",
     description: [In informatica, Agile è un approccio di lavoro basato su iterazioni brevi e frequenti feedback. Nel metodo Scrum, uno dei più diffusi, il lavoro viene suddiviso in Sprint di una o due settimane. Ogni Sprint inizia con una Sprint Planning, in cui si definiscono gli obiettivi, e si conclude con una Sprint Retrospective, in cui il gruppo valuta cosa è andato bene e cosa migliorare.],
   ),
+  amministratore-progetto: (
+    short: "Amministratore del Progetto",
+    description: [Ruolo che si occupa della configurazione e gestione dell’infrastruttura IT di supporto a un progetto.],
+  ),
   amministratore: (
     short: "Amministratore",
-    description: [Ruolo che si occupa della configurazione e gestione dell’infrastruttura IT di supporto a un progetto.],
+    description: [Specializzazione di un attore nella gerarchia di utenti previsti in SmartDashboard. Si occupa della configurazione e gestione dell’infrastruttura.],
   ),
   analisi-dei-requisiti: (
     short: "Analisi dei Requisiti",
@@ -27,7 +31,7 @@
   ),
   attore: (
     short: "Attore",
-    description: [Un’entità esterna e non controllabile dal progetto, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.],
+    description: [Un’entità esterna e non controllabile dal sistema, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.],
   ),
   autenticazione: (
     short: "Autenticazione",
@@ -39,7 +43,7 @@
   ),
   azione: (
     short: "Azione",
-    description: [L’insieme di processi intrapresi per mettere in pratica una determinata @decisione.],
+    description: [L’insieme di processi intrapresi per mettere in pratica una determinata decisione.],
   ),
 
   // --- B ---
@@ -51,6 +55,11 @@
     short: "Base di dati",
     description: [Traduzione italiana del termine Database, per la definizione vedere ‘@database’.],
   ),
+  bi: (
+    short: "BI",
+    long: "Business Intelligence",
+    description: [Acronimo di Business Intelligence, è un insieme di processi, strumenti e tecnologie che consentono alle organizzazioni di raccogliere, analizzare e visualizzare dati aziendali per supportare decisioni strategiche e operative. La BI trasforma i dati grezzi in informazioni significative, permettendo di identificare tendenze, modelli e opportunità di miglioramento.],
+  ),
 
   // --- C ---
   capitolato: (
@@ -59,17 +68,25 @@
   ),
   caso-d-uso: (
     short: "Caso d’uso",
-    description: [Insieme di azioni all’interno di uno scenario, con in comune uno scopo finale per un @attore.],
+    description: [Insieme di azioni all’interno di uno scenario, con in comune uno scopo finale per un attore.],
   ),
   committente: (
     short: "Committente",
     description: [Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto software, di un sistema informatico o di un servizio IT. Il committente definisce gli obiettivi, approva i requisiti e verifica i risultati, ma non esegue direttamente lo sviluppo.],
   ),
-
+  csv: (
+    short: "CSV",
+    long: "Comma-Separated Values",
+    description: [Acronimo di Comma-Separated Values, è un formato di file utilizzato per memorizzare dati tabulari in cui ogni riga rappresenta un record e i valori dei campi sono separati da virgole o altri delimitatori. I file CSV sono ampiamente utilizzati per l’importazione e l’esportazione di dati tra diverse applicazioni, come fogli di calcolo, database e software di analisi dei dati.],
+  ),
   // --- D ---
   database: (
     short: "Database",
     description: [Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Guardare definizione @dbms).],
+  ),
+  data-warehouse: (
+    short: "Data Warehouse",
+    description: [Sistema di archiviazione e gestione dei dati progettato per supportare l’analisi e la generazione di report. Un data warehouse raccoglie dati provenienti da diverse fonti, li organizza in un formato coerente e li rende disponibili per l’analisi storica e decisionale. È ottimizzato per query complesse e analisi multidimensionali, consentendo alle organizzazioni di ottenere informazioni strategiche dai propri dati.],
   ),
   dashboard: (
     short: "Dashboard",
@@ -97,9 +114,17 @@
     short: "Discord",
     description: [Piattaforma di videochiamate e messaggistica asincrona. È caratterizzata dalla possibilità di creare spazi indipendenti chiamati server, all’interno dei quali è possibile istituire vari canali testuali (tipicamente suddivisi per argomento) e canali vocali indipendenti, utilizzati per chiamate di gruppo tra i membri del server.],
   ),
+  docker: (
+    short: "Docker",
+    description: [Piattaforma software che consente di creare, distribuire e gestire applicazioni all’interno di container, che sono ambienti isolati e portabili. Docker semplifica il processo di sviluppo e distribuzione delle applicazioni, garantendo coerenza tra diversi ambienti (sviluppo, test e produzione) e facilitando la scalabilità e la gestione delle dipendenze.],
+  ),
   drag-and-drop: (
     short: "Drag & Drop",
     description: [Tecnica di interazione con l’interfaccia utente che permette di selezionare un elemento e spostarlo in un’altra posizione trascinandolo con il cursore del mouse o con il dito su dispositivi touch. Viene spesso utilizzata per organizzare elementi, come file o icone, in modo intuitivo e visivo.],
+  ),
+  drill-down: (
+    short: "Drill Down",
+    description: [Tecnica di analisi dei dati che consente di esplorare i dettagli di un insieme di informazioni, passando da un livello di aggregazione a uno più granulare. Viene spesso utilizzata in contesti di business intelligence e reporting per ottenere una visione più approfondita dei dati.],
   ),
 
   // --- E ---
@@ -111,25 +136,34 @@
     short: "Efficienza",
     description: [Rapporto tra risultati ottenuti e risorse impiegate per ottenerli.],
   ),
+  erp: (
+    short: "ERP",
+    long: "Enterprise Resource Planning",
+    description: [Acronimo di Enterprise Resource Planning, è un sistema software integrato che gestisce e automatizza i processi aziendali principali, come contabilità, gestione delle risorse umane, produzione, approvvigionamento e vendite. Gli ERP consentono alle organizzazioni di centralizzare le informazioni, migliorare la collaborazione tra i reparti e ottimizzare l’efficienza operativa.],
+  ),
   excel: (
     short: "Excel",
     description: [Software di Microsoft per la gestione di fogli di calcolo, che consente di organizzare, analizzare e visualizzare dati in tabelle, grafici e report. È ampiamente utilizzato in ambito aziendale, finanziario e accademico per attività come la contabilità, l’analisi dei dati e la pianificazione.],
   ),
 
   // --- F ---
+  fast-api: (
+    short: "FastAPI",
+    description: [Framework web moderno e ad alte prestazioni per la creazione di API in Python, basato su standard come OpenAPI e JSON Schema. FastAPI semplifica lo sviluppo di applicazioni web e microservizi, offrendo funzionalità come la validazione automatica dei dati e la generazione di documentazione interattiva.],
+  ),
   frontend: (
     short: "Frontend",
     description: [La parte di un progetto che si occupa dell’interazione diretta con l’utilizzatore finale.],
   ),
   funzionalita: (
     short: "Funzionalità",
-    description: [Una caratteristica offerta da un Sistema, spesso con lo scopo di soddisfare un bisogno.],
+    description: [Una caratteristica offerta da un sistema, spesso con lo scopo di soddisfare un bisogno.],
   ),
 
   // --- G ---
   gauge: (
     short: "Gauge",
-    description: [Elemento grafico simile a un tachimetro o a un contachilometri utilizzato per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.],
+    description: [Termine tecnico per un indicatore visivo che mostra lo stato di avanzamento di una metrica. Per la definizione vedere "@indicatori-a-quadrante".],
   ),
   git: (
     short: "Git",
@@ -194,8 +228,8 @@
   // --- L ---
   llm: (
     short: "LLM",
-    long: "Large Language Models",
-    description: [Large Language Models. Indica i modelli addestrati su enormi quantità di testo come ChatGPT e Claude.],
+    long: "Large Language Model",
+    description: [Large Language Model. Indica i modelli addestrati su enormi quantità di testo come ChatGPT e Claude.],
   ),
 
   // --- M ---
@@ -210,10 +244,6 @@
   merge: (
     short: "Merge",
     description: [Processo con il quale, in un sistema di versionamento come git, un ramo di lavoro viene fatto confluire in un altro, generalmente in un grado gerarchico più elevato.],
-  ),
-  metodo-agile: (
-    short: "Metodo Agile",
-    description: [Metodo di sviluppo software per la gestione di progetti complessi basato sui cicli iterativi brevi chiamati Sprint, che favorisce la flessibilità del progetto e la collaborazione continua.],
   ),
   milestone: (
     short: "Milestone",
@@ -324,6 +354,10 @@
     short: "Repository",
     description: [Uno spazio condiviso tra tutti i membri del gruppo, in cui viene memorizzato e versionato tutto il codice sorgente prodotto.],
   ),
+  requisiti-di-qualita: (
+    short: "Requisiti di qualità",
+    description: [Tipo di requisito che descrive le caratteristiche qualitative che il progetto deve possedere, come prestazioni, sicurezza, affidabilità e usabilità.],
+  ),
   requisito-di-vincolo: (
     short: "Requisito di vincolo",
     description: [Tipo di requisito che descrive le restrizioni imposte dall’azienda proponente che il progetto deve rispettare.],
@@ -347,6 +381,11 @@
   ),
 
   // --- S ---
+  sal: (
+    short: "SAL",
+    long: "Stato Avanzamento Lavori",
+    description: [Acronimo di Stato Avanzamento Lavori, è un documento che riassume lo stato di avanzamento del progetto, evidenziando le attività completate, quelle in corso e quelle pianificate. Il SAL fornisce una panoramica chiara dei progressi rispetto agli obiettivi prefissati e serve come strumento di comunicazione tra il team di progetto e gli stakeholder.],
+  ),
   schede-kpi: (
     short: "Schede KPI",
     description: [Strumenti di monitoraggio delle prestazioni che visualizzano metriche chiave (KPI) in modo chiaro e conciso, consentendo agli utenti di valutare rapidamente lo stato di un progetto o di un sistema e prendere decisioni informate.],
@@ -366,11 +405,11 @@
   sql: (
     short: "SQL",
     long: "Structured Query Language",
-    description: [Acronimo di Structured Query Language, è un linguaggio dichiarativo con lo scopo di creare, filtrare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.],
+    description: [Acronimo di Structured Query Language, è un linguaggio dichiarativo con lo scopo di definire, interrogare, modificare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.],
   ),
   stakeholder: (
     short: "Stakeholder",
-    description: [Qualunque persona, gruppo o organizzazione che ha interesse, influenza o è coinvolta nel progetto, includendo clienti, utenti, sviluppatori, dirigenti, fornitori e persino organizzazioni esterne, ed è fondamentale per definire requisiti.],
+    description: [Qualunque persona, gruppo o organizzazione che ha interesse, influenza o è coinvolta nel progetto, includendo clienti, utenti, sviluppatori, dirigenti, fornitori e persino organizzazioni esterne.],
   ),
   sviluppo: (
     short: "Sviluppo",
@@ -406,7 +445,7 @@
   ve: (
     short: "VE",
     long: "Verbale Esterno",
-    description: [Acronimo di Verbale Esterno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro esterno. Il codice associato ai VE segue la forma VE x.y.z, dove x identifica il numero progressivo del verbale approvato, y identifica una specifica decisione o voce registrata all’interno del verbale e z identifica le modifiche minori.],
+    description: [Acronimo di Verbale Esterno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro esterno. Il codice associato ai VE segue la forma VE_YYYY_MM_DD (YYYY: anno, MM: mese, DD: giorno).],
   ),
   verifica: (
     short: "Verifica",
@@ -423,7 +462,7 @@
   vi: (
     short: "VI",
     long: "Verbale Interno",
-    description: [Acronimo di Verbale Interno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro interno. Il codice associato ai VI segue la forma VI x.y.z, dove x identifica il numero progressivo del verbale approvato, y identifica una specifica decisione o voce registrata all’interno del verbale e z identifica le modifiche minori.],
+    description: [Acronimo di Verbale Interno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro interno. Il codice associato ai VI segue la forma VI_YYYY_MM_DD (YYYY: anno, MM: mese, DD: giorno).],
   ),
 
   // --- W ---
@@ -433,11 +472,11 @@
   ),
   widget: (
     short: "Widget",
-    description: [Elemento dell’interfaccia grafica di un software che consente all’utente di interagire con il sistema, come pulsanti, caselle di testo, menu a discesa o barre di scorrimento. I widget facilitano l’accesso a funzionalità e informazioni, migliorando l’esperienza dell’utente.],
+    description: [Elemento dell’interfaccia grafica di un software che consente all’utente di interagire con il sistema, come grafici o tabelle in SmartDashboard. I widget facilitano l’accesso a funzionalità e informazioni, migliorando l’esperienza dell’utente.],
   ),
   whatsapp: (
     short: "WhatsApp",
-    description: [Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne.],
+    description: [Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne e per le comunicazioni esterne con la proponente.],
   ),
 )
 
@@ -461,10 +500,10 @@
   destinatari: gruppo,
   indice: true,
   registroModifiche: (
-    ("0.1.3", "2026-11-21", "Automazione generazione glossario con pacchetto glossy", BG, "-"),
-    ("0.1.2", "2026-11-15", "Corrette definizioni dopo la verifica", BG, "-"),
-    ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, "-"),
-    ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, "-"),
+    ("0.1.3", "2026-11-15", "Corrette definizioni dopo la verifica e aggiunti termini mancanti", BG, LS),
+    ("0.1.2", "2026-11-21", "Automazione generazione glossario con pacchetto glossy", BG, LS),
+    ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, LS),
+    ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, LS),
   ),
 )
 
