@@ -3,30 +3,242 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/desktop.css" media="screen and (min-width: 880px)">
+
+  <script src="js/script.js" defer></script>
+  <meta name="description" content="Documentazione del gruppo ByteClub per il corso di Ingegneria del Software">
   <title>ByteClub — Documentazione</title>
 </head>
-<body>
-  <h1>ByteClub — Documentazione</h1>
+<body id="top">
+    <header>
+      <button id="bottoneMenu" type="button" aria-controls="menu" aria-expanded="false" aria-label="Apri menu di navigazione">
+        <span></span><span></span><span></span>
+      </button>
+      <nav id="menu" aria-label="Navigazione principale" aria-hidden="true">
+        <span class="titolo-menu">Menù</span>
+        <ul>
+          <li><a href="#lettera-presentazione-rtb">Lettera di presentazione RTB</a></li>
+          <li><a href="#RTB">RTB</a></li>
+          <li><a href="#candidatura"> Candidatura </a></li>
+          <li><a href="#diario"> Diario di bordo</a></li>
+          <li><a href="#contatti"> Contatti </a></li>
+          <li><a href="#about"> Chi siamo </a></li>
+          <li>
+            <button id="tema-toggle" type="button" aria-pressed="false"
+              aria-label="Attiva modalità scura">
+              <span class="tema-simbolo" aria-hidden="true">
+                <span class="bit bit-one">1</span><span class="bit bit-zero">0</span>
+              </span>
+              <span class="tema-etichetta">Tema: Chiaro</span>
+            </button>
+          </li>
+        </ul>
+        <div id="logo">
+          <img src="assets/favicon.svg" alt="Logo ByteClub">
+        </div>
+      </nav>
+      <div id="intestazione">
+          <h1 class="gradientTitle">ByteClub</h1>
+      </div>
+   
+  </header>
   <main>
+    <section id="introduzione" class="hero">
+      <div class="hero-copy">
+        <h2>Progetto di Ingegneria del Software A.A. 2026/27</h2>
+        <p>La raccolta ufficiale dei documenti, dei verbali e delle attività del gruppo ByteClub per il corso di laurea in Informatica dell'Università degli Studi di Padova.</p>
+      </div>
+      <div class="project-meta" role="group" aria-label="Stato del progetto"
+        data-github-milestones-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/milestones?state=all&per_page=20"
+        data-github-issues-url="https://api.github.com/repos/byteclubunipd/Progetto-SWE/issues"
+        data-github-review-url="https://api.github.com/search/issues?q=repo%3Abyteclubunipd%2FProgetto-SWE+is%3Aissue+is%3Aopen+linked%3Apr&amp;per_page=100">
+        <div class="project-status">
+          <span>Stato attuale</span>
+          <strong id="milestone-name">Caricamento...</strong>
+          <!-- aria-valuenow assente di proposito: lo imposta script.js quando arrivano i dati. -->
+          <div class="progress-track" role="progressbar" aria-label="Avanzamento milestone"
+            aria-valuemin="0" aria-valuemax="100" aria-valuetext="Caricamento in corso">
+            <span id="milestone-progress"></span>
+          </div>
+          <span id="milestone-summary">Recupero dei dati da GitHub</span>
+          <ul id="milestone-issues" class="issue-list" aria-label="Issue della milestone" hidden></ul>
+        </div>
+        <p id="data-aggiornamento" class="data-aggiornamento">Ultimo aggiornamento: [DATA_AGGIORNAMENTO]</p>
+      </div>
+    </section>
+    <section class="resource-feature">
+      <h2 id="lettera-presentazione-rtb">Lettera di presentazione RTB</h2>
+      <p class="resource-description">Il documento principale della RTB del gruppo ByteClub.</p>
+      <div class="featured-document">
+        [LETTERA]
+      </div>
+    </section>
+
+    <section id="RTB">
+      <h2>RTB</h2>
+      <p class="section-description">
+        La documentazione della prima milestone, distinta tra materiali di progetto e verbali degli incontri.
+      </p>
+
+      <div class="resource-grid">
+        <section class="resource-card">
+          <h3>Documenti esterni</h3>
+          <p>Materiali preparati per la valutazione e il confronto con l'esterno.</p>
+          [RTB_DOCUMENTI_ESTERNI]
+        </section>
+
+        <section class="resource-card">
+          <h3>Documenti interni</h3>
+          <p>Analisi e materiali di lavoro del gruppo.</p>
+          [RTB_DOCUMENTI_INTERNI]
+        </section>
+
+        <section class="resource-card">
+          <h3>Verbali esterni</h3>
+          <p>Resoconti degli incontri con i referenti esterni.</p>
+          [RTB_VERBALI_ESTERNI]
+        </section>
+
+        <section class="resource-card">
+          <h3>Verbali interni</h3>
+          <p>Decisioni e attività discusse dal gruppo.</p>
+          [RTB_VERBALI_INTERNI]
+        </section>
+      </div>
+    </section>
     <section>
-      <h2>1_Diario_di_bordo</h2>
+      <h2 id="candidatura">Candidatura</h2>
+      <p class="section-description">La documentazione della prima milestone, distinta tra materiali di progetto e verbali degli incontri.</p>
+      <div class="resource-grid">
+        <section class="resource-card">
+          <h3>Documenti esterni</h3>
+          <p>Materiali preparati per la valutazione e il confronto con l'esterno.</p>
+          [DOCUMENTI_ESTERNI]
+        </section>
+        <section class="resource-card">
+          <h3>Documenti interni</h3>
+          <p>Analisi e materiali di lavoro del gruppo.</p>
+          [DOCUMENTI_INTERNI]
+        </section>
+        <section class="resource-card">
+          <h3>Verbali esterni</h3>
+          <p>Resoconti degli incontri con i referenti esterni.</p>
+          [VERBALI_ESTERNI]
+        </section>
+        <section class="resource-card">
+          <h3>Verbali interni</h3>
+          <p>Decisioni e attività discusse dal gruppo.</p>
+          [VERBALI_INTERNI]
+        </section>
+      </div>
+    </section>
+    <section class="resource-section">
+      <h2 id="diario">Diario di bordo</h2>
+      <p class="section-description">La cronologia del lavoro svolto e degli aggiornamenti del gruppo.</p>
       [DIARI_DI_BORDO]
     </section>
     <section>
-      <h2>2_Candidatura</h2>
-      <section>
-        <h3>Documenti</h3>
-        [CANDIDATURA_DOCUMENTI]
-      </section>
-      <section>
-        <h3>Verbali interni</h3>
-        [VERBALI_INTERNI]
-      </section>
-      <section>
-        <h3>Verbali esterni</h3>
-        [VERBALI_ESTERNI]
-      </section>
+      <h2 id="contatti">Contatti</h2>
+      <p class="section-description">Per comunicare con il gruppo o consultare il codice e la documentazione del progetto.</p>
+      <div class="contatto-principale">
+        <p>Per qualsiasi informazione, puoi contattarci all'indirizzo email: <a href="mailto:byteclubunipd@gmail.com">byteclubunipd@gmail.com</a></p>
+      </div>
+      <div class="contatto-principale" >
+        <p>La repository del progetto è disponibile su <a href="https://github.com/byteclubunipd/Progetto-SWE.git" target="_blank" rel="noopener noreferrer">github.com/byteclubunipd/Progetto-SWE</a></p>
+      </div>
+      <h3>Membri del team</h3>
+      <p id="membri-team-descrizione" class="sr-only">Tabella dei membri del team con nome, cognome, matricola e indirizzo email.</p>
+      <div class="team-table-wrapper">
+        <table class="team-table" aria-describedby="membri-team-descrizione">
+          <thead>
+            <tr>
+              <th scope="col">Nome</th>
+              <th scope="col">Cognome</th>
+              <th scope="col">Matricola</th>
+              <th scope="col">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Bruno</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Grimaldi</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2048056</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:bruno.grimaldi@studenti.unipd.it">bruno.grimaldi@studenti.unipd.it</a></span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Elico</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Huang</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2147952</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:elico.huang@studenti.unipd.it">elico.huang@studenti.unipd.it</a></span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Mattia</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Milan</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2137968</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:mattia.milan.4@studenti.unipd.it">mattia.milan.4@studenti.unipd.it</a></span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Margherita</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Monaco</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2138017</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:margherita.monaco@studenti.unipd.it">margherita.monaco@studenti.unipd.it</a></span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Riccardo</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Pontello</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2076441</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:riccardo.pontello@studenti.unipd.it">riccardo.pontello@studenti.unipd.it</a></span></td>
+            </tr>
+            <tr>
+              <th scope="row"><span class="team-table-label" aria-hidden="true">Nome</span><span class="team-table-value">Lorenca</span></th>
+              <td><span class="team-table-label" aria-hidden="true">Cognome</span><span class="team-table-value">Shiroka</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Matricola</span><span class="team-table-value">2149035</span></td>
+              <td><span class="team-table-label" aria-hidden="true">Email</span><span class="team-table-value"><a href="mailto:lorenca.shiroka@studenti.unipd.it">lorenca.shiroka@studenti.unipd.it</a></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <section class="about-section">
+      <h2 id="about">Chi siamo</h2>
+        <p>Il gruppo ByteClub è composto da studenti dell'Università di Padova, nato per svolgere il progetto didattico del corso di Ingegneria del Software.</p>
+        <p>I nostri profili GitHub:</p>
+        <div class="cardTeam">
+          <div class="personCard">
+            <img src="https://github.com/BrunoGrimaldi.png?size=96" alt="Profilo GitHub di Bruno Grimaldi" loading="lazy" decoding="async">
+            <p>Bruno Grimaldi <a href="https://github.com/BrunoGrimaldi">github.com/BrunoGrimaldi</a></p>
+          </div>
+          <div class="personCard">
+            <img src="https://github.com/ElicoPro.png?size=96" alt="Profilo GitHub di Elico Huang" loading="lazy" decoding="async">
+            <p>Elico Huang <a href="https://github.com/ElicoPro">github.com/ElicoPro</a></p>
+          </div>
+          <div class="personCard">
+            <img src="https://github.com/PitinPitan.png?size=96" alt="Profilo GitHub di Mattia Milan" loading="lazy" decoding="async">
+            <p>Mattia Milan <a href="https://github.com/PitinPitan">github.com/PitinPitan</a></p>
+          </div>          
+          <div class="personCard">
+            <img src="https://github.com/mimi8017.png?size=96" alt="Profilo GitHub di Margherita Monaco" loading="lazy" decoding="async">
+            <p>Margherita Monaco <a href="https://github.com/mimi8017">github.com/mimi8017</a></p>
+          </div>
+          <div class="personCard">
+            <img src="https://github.com/rpontell.png?size=96" alt="Profilo GitHub di Riccardo Pontello" loading="lazy" decoding="async">
+            <p>Riccardo Pontello <a href="https://github.com/rpontell">github.com/rpontell</a></p>
+         </div>
+         <div class="personCard">
+            <img src="https://github.com/lololoren.png?size=96" alt="Profilo GitHub di Lorenca Shiroka" loading="lazy" decoding="async">
+            <p>Lorenca Shiroka <a href="https://github.com/lololoren">github.com/lololoren</a></p>
+         </div>
+        </div>
     </section>
   </main>
+  <footer>
+    <a class="back-to-top" href="#top">Torna in alto</a>
+    <p>&copy; <time datetime="2026">2026</time> ByteClub - Documentazione del progetto</p>
+  </footer>
 </body>
 </html>

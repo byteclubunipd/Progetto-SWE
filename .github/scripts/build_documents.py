@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import date
 import html
 import json
 import os
@@ -13,7 +14,7 @@ import subprocess
 import tempfile
 from urllib.parse import quote
 
-SOURCE_DIRS = ("1_Diario_di_bordo", "2_Candidatura")
+SOURCE_DIRS = ("1_Diario_di_bordo", "2_Candidatura", "3_RTB")
 MANIFEST = Path(".github/typst-manifest.json")
 TEMPLATE = Path("website/index.html")
 SITE_BUILD = Path("website/build")
@@ -51,8 +52,62 @@ def naturalKey(value: str) -> tuple:
                  for part in re.split(r"(\d+)", value))
 
 
+def documentMetadata(source: Path) -> dict[str, str]:
+    content = source.read_text(encoding="utf-8-sig")
+    values = {}
+
+    for field in ("titolo", "versione", "stato", "data", "tipoRiunione"):
+        match = re.search(
+            rf'\b{field}\s*(?::|=)\s*"([^"]*)"',
+            content
+        )
+        if match:
+            values[field] = match.group(1).strip()
+
+    signature = re.search(r"\bfirma\s*:\s*(true|false)", content)
+    if signature:
+        values["firma"] = signature.group(1)
+
+    return values
+
+
+def collectMetadata(root: Path, sources: list[Path]) -> dict[str, dict[str, str]]:
+    metadata = {}
+    for source in sources:
+        relative = source.relative_to(root / "docs").with_suffix(".pdf").as_posix()
+        metadata[relative] = documentMetadata(source)
+    return metadata
+
+def approvedOutputs(
+    candidate: Path,
+    metadata: dict[str, dict[str, str]]
+) -> list[str]:
+    approved = []
+
+    for pdf in candidate.rglob("*.pdf"):
+        relative = pdf.relative_to(candidate).as_posix()
+
+        # Pubblica esclusivamente le directory gestite.
+        if not relative.split("/", 1)[0] in SOURCE_DIRS:
+            continue
+
+        document = metadata.get(relative, {})
+        stato = document.get("stato", "").strip().casefold()
+
+        # Se lo stato è specificato, deve essere Approvato.
+        # Se manca, il documento può comunque essere pubblicato.
+        if stato and stato != "approvato":
+            continue
+
+        approved.append(relative)
+
+    return sorted(approved, key=naturalKey)
+
+
 def catalog(directory: Path, outputRoot: Path, prefix: str,
-            excluded: tuple[Path, ...] = ()) -> str:
+            metadata: dict[str, dict[str, str]],
+            excluded: tuple[Path, ...] = (),
+            prepend: tuple[Path, ...] = ()) -> str:
     """Render the directory tree; retain full filenames and URL-encode every path."""
     if not directory.exists():
         return EMPTY
@@ -62,28 +117,84 @@ def catalog(directory: Path, outputRoot: Path, prefix: str,
                    key=lambda p: naturalKey(p.name), reverse=True)
     folders = sorted((p for p in entries if p.is_dir()),
                      key=lambda p: naturalKey(p.name))
+    fileEntries = []
+    for sourceDirectory in prepend:
+        if sourceDirectory.exists():
+            preferred = sorted(
+                (p for p in sourceDirectory.iterdir()
+                 if p.is_file() and p.suffix.lower() == ".pdf"),
+                key=lambda p: naturalKey(p.name), reverse=True,
+            )
+            fileEntries.extend((file, sourceDirectory) for file in preferred)
+    fileEntries.extend((file, directory) for file in files)
     items = []
-    for file in files:
+    for file, titleDirectory in fileEntries:
         url = prefix + quote(file.relative_to(outputRoot).as_posix(), safe="/")
-        items.append(f'<li><a href="{html.escape(url, quote=True)}">'
-                     f'{html.escape(file.stem)}</a></li>')
+        document = metadata.get(file.relative_to(outputRoot).as_posix(), {})
+
+        stato = document.get("stato", "").strip().casefold()
+        if stato and stato != "approvato":
+            continue
+
+        isDiary = titleDirectory.name == "1_Diario_di_bordo"
+        isLetter = titleDirectory.name == "Lettera_di_presentazione"
+        isExternalMinutes = titleDirectory.name == "Esterni" and titleDirectory.parent.name == "Verbali"
+        isInternalMinutes = titleDirectory.name == "Interni" and titleDirectory.parent.name == "Verbali"
+        isMinutes = isExternalMinutes or isInternalMinutes
+        title = "Diario di bordo" if isDiary else "Lettera di presentazione" if isLetter else document.get(
+            "titolo", file.stem.replace("_", " "))
+        details = []
+        if document.get("data"):
+            details.append(document["data"])
+        if not isDiary and not isMinutes:
+            if (document.get("versione")
+                    and document["versione"].lower() != "false"):
+                details.append(f'Versione {document["versione"]}')
+
+            if document.get("stato"):
+                details.append(document["stato"])
+
+        if isExternalMinutes:
+            details.append("Firmato" if document.get("firma") == "true" else "Non firmato")
+        elif not isInternalMinutes and document.get("firma") == "true":
+            details.append("Firmato")
+        detailMarkup = ""
+        if details:
+            detailMarkup = '<span class="document-meta">' + " · ".join(
+                html.escape(value) for value in details) + "</span>"
+        items.append(f'<li><a href="{html.escape(url, quote=True)}" '
+                     'target="_blank" rel="noopener noreferrer">'
+                     f'<span class="document-title">{html.escape(title)}</span>'
+                     f'{detailMarkup}</a></li>')
     for folder in folders:
-        nested = catalog(folder, outputRoot, prefix, excluded)
+        nested = catalog(folder, outputRoot, prefix, metadata, excluded)
         if nested != EMPTY:
             items.append(f"<li><strong>{html.escape(folder.name.replace('_', ' '))}"
                          f"</strong>\n{nested}</li>")
-    return "<ul>\n" + "\n".join(items) + "\n</ul>" if items else EMPTY
+    return '<ul class="document-list">\n' + "\n".join(items) + \
+        "\n</ul>" if items else EMPTY
 
 
-def render(template: str, outputRoot: Path, prefix: str) -> str:
+def render(template: str, outputRoot: Path, prefix: str,
+           metadata: dict[str, dict[str, str]] | None = None) -> str:
+    metadata = metadata or {}
     candidature = outputRoot / "2_Candidatura"
+    candidaturaLetter = candidature / "Lettera_di_presentazione"
     replacements = {
-        "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix),
-        "[CANDIDATURA_DOCUMENTI]": catalog(candidature, outputRoot, prefix,
-                                          (candidature / "verbali/interni",
-                                           candidature / "verbali/esterni")),
-        "[VERBALI_INTERNI]": catalog(candidature / "verbali/interni", outputRoot, prefix),
-        "[VERBALI_ESTERNI]": catalog(candidature / "verbali/esterni", outputRoot, prefix),
+        "[DATA_AGGIORNAMENTO]": date.today().isoformat(),
+        "[DIARI_DI_BORDO]": catalog(outputRoot / "1_Diario_di_bordo", outputRoot, prefix, metadata),
+        "[LETTERA]": catalog(outputRoot / "3_RTB/Lettera_di_presentazione", outputRoot, prefix, metadata),
+        "[RTB_DOCUMENTI_ESTERNI]": catalog(outputRoot / "3_RTB/Documenti_esterni", outputRoot, prefix, metadata),
+        "[RTB_DOCUMENTI_INTERNI]": catalog(outputRoot / "3_RTB/Documenti_interni", outputRoot, prefix, metadata),
+        "[RTB_VERBALI_ESTERNI]": catalog(outputRoot / "3_RTB/Verbali/Esterni", outputRoot, prefix, metadata),
+        "[RTB_VERBALI_INTERNI]": catalog(outputRoot / "3_RTB/Verbali/Interni", outputRoot, prefix, metadata),
+        "[DOCUMENTI_ESTERNI]": catalog(
+            candidature / "Documenti_esterni", outputRoot, prefix, metadata,
+            prepend=(candidaturaLetter,),
+        ),
+        "[DOCUMENTI_INTERNI]": catalog(candidature / "Documenti_interni", outputRoot, prefix, metadata),
+        "[VERBALI_INTERNI]": catalog(candidature / "Verbali/Interni", outputRoot, prefix, metadata),
+        "[VERBALI_ESTERNI]": catalog(candidature / "Verbali/Esterni", outputRoot, prefix, metadata),
     }
     for keyword in replacements:
         if template.count(keyword) != 1:
@@ -122,6 +233,66 @@ def compileTypst(source: Path, target: Path, root: Path) -> None:
     )
 
 
+def typstTokens(text: str) -> list[str]:
+    """Read tokens without treating comments, strings or raw text as settings."""
+    pattern = re.compile(r'\s+|//[^\r\n]*|/\*|"(?:\\.|[^"\\])*"|\x60+|[\w-]+|.',
+                         re.DOTALL)
+    tokens = []
+    position = 0
+    while position < len(text):
+        match = pattern.match(text, position)
+        token = match.group()
+        position = match.end()
+        if token.isspace() or token.startswith("//"):
+            continue
+        if token == "/*":
+            depth = 1
+            while depth:
+                comment = re.search(r"/\*|\*/", text[position:])
+                if comment is None:
+                    raise ValueError("Commento Typst non chiuso")
+                depth += 1 if comment.group() == "/*" else -1
+                position += comment.end()
+            continue
+        if token.startswith("`"):
+            end = text.find(token, position)
+            if end == -1:
+                raise ValueError("Blocco raw Typst non chiuso")
+            position = end + len(token)
+            token = "<raw>"
+        tokens.append(token)
+    return tokens
+
+
+def hasSignature(source: Path) -> bool:
+    """Only accept a literal firma argument in the document's verbale show rule."""
+    tokens = typstTokens(source.read_text(encoding="utf-8-sig"))
+    prefix = ["#", "show", ":", "verbale", ".", "with", "("]
+    for start in range(len(tokens) - len(prefix) + 1):
+        if tokens[start:start + len(prefix)] != prefix:
+            continue
+        depth = 1
+        flags = []
+        for index in range(start + len(prefix), len(tokens)):
+            token = tokens[index]
+            if (depth == 1 and tokens[index - 1] in ("(", ",")
+                    and token == "firma" and tokens[index + 1:index + 2] == [":"]):
+                value = tokens[index + 2:index + 4]
+                if (len(value) != 2 or value[0] not in ("true", "false")
+                        or value[1] not in (",", ")")):
+                    raise ValueError(f"Usare firma: true oppure firma: false in {source}")
+                flags.append(value[0] == "true")
+            if token in ("(", "[", "{"):
+                depth += 1
+            elif token in (")", "]", "}"):
+                depth -= 1
+                if depth == 0:
+                    break
+        if len(flags) > 1:
+            raise ValueError(f"Campo firma duplicato in {source}")
+        return flags[0] if flags else False
+    return False
+
 def build(root: Path, *, compiler=compileTypst) -> list[str]:
     root = root.resolve()
     output = root / "docs/6_Output"
@@ -144,6 +315,13 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
     if len({name.casefold() for name in outputs}) != len(outputs):
         raise ValueError("Due sorgenti producono lo stesso nome PDF su Windows")
 
+    signed = {name for source, name in zip(sources, outputs) if hasSignature(source)}
+    for name in signed:
+        existing = output / managedRelative(name)
+        ensureInside(root, existing)
+        if not existing.is_file() or not existing.read_bytes().startswith(b"%PDF-"):
+            raise ValueError(f"firma: true richiede un PDF firmato esistente e valido: {existing}")
+
     # Build a complete candidate tree before touching the existing PDF files.
     with tempfile.TemporaryDirectory(prefix="byteclub-docs-") as temporary:
         candidate = Path(temporary) / "output"
@@ -159,6 +337,9 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
         for obsolete in previous - set(outputs):
             (candidate / managedRelative(obsolete)).unlink(missing_ok=True)
         for source, name in zip(sources, outputs):
+            if name in signed:
+                print(f"PDF firmato conservato: {name}")
+                continue
             target = candidate / managedRelative(name)
             target.parent.mkdir(parents=True, exist_ok=True)
             compiler(source, target, root)
@@ -166,22 +347,42 @@ def build(root: Path, *, compiler=compileTypst) -> list[str]:
                 raise ValueError(f"La compilazione non ha prodotto un PDF valido: {source}")
             print(f"Compilato: {source.relative_to(root).as_posix()}")
 
-        # One self-contained site works both locally and on GitHub Pages.
-        publishedHtml = render(template, candidate, "docs/6_Output/")
-        manifest = json.dumps({"schema": 1, "outputs": outputs},
+        # Collect metadata and identify approved documents.
+        metadata = collectMetadata(root, sources)
+        approved = approvedOutputs(candidate, metadata)
+
+        # Render the catalog using only approved PDFs.
+        publishedHtml = render(template, candidate, "docs/6_Output/", metadata)
+
+        # Build a public directory containing only approved PDFs.
+        publicOutput = Path(temporary) / "public_output"
+        publicOutput.mkdir()
+
+        # Pubblica tutti i PDF esistenti, anche quelli non gestiti.
+        for pdf in candidate.rglob("*.pdf"):
+            relative = pdf.relative_to(candidate)
+            target = publicOutput / relative
+
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(pdf, target)
+
+        # Signed PDFs are maintained manually, so cleanup must no longer own them.
+        generated = [name for name in outputs if name not in signed]
+        manifest = json.dumps({"schema": 1, "outputs": generated},
                               ensure_ascii=False, indent=2) + "\n"
         stagedSite = Path(temporary) / "site"
         stagedSite.mkdir()
         (stagedSite / "index.html").write_text(publishedHtml, encoding="utf-8")
-        assets = root / "website/assets"
-        if assets.exists():
-            ensureInside(root, assets)
-            for entry in assets.rglob("*"):
-                ensureInside(root, entry)
-            shutil.copytree(assets, stagedSite / "assets")
-        shutil.copytree(candidate, stagedSite / "docs/6_Output")
+        for directoryName in ("assets", "css", "js"):
+            directory = root / "website" / directoryName
+            if directory.exists():
+                ensureInside(root, directory)
+                for entry in directory.rglob("*"):
+                    ensureInside(root, entry)
+                shutil.copytree(directory, stagedSite / directoryName)
+        shutil.copytree(publicOutput, stagedSite / "docs/6_Output")
 
-        for name in outputs:
+        for name in generated:
             target = output / managedRelative(name)
             atomicWrite(root, target, (candidate / managedRelative(name)).read_bytes())
         for obsolete in previous - set(outputs):

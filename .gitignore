@@ -1,6 +1,28 @@
-docs/3_RTB
-docs/6_Output/3_RTB
 docs/4_PB
 docs/6_Output/4_PB
 __pycache__/
 /website/build/
+
+# PoC - Python
+PoC/**/__pycache__/
+PoC/**/.venv/
+PoC/**/*.pyc
+
+# PoC - Node
+PoC/**/node_modules/
+PoC/**/dist/
+
+# PoC - Environment
+PoC/.env
+PoC/**/.env
+!PoC/.env.example
+
+# PoC - Data
+PoC/data/raw/*
+PoC/data/processed/*
+PoC/data/warehouse/*
+!PoC/data/samples/
+
+# PoC - Database
+PoC/**/*.duckdb
+PoC/**/*.db

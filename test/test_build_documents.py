@@ -24,12 +24,22 @@ def fakeCompile(source, target, root):
 class Links(HTMLParser):
     def __init__(self):
         super().__init__()
-        self.hrefs = []
+        self.references = []
+        self.document_links = []
 
     # Nome richiesto dal protocollo HTMLParser.
     def handle_starttag(self, tag, attrs):
-        if tag == "a":
-            self.hrefs.extend(value for key, value in attrs if key == "href")
+        attributes = dict(attrs)
+        if (tag == "a" and "href" in attributes
+                and not attributes["href"].startswith(("#", "mailto:", "http:", "https:"))):
+            self.references.append(attributes["href"])
+            if attributes["href"].lower().endswith(".pdf"):
+                self.document_links.append(attributes)
+        if (tag == "link" and "href" in attributes
+                and not attributes["href"].startswith(("http:", "https:"))):
+            self.references.append(attributes["href"])
+        if tag == "script" and "src" in attributes:
+            self.references.append(attributes["src"])
 
 
 class DocumentationBuildTest(unittest.TestCase):
@@ -38,6 +48,10 @@ class DocumentationBuildTest(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
         self.write(PIPELINE.TEMPLATE, HTML_TEMPLATE)
+        self.write("website/assets/favicon.svg", "<svg></svg>")
+        self.write("website/css/style.css", "body {}")
+        self.write("website/css/desktop.css", "main {}")
+        self.write("website/js/script.js", "/* test */")
 
     def write(self, relative, value):
         path = self.root / relative
@@ -58,14 +72,19 @@ class DocumentationBuildTest(unittest.TestCase):
     def testEmptySectionsHaveTheRequestedMessage(self):
         self.assertEqual(self.runBuild(), [])
         generated = (self.root / "website/build/index.html").read_text(encoding="utf-8")
-        self.assertEqual(generated.count(PIPELINE.EMPTY), 4)
+        self.assertEqual(generated.count(PIPELINE.EMPTY), 10)
+        self.assertNotIn("[DATA_AGGIORNAMENTO]", generated)
+        self.assertRegex(
+            generated,
+            r"Ultimo aggiornamento: \d{4}-\d{2}-\d{2}",
+        )
 
     def testRecursiveScopePreservesNamesAndIsIdempotent(self):
         self.write("docs/1_Diario_di_bordo/rtb/DDB_2026-10-17.typ", "Diario")
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Verbale")
-        self.write("docs/2_Candidatura/Lettera v0.1.0.TYP", "Lettera")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Verbale")
+        self.write("docs/2_Candidatura/Lettera_di_presentazione/Lettera v0.1.0.TYP", "Lettera")
         self.write("docs/5_Templates/base.typ", "Non compilare")
-        self.write("docs/3_RTB/Analisi v0.1.0.typ", "Non compilare")
+        self.write("docs/5_Templates/Analisi v0.1.0.typ", "Non compilare")
         outputs = self.runBuild()
         self.assertEqual(len(outputs), 3)
         for name in outputs:
@@ -75,6 +94,69 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
         self.assertEqual((self.root / PIPELINE.TEMPLATE).read_text(encoding="utf-8"),
                          HTML_TEMPLATE)
+
+    def testRtbDocumentsAreCompiledIntoTheirMatchingOutputDirectories(self):
+        names = [
+            "3_RTB/Documenti_esterni/Specifica.pdf",
+            "3_RTB/Documenti_interni/Analisi.pdf",
+            "3_RTB/Verbali/Esterni/VE_2026-11-11.pdf",
+            "3_RTB/Verbali/Interni/VI_2026-11-11.pdf",
+        ]
+        for name in names:
+            self.write("docs/" + name.removesuffix(".pdf") + ".typ", "Documento RTB")
+
+        outputs = self.runBuild()
+
+        for name in names:
+            output = self.root / "docs/6_Output" / name
+            self.assertTrue(output.is_file(), name)
+            self.assertTrue(output.read_bytes().startswith(b"%PDF-"), name)
+
+            published = self.root / "website/build/docs/6_Output" / name
+            self.assertEqual(published.read_bytes(), output.read_bytes())
+
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        for title in ("Specifica", "Analisi", "VE 2026-11-11", "VI 2026-11-11"):
+            self.assertIn(f'<span class="document-title">{title}</span>', page)
+
+        self.assertEqual(
+            sorted(name for name in outputs if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+        manifest = json.loads(
+            (self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(
+            sorted(name for name in manifest["outputs"] if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+
+        before = self.snapshot()
+        self.runBuild()
+        self.assertEqual(self.snapshot(), before)
+
+    def testRtbExternalDocumentsCatalog(self):
+        self.write("docs/3_RTB/Documenti_esterni/Specifica.typ", "Specifica RTB")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">Specifica</span>', page)
+
+    def testRtbInternalDocumentsCatalog(self):
+        self.write("docs/3_RTB/Documenti_interni/Analisi.typ", "Analisi RTB")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">Analisi</span>', page)
+
+    def testRtbExternalMinutesCatalog(self):
+        self.write("docs/3_RTB/Verbali/Esterni/VE_2026-11-11.typ", "Verbale esterno")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">VE 2026-11-11</span>', page)
+
+    def testRtbInternalMinutesCatalog(self):
+        self.write("docs/3_RTB/Verbali/Interni/VI_2026-11-11.typ", "Verbale interno")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">VI 2026-11-11</span>', page)
 
     def testCompilationFailureKeepsPreviousPdfCatalogAndManifest(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Versione precedente")
@@ -93,32 +175,127 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testRenameRemovesOnlyOwnedOutputsAndKeepsSignedPdf(self):
-        source = self.write("docs/2_Candidatura/Vecchio v0.1.0.typ", "Versione")
-        signed = self.write("docs/6_Output/2_Candidatura/verbali/esterni/Firmato.pdf",
+        source = self.write("docs/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.typ", "Versione")
+        signed = self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf",
                             b"%PDF-manuale")
         self.runBuild()
         source.unlink()
-        self.write("docs/2_Candidatura/Nuovo v0.1.0.typ", "Versione aggiornata")
+        self.write("docs/2_Candidatura/Documenti_esterni/Nuovo v0.1.0.typ", "Versione aggiornata")
         self.runBuild()
-        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Vecchio v0.1.0.pdf").exists())
+        self.assertFalse((self.root / "docs/6_Output/2_Candidatura/Documenti_esterni/Vecchio v0.1.0.pdf").exists())
         self.assertEqual(signed.read_bytes(), b"%PDF-manuale")
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertNotIn("Vecchio%20v0.1.0.pdf", page)
         self.assertIn("Nuovo%20v0.1.0.pdf", page)
         self.assertIn("Firmato.pdf", page)
 
+    def testSignedPdfIsReusedWithoutCompilationAndPublishedUnchanged(self):
+        name = "2_Candidatura/Verbali/Esterni/VE_2026-10-29"
+        self.write(f"docs/{name}.typ", '#show: verbale.with(firma: true)')
+        signedBytes = b"%PDF-1.7\nPDF firmato dall'azienda\n%%EOF"
+        signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
+        modified = signed.stat().st_mtime_ns
+        self.write("docs/2_Candidatura/Normale.typ", "Documento da compilare")
+        compiled = []
+
+        def recordCompile(source, target, root):
+            compiled.append(source.stem)
+            fakeCompile(source, target, root)
+
+        outputs = PIPELINE.build(self.root, compiler=recordCompile)
+        self.assertIn(name + ".pdf", outputs)
+        self.assertEqual(compiled, ["Normale"])
+        self.assertEqual(signed.read_bytes(), signedBytes)
+        self.assertEqual(signed.stat().st_mtime_ns, modified)
+        published = self.root / "website/build/docs/6_Output" / (name + ".pdf")
+        self.assertEqual(published.read_bytes(), signedBytes)
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn(name + ".pdf", page)
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], ["2_Candidatura/Normale.pdf"])
+        before = self.snapshot()
+        PIPELINE.build(self.root, compiler=recordCompile)
+        self.assertEqual(self.snapshot(), before)
+
+    def testMissingOrInvalidSignedPdfKeepsAllExistingOutputs(self):
+        self.write("docs/2_Candidatura/Normale.typ", "Versione precedente")
+        self.runBuild()
+        self.write("docs/2_Candidatura/Normale.typ", "Versione nuova")
+        self.write("docs/2_Candidatura/Verbali/Esterni/Firmato.typ",
+                   '#show: verbale.with(firma: true)')
+        for content in (None, b"", b"Questo non e un PDF"):
+            with self.subTest(content=content):
+                if content is not None:
+                    self.write("docs/6_Output/2_Candidatura/Verbali/Esterni/Firmato.pdf", content)
+                before = self.snapshot()
+                with self.assertRaisesRegex(ValueError, "firma: true richiede un PDF"):
+                    self.runBuild()
+                self.assertEqual(self.snapshot(), before)
+
+    def testSigningReleasesGeneratedPdfFromCleanupAndCanBeReversed(self):
+        name = "2_Candidatura/Verbali/Esterni/Verbale"
+        source = self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
+        self.runBuild()
+        signedBytes = b"%PDF-1.7\nFirmato"
+        signed = self.write(f"docs/6_Output/{name}.pdf", signedBytes)
+        source.write_text('#show: verbale.with(firma: true)', encoding="utf-8")
+        self.runBuild()
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], [])
+        source.unlink()
+        self.runBuild()
+        self.assertEqual(signed.read_bytes(), signedBytes)
+        self.write(f"docs/{name}.typ", '#show: verbale.with(firma: false)')
+        self.runBuild()
+        self.assertNotEqual(signed.read_bytes(), signedBytes)
+        manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(manifest["outputs"], [name + ".pdf"])
+
+    def testSignatureFlagIgnoresCommentsStringsRawTextAndNestedArguments(self):
+        cases = [
+            ('#show: verbale.with()', False),
+            ('#show: verbale.with(firma: false,)', False),
+            ('#show: verbale.with(firma: true,)', True),
+            ('#show: verbale.with(firma: /* commento */ true)', True),
+            ('// #show: verbale.with(firma: true)\n#show: verbale.with()', False),
+            ('/* esterno /* firma: true */ fine */ #show: verbale.with()', False),
+            ('#show: verbale.with(titolo: "firma: true",)', False),
+            ('#show: verbale.with(diario: ([firma: true],),)', False),
+            ('#show: verbale.with(diario: (```firma: true```,),)', False),
+            ('`#show: verbale.with(firma: true)`', False),
+            ('"#show: verbale.with(firma: true)"', False),
+            ('#show: altro.with(firma: true)', False),
+            ('#show: verbale.with(\n firma: true,\n titolo: "Test",\n)', True),
+        ]
+        for text, expected in cases:
+            with self.subTest(text=text):
+                source = self.write("docs/2_Candidatura/Verbale.typ", text)
+                self.assertEqual(PIPELINE.hasSignature(source), expected)
+
+    def testSignatureFlagRejectsAmbiguousValuesBeforeReplacingOutputs(self):
+        self.write("docs/2_Candidatura/Verbale.typ", '#show: verbale.with()')
+        self.runBuild()
+        for flag in ('"true"', '1', 'abilitata', 'true or false', 'true, firma: false'):
+            with self.subTest(flag=flag):
+                self.write("docs/2_Candidatura/Verbale.typ",
+                           f'#show: verbale.with(firma: {flag})')
+                before = self.snapshot()
+                with self.assertRaisesRegex(ValueError, "firma"):
+                    self.runBuild()
+                self.assertEqual(self.snapshot(), before)
+
     def testUnicodeSpacesHtmlCharactersAndKeywordLikeNames(self):
-        self.write("docs/2_Candidatura/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
+        self.write("docs/2_Candidatura/Documenti_esterni/Verbale è & [VERBALI_INTERNI] v0.1.0.typ", "Test")
         self.runBuild()
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
         self.assertIn("&amp;", page)
         self.assertIn("%20", page)
         self.assertIn("%26", page)
         self.assertIn("%C3%A8", page)
-        self.assertIn("[VERBALI_INTERNI]", page)
+        self.assertIn("%5BVERBALI_INTERNI%5D", page)
 
     def testLinksResolveInLocalBuildAndPublishedSite(self):
-        self.write("docs/2_Candidatura/verbali/interni/VI_2026-10-13.typ", "Test")
+        self.write("docs/2_Candidatura/Verbali/Interni/VI_2026-10-13.typ", "Test")
         self.write("website/assets/logo.png", b"immagine di prova")
         self.runBuild()
         buildRoot = self.root / PIPELINE.SITE_BUILD
@@ -128,25 +305,24 @@ class DocumentationBuildTest(unittest.TestCase):
             page = siteRoot / "index.html"
             parser = Links()
             parser.feed(page.read_text(encoding="utf-8"))
-            self.assertTrue(parser.hrefs)
-            for href in parser.hrefs:
+            self.assertTrue(parser.references)
+            for href in parser.references:
                 self.assertTrue((siteRoot / unquote(href)).resolve().is_file(), href)
             self.assertEqual((siteRoot / "assets/logo.png").read_bytes(), b"immagine di prova")
+            self.assertEqual((siteRoot / "assets/favicon.svg").read_text(), "<svg></svg>")
+            self.assertEqual((siteRoot / "css/style.css").read_text(), "body {}")
+            self.assertEqual((siteRoot / "css/desktop.css").read_text(), "main {}")
+            self.assertEqual((siteRoot / "js/script.js").read_text(), "/* test */")
 
     def testCatalogListsOnlyCurrentSectionsAndPreservesOtherOutputs(self):
         documents = [
             "1_Diario_di_bordo/rtb/DDB.pdf",
-            "2_Candidatura/Lettera.pdf",
-            "2_Candidatura/verbali/interni/VI.pdf",
-            "2_Candidatura/verbali/esterni/VE.pdf",
-            "2_Candidatura/verbali/Altro.pdf",
-            "2_Candidatura/verbali/archivio/Storico.pdf",
-            "3_RTB/Analisi.pdf",
-            "3_RTB/verbali/interni/VI_RTB.pdf",
-            "4_PB/sottocartella/Manuale.pdf",
-            "0_Verbale/Verbale.pdf",
+            "2_Candidatura/Lettera_di_presentazione/Lettera.pdf",
+            "2_Candidatura/Verbali/Interni/VI.pdf",
+            "2_Candidatura/Verbali/Esterni/VE.pdf",
+            "2_Candidatura/Documenti_esterni/Piano.pdf",
+            "2_Candidatura/Documenti_interni/Studio.pdf",
             "5_Templates/Esempio.pdf",
-            "7_Futura/Nuovo v0.1.0.pdf",
             "Documento_radice.pdf",
         ]
         for name in documents:
@@ -155,12 +331,27 @@ class DocumentationBuildTest(unittest.TestCase):
         page = self.root / "website/build/index.html"
         parser = Links()
         parser.feed(page.read_text(encoding="utf-8"))
-        self.assertEqual(len(parser.hrefs), 6)
-        self.assertEqual(len(set(parser.hrefs)), 6)
+        pdfReferences = [href for href in parser.references if href.endswith(".pdf")]
+        self.assertEqual(len(pdfReferences), 6)
+        self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
-        for heading in ("3_RTB", "4_PB", "Altri documenti"):
+        self.assertIn('id="lettera-presentazione-rtb"', content)
+        self.assertLess(content.index('id="lettera-presentazione-rtb"'),
+                        content.index('id="RTB"'))
+        self.assertLess(content.index("Lettera.pdf"), content.index("Piano.pdf"))
+        self.assertNotIn('class="quick-links"', content)
+        self.assertNotIn("Portale della documentazione", content)
+        self.assertIn("milestone-name", content)
+        self.assertIn("milestone-progress", content)
+        self.assertEqual(len(parser.document_links), 6)
+        for attributes in parser.document_links:
+            self.assertEqual(attributes.get("target"), "_blank")
+            self.assertEqual(attributes.get("rel"), "noopener noreferrer")
+        for heading in ("5_Templates", "Altri documenti"):
             self.assertNotIn(heading, content)
-        for href in parser.hrefs:
+        for heading in ("Documenti esterni", "Documenti interni", "Verbali esterni", "Verbali interni"):
+            self.assertIn(heading, content)
+        for href in pdfReferences:
             self.assertEqual((page.parent / unquote(href)).resolve().read_bytes(),
                              b"%PDF-manuale")
         for name in documents:
@@ -168,6 +359,31 @@ class DocumentationBuildTest(unittest.TestCase):
                 self.assertEqual((base / "docs/6_Output" / name).read_bytes(), b"%PDF-manuale")
         manifest = json.loads((self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
         self.assertEqual(manifest["outputs"], [])
+
+    def testCatalogUsesTypstDocumentMetadata(self):
+        self.write(
+            "docs/2_Candidatura/Lettera_di_presentazione/Lettera v2.0.0.typ",
+            '#show: documento.with(titolo: "SmartDashboard: piattaforma web di '
+            'Business Intelligence", versione: "2.0.0", stato: "Approvato")')
+        self.write(
+            "docs/2_Candidatura/Documenti_esterni/Valutazione v1.0.0.typ",
+            '#show: documento.with(titolo: "Valutazione Capitolati", '
+            'versione: "1.0.0", stato: "Approvato")')
+        self.write(
+            "docs/2_Candidatura/Verbali/Esterni/VE_2026-11-04.typ",
+            '#show: verbale.with(titolo: "Verbale Riunione", '
+            'data: "4 novembre 2026", firma: true)')
+        self.write(
+            "docs/6_Output/2_Candidatura/Verbali/Esterni/VE_2026-11-04.pdf",
+            b"%PDF-firmato")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn("Lettera di presentazione", page)
+        self.assertNotIn("SmartDashboard: piattaforma web di Business Intelligence", page)
+        self.assertIn("Valutazione Capitolati", page)
+        self.assertIn("Versione 1.0.0 · Approvato", page)
+        self.assertIn("Verbale Riunione", page)
+        self.assertIn("4 novembre 2026 · Firmato", page)
 
     def testBadKeywordDoesNotReplaceExistingOutputs(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Prima")
@@ -180,9 +396,9 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
 
     def testManifestCannotDeleteAPathOutsideManagedDirectories(self):
-        protected = self.write("docs/6_Output/3_RTB/Protetto.pdf", b"%PDF-protetto")
+        protected = self.write("docs/6_Output/5_Templates/Protetto.pdf", b"%PDF-protetto")
         self.write(PIPELINE.MANIFEST, json.dumps({
-            "schema": 1, "outputs": ["3_RTB/Protetto.pdf"]}))
+            "schema": 1, "outputs": ["5_Templates/Protetto.pdf"]}))
         before = self.snapshot()
         with self.assertRaises(ValueError):
             self.runBuild()
