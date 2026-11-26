@@ -16,7 +16,7 @@
   registroModifiche: (),
   indice: true,
   glossario: none,
-  urlGlossario: "https://byteclub.github.io/docs/Glossario.pdf",
+  urlGlossario: "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/3_RTB/Documenti_interni/Glossario.pdf",
   body,
 ) = {
   set document(title: titolo, author: redazione)
