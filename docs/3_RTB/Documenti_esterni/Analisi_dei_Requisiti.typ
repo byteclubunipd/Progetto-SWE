@@ -3,14 +3,14 @@
 #import "/docs/3_RTB/Documenti_interni/Glossario.typ": termini
 
 #let gruppo = "ByteClub"
-#let linkGlossario = "InserireLinkGlossario"
 #let linkCapitolato = "https://www.math.unipd.it/~tullio/IS-1/2026/Progetto/C7-SD.pdf"
 #let linkLezioneAnalisi = "https://www.math.unipd.it/~tullio/IS-1/2026/Dispense/T05.pdf"
+#let linkVerbaleEsterno = "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/2_Candidatura/Verbali/Esterni/VE_2026-11-13.pdf"
 #let linkNormeProgetto = "InserireLinkNormeProgetto"
 
 #show: documento.with(
   titolo: "Analisi dei Requisiti",
-  versione: "0.1.5",
+  versione: "0.1.6",
   mostraInformazioni: true,
   mostraRegistro: true,
   stato: "Da Approvare",
@@ -22,12 +22,13 @@
   destinatari: gruppo + "\nErgon Informatica S.r.l.\nProf. Vardanega Tullio \nProf. Cardin Riccardo",
   indice: true,
   registroModifiche: (
-    ("0.1.5", "2026-11-24", "Modificato codice del documento per interagire con i termini tecnici presenti nel glossario", BG, "-"),
-    ("0.1.4", "2026-11-17", "Aggiunto paragrafo 2.2, 3; inizializzati paragrafi 2.3, 3.1, 3.2, 3.3, 3.4, 3.5", BG, "-"),
-    ("0.1.3", "2026-11-16", "Aggiunti indici tabelle e immagini", BG, "-"),
-    ("0.1.2", "2026-11-15", "Aggiunti paragrafi 1.5, 1.6, 2, 2.1", BG, "-"),
-    ("0.1.1", "2026-11-13", "Aggiunti paragrafi 1.1, 1.2, 1.3, 1.4", BG, "-"),
-    ("0.1.0", "2026-11-12", "Formattazione e divisione in paragrafi del documento", BG, "-"),
+    ("0.1.6", "2026-11-26", "Corretti errori e modificato il documento in base alle indicazioni ricevute dopo la verifica", BG, LS),
+    ("0.1.5", "2026-11-24", "Modificato codice del documento per interagire con i termini tecnici presenti nel glossario", BG, LS),
+    ("0.1.4", "2026-11-17", "Aggiunto paragrafo 2.2, 3; inizializzati paragrafi 2.3, 3.1, 3.2, 3.3, 3.4, 3.5", BG, LS),
+    ("0.1.3", "2026-11-16", "Aggiunti indici tabelle e immagini", BG, LS),
+    ("0.1.2", "2026-11-15", "Aggiunti paragrafi 1.5, 1.6, 2, 2.1", BG, LS),
+    ("0.1.1", "2026-11-13", "Aggiunti paragrafi 1.1, 1.2, 1.3, 1.4", BG, LS),
+    ("0.1.0", "2026-11-12", "Formattazione e divisione in paragrafi del documento", BG, LS),
   ),
   glossario: termini,
 )
@@ -87,7 +88,7 @@ IMMAGINE
 
 = Introduzione
 == Glossario
-Per tutti i termini tecnici, gli acronimi e le definizioni utilizzate nel documento si rimanda al #link(linkGlossario)[#underline[@glossario]], disponibile come documento separato.
+Per tutti i termini tecnici, gli acronimi e le definizioni utilizzate nel documento si rimanda al #underline[@glossario].
 Ogni parola presente nel @glossario viene segnata come segue: \
 #align(center)[termine#super[G]]
 == Scopo del documento
@@ -102,9 +103,9 @@ I requisiti identificati sono classificati secondo le seguenti priorità:
 - *Opzionali*: implementabili in fasi successive o in estensioni future.
 
 Il documento è redatto dal gruppo "*ByteClub*" ed è destinato a:
-- il @*Committente* (Ergon Informatica S.r.l.), per la @verifica della corretta interpretazione delle richieste;
-- il *Team di @sviluppo* come linea guida per la @progettazione architetturale e la codifica;
-- il *Team di @verifica* per la definizione delle strategie di test e validazione.
+- il *@proponente* (Ergon Informatica S.r.l.), per la @verifica della corretta interpretazione delle richieste;
+- il *team di @sviluppo* come linea guida per la @progettazione architetturale e la codifica;
+- il *team di @verifica* per la definizione delle strategie di test e validazione.
 
 Il documento è inoltre destinato ad altre figure professionali coinvolte nello @sviluppo, quali Amministratori e @responsabile di Progetto, per consentire loro di acquisire una piena comprensione delle specifiche di Sistema.
 
@@ -114,35 +115,40 @@ Il sistema è progettato secondo un'architettura modulare e scalabile, in grado 
 
 == Funzioni del prodotto
 Il sistema dovrà offrire le seguenti @funzionalita principali:
-- *Costuzione self-service delle @dashboard*: l'utente potrà creare e personalizzare le proprie @dashboard in modo intuitivo tramite un'interfaccia @drag-and-drop, selezionando e ridimensionando i @widget secondo le proprie esigenze. Avrá inoltre la possibilità di salvare le @dashboard per un utilizzo futuro;
-- *Librerie di @widget*: il sistema fornirà una vasta gamma di @widget predefiniti:
+- *Costruzione self-service delle @dashboard*: l'utente potrà creare e personalizzare le proprie @dashboard in modo intuitivo tramite un'interfaccia @drag-and-drop, selezionando e ridimensionando i @widget secondo le proprie esigenze. Avrà inoltre la possibilità di salvare le @dashboard per un utilizzo futuro;
+- *Libreria di @widget*: il sistema fornirà una vasta gamma di @widget predefiniti:
   - Grafici (a barre, a torta e a linee);
   - Tabelle (normali e @tabelle-pivot);
   - Mappe geografiche; 
-  - @schede-kpi;
-  - @indicatori-a-quadrante (@gauge);
-- *Filtraggio e ordinamento*: il sistema dovrà consentire agli utenti di filtrare e ordinare i dati visualizzati nelle @dashboard, facilitando l'analisi e la comprensione delle informazioni.
+  - @schede-kpi:cap;
+  - @indicatori-a-quadrante:cap (@gauge);
+- *Filtraggio*: il sistema dovrà consentire agli utenti di filtrare i dati visualizzati nelle @dashboard, facilitando l'analisi e la comprensione delle informazioni.
 - *Personalizzazione e usabilità*: sono previsti temi chiaro/scuro, un'@interfaccia-responsive e tempi di caricamento dei dati contenuti.
 - *Esportazione dei dati*: il sistema dovrà consentire l'esportazione dei dati visualizzati in formati standard (@pdf, @excel) per la condivisione.
 - *Gestione utenti e persistenza*: il sistema dovrà supportare la gestione degli utenti, con @autenticazione e @autorizzazione basata su ruoli, e garantire la persistenza dei dati attraverso un @database sicuro e affidabile. Le configurazioni delle @dashboard e le preferenze degli utenti sono salvate lato @server e associate al singolo utente.
-- *Assistente AI*: il sistema dovrà integrare un assistente virtuale basato su modelli di @llm per affiancare gli utenti nella creazione delle dashboard, nella comprensione dei dati e nell'ottimizzazione delle analisi.
+- *Assistente AI*: il sistema dovrà integrare un assistente virtuale basato su modelli di @llm per affiancare gli utenti per:
+  - la creazione delle @dashboard, facendo da assistente designer;
+  - la comprensione dei dati, spiegando le visualizzazioni e gli indicatori;
+  - l'ottimizzazione delle analisi, creando insight automatizzati.
+- *Esportazione delle @dashboard*: il sistema dovrà consentire agli utenti di esportare le proprie @dashboard in formati standard (@pdf, @excel).
 
 I requisiti obbligatori sono stati definiti in accordo con le indicazioni del @proponente e con quanto emerso dai colloqui preliminari.
 
 == Caratteristiche dell'utente
 Il sistema si rivolge a utenti aziendali con competenze di base nell'uso di strumenti informatici e nella lettura di dati. In particolare:
 - *Dipendente*: utilizzatore della @dashboard per l'analisi e la visualizzazione dei dati aziendali.
-- *Amministratore*: gestisce gli utenti e i relativi permessi; crea delle @dashboard aziendali.
-- *Amministratore di gestione*: crea e gestisce gli altri utenti (modifica i ruoli e abilita o disabilita le autorizzazioni), ha accesso alle impostazioni generali della piattaforma (configurazione @api).
+- *@amministratore:cap*: gestisce gli utenti e i relativi permessi; crea delle @dashboard aziendali.
+- *@amministratore:cap di gestione*: crea altri utenti, ne imposta i ruoli e gli abilita o disabilita le autorizzazioni; ha accesso alle impostazioni generali della piattaforma (configurazione @api).
 Ogni ruolo eredita i permessi e le funzionalità del ruolo precedente, con l'aggiunta di privilegi specifici.\
 Gli utenti dovranno essere in grado di interagire con l'interfaccia del sistema, comprendere le visualizzazioni dei dati e utilizzare le funzionalità di filtraggio e personalizzazione delle @dashboard.
 == Riferimenti
 === Riferimenti normativi
-- #link(linkNormeProgetto)[#underline[@norme-di-progetto]]. Ulitma consultazione: 2026-xx-yy.
-- #link(linkCapitolato)[#underline[@capitolato] C8 - Ergon Informatica S.r.l. - SmartDashboard]. Ulitma consultazione: 2026-11-13.
+- #link(linkNormeProgetto)[#underline[@norme-di-progetto:cap]]. Ultima consultazione: 2026-xx-yy.
+- #link(linkCapitolato)[#underline[@capitolato:cap] C7 - Ergon Informatica S.r.l. - SmartDashboard]. Ultima consultazione: 2026-11-13.
 === Riferimenti informativi
-- #link(linkLezioneAnalisi)[#underline[Lezione del prof. Tullio sull'@analisi-dei-requisiti]]. Ulitma consultazione: 2026-11-15.
-- #link(linkGlossario)[#underline[@glossario]]. Ulitma consultazione: 2026-11-13.
+- #link(linkVerbaleEsterno)[#underline[Verbale esterno del 2026-11-13]]. Ultima consultazione: 2026-11-13.
+- #link(linkLezioneAnalisi)[#underline[Lezione del prof. Tullio sull'@analisi-dei-requisiti]]. Ultima consultazione: 2026-11-15.
+- #underline[@glossario:cap]. Ultima consultazione: 2026-11-13.
 = Casi d'uso
 == Descrizione associata al caso d'uso
 Ogni @caso-d-uso si  compone di tutte le informazioni presenti nella seguente
@@ -152,8 +158,9 @@ tabella, salvo i casi in cui uno specifico campo non risulti rilevante.
     columns: (0.3fr, 1fr),
     fill: (col, row) => if row == 0 { rgb("e8e8e8") },
     [#strong[Campo]], [#strong[Descrizione]],
-    [Grafico @uml], [Rappresenta lo scenario del Casi d’Uso in oggetto.],
-    [@attore], [Rappresenta coloro che interagiscono in quel sistema, senza il controllo da parte del sistema.],
+    [Grafico @uml], [Rappresenta lo scenario del @caso-d-uso in oggetto.],
+    [@attore:cap primario], [Rappresenta coloro che interagiscono in quel sistema, senza il controllo da parte del sistema.],
+    [@attore:cap secondario], [Rappresenta coloro che che il sistema contatta o utilizza per completare il @caso-d-uso, oppure che riceve notifiche/dati in risposta all'azione avviata dall'@attore primario.],
     [Scenario principale], [La sequenza ragionevole delle operazioni che l’@attore deve effettuare per portare a compimento lo scenario.],
     [Precondizioni], [Lista di elementi necessari per far sì che l’@attore possa soddisfare il @caso-d-uso in oggetto.],
     [Postcondizioni], [Lista di elementi che descrive le modifiche effettuate internamente dopo il corretto avvenimento dello scenario principale.],
@@ -161,14 +168,14 @@ tabella, salvo i casi in cui uno specifico campo non risulti rilevante.
     [Inclusioni], [Ulteriori Casi d’Uso che l’@attore deve compiere per portare a termine lo scenario.],
     [Estensioni], [Relazione che aggiunge comportamento opzionale o alternativo a un caso d’uso completo, attivata solo al verificarsi di una condizione specifica.],
     [Specializzazioni], [Rappresentazioni di varianti del caso d’uso generale, sono tra loro mutualmente esclusive. Non impongono un percorso di esecuzione obbligatorio.],
-    [Trigger], [Descrizione sintetica di una @funzionalita dal punto di vista dell’utente, focalizzata sugli obiettivi.],
+    [Trigger], [Evento o @funzionalita che avvia il @caso-d-uso.],
   ),
   caption: [Campi dei casi d'uso e loro descrizione]
 ) <DescrizioneCasoUso>
 #pagebreak()
 == Attori
 #figure(
-  image("Assets/attori.png", width: 60%),
+  image("Assets/attori.svg", width: 60%),
   caption: [Attori principali del sistema SmartDashboard]
 ) \
 #figure(
@@ -178,8 +185,8 @@ tabella, salvo i casi in cui uno specifico campo non risulti rilevante.
     [#strong[Attore]], [#strong[Descrizione]],
     [Utente], [Indica quando il @caso-d-uso è generico e può essere eseguito da qualsiasi @attore.],
     [Dipendente], [Accede al sistema per visualizzare e analizzare i dati aziendali tramite le @dashboard.],
-    [Amministratore], [Gestisce gli utenti e i relativi permessi; crea delle @dashboard aziendali.],
-    [Amministratore di gestione], [Crea e gestisce gli altri utenti (modifica i ruoli e abilita o disabilita le autorizzazioni), ha accesso alle impostazioni generali della piattaforma (configurazione @api).],
+    [@amministratore:cap], [Gestisce gli utenti e i relativi permessi; crea delle @dashboard aziendali.],
+    [@amministratore:cap di gestione], [Crea altri utenti, ne imposta i ruoli e gli abilita o disabilita le autorizzazioni; ha accesso alle impostazioni generali della piattaforma (configurazione @api).],
   ),
   caption: [Descrizione attori]
 ) <Attori>
@@ -253,7 +260,7 @@ Per chiarimenti sulla nomenclatura utilizzata si rimanda al documento #link(link
   table(
     columns: (0.4fr, 1fr),
     fill: (col, row) => if row == 0 { rgb("e8e8e8") },
-    [#strong[@caso-d-uso]], [#strong[Requisiti associati]],
+    [#strong[@caso-d-uso:cap]], [#strong[Requisiti associati]],
     [Codice caso d'uso], [Codici dei requisiti associati al caso d'uso],
   ),
   caption: [Tracciamento dei casi d'uso e riepilogo dei requisiti]
