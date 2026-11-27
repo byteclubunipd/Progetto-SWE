@@ -1,4 +1,5 @@
 #import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS, tabellaRigaPari, tabellaRigaDispari
+#import "@preview/glossy:0.9.2": *
 
 #let valore-metadati(valore) = if valore == none {
   []
@@ -22,6 +23,8 @@
   destinatari: (),
   registroModifiche: (),
   indice: true,
+  glossario: none,
+  urlGlossario: "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/3_RTB/Documenti_interni/Glossario.pdf",
   tabelle: false,
   immagini: false,
   body,
@@ -31,6 +34,38 @@
     tipo: "Documento " + uso,
     intestazione: intestazione(titolo),
     [
+      #show: doc => if glossario != none {
+        show: init-glossary.with(glossario)
+        show ref: it => {
+          let key = str(it.target).split(":").first()
+          if key in glossario {
+            link(urlGlossario + "#" + key)[#it#super[G]]
+          } else {
+            it
+          }
+        }
+        doc
+      } else {
+        doc
+      }
+
+      // Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
+      #show outline.entry: it => {
+        if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
+          let loc = it.element.location()
+          let num = counter(figure.where(kind: it.element.kind)).at(loc).first()
+          let desc = it.element.caption.body
+          let page-num = loc.page()
+          link(loc, [
+            #num -- #desc
+            #box(width: 1fr, repeat([. ]))
+            #page-num \
+          ])
+        } else {
+          it
+        }
+      }
+
       // COPERTINA
       #copertina(titolo)
 
@@ -72,14 +107,13 @@
           righe: registroModifiche,
         )
       ]
-      
 
-      
       #if indice [
         #pagebreak()
         #indiceDocumento()
         #pagebreak()
       ]
+
       #if tabelle [
         #outline(
           title: [Elenco delle tabelle],
@@ -88,6 +122,7 @@
         )
         #pagebreak()
       ]
+
       #if immagini [
         #outline(
           title: [Elenco delle figure],
@@ -96,6 +131,7 @@
         )
         #pagebreak()
       ]
+
       #body
     ],
   )
