@@ -30,22 +30,6 @@
     description: [Acronimo di Application Programming Interface, è un’interfaccia utile a permettere o facilitare la comunicazione tra diversi software o parti di un singolo software.],
   ),
   attore: (
-<<<<<<< HEAD
-    short: "Attore",
-    description: [Un’entità esterna e non controllabile dal progetto, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.],
-  ),
-  autenticazione: (
-    short: "Autenticazione",
-    description: [Processo di verifica dell’identità di un utente o di un sistema, al fine di garantire l’accesso sicuro a risorse o servizi. L’autenticazione può avvenire tramite credenziali (come username e password), token, certificati digitali o altri metodi di identificazione. Una volta autenticato, l’utente può accedere alle funzionalità e ai dati autorizzati, mentre l’autenticazione fallita impedisce l’accesso non autorizzato.],
-  ),
-  autorizzazione: (
-    short: "Autorizzazione",
-    description: [Processo che determina i privilegi e i permessi di un utente o di un sistema autenticato, stabilendo quali azioni può eseguire e quali risorse può accedere. L’autorizzazione viene spesso gestita tramite ruoli, gruppi o politiche di accesso, garantendo che solo gli utenti con i diritti appropriati possano eseguire determinate operazioni o visualizzare informazioni sensibili.],
-  ),
-  azione: (
-    short: "Azione",
-    description: [L’insieme di processi intrapresi per mettere in pratica una determinata @decisione.],
-=======
     short: "attore",
     description: [Un’entità esterna e non controllabile dal sistema, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.],
   ),
@@ -60,42 +44,10 @@
   azione: (
     short: "azione",
     description: [L’insieme di processi intrapresi per mettere in pratica una determinata decisione.],
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 
   // --- B ---
   backend: (
-<<<<<<< HEAD
-    short: "Backend",
-    description: [La parte di un progetto che si occupa del funzionamento a livello logico del sistema.],
-  ),
-  base-di-dati: (
-    short: "Base di dati",
-    description: [Traduzione italiana del termine Database, per la definizione vedere ‘@database’.],
-  ),
-
-  // --- C ---
-  capitolato: (
-    short: "Capitolato",
-    description: [Documento fornito dalla proponente, che espone le principali specifiche e condizioni di un progetto. Stabilisce delle regole e delle aspettative che il fornitore deve rispettare.],
-  ),
-  caso-d-uso: (
-    short: "Caso d’uso",
-    description: [Insieme di azioni all’interno di uno scenario, con in comune uno scopo finale per un @attore.],
-  ),
-  committente: (
-    short: "Committente",
-    description: [Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto software, di un sistema informatico o di un servizio IT. Il committente definisce gli obiettivi, approva i requisiti e verifica i risultati, ma non esegue direttamente lo sviluppo.],
-  ),
-
-  // --- D ---
-  database: (
-    short: "Database",
-    description: [Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Guardare definizione @dbms).],
-  ),
-  dashboard: (
-    short: "Dashboard",
-=======
     short: "backend",
     description: [La parte di un progetto che si occupa del funzionamento a livello logico del sistema.],
   ),
@@ -138,7 +90,6 @@
   ),
   dashboard: (
     short: "dashboard",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Interfaccia grafica che fornisce una panoramica delle informazioni più rilevanti e consente di monitorare lo stato di un sistema o di un progetto. Spesso include grafici, tabelle e indicatori chiave di prestazione (@kpi) per facilitare la comprensione e l’analisi dei dati.],
   ),
   db: (
@@ -152,35 +103,6 @@
     description: [Acronimo di Database Management System, è un software che gestisce l’archiviazione, l’organizzazione e l’accesso ai dati all’interno di un database. Fornisce strumenti per creare, leggere, aggiornare e cancellare dati, garantendo integrità, sicurezza e prestazioni ottimali. Esempi di DBMS includono MySQL, PostgreSQL, Oracle Database e Microsoft SQL Server.],
   ),
   decisione: (
-<<<<<<< HEAD
-    short: "Decisione",
-    description: [Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da adottare per soddisfare un determinato bisogno.],
-  ),
-  design-pattern: (
-    short: "Design Pattern",
-    description: [Soluzione progettuale riutilizzabile a problemi comuni nella progettazione del software, utile per migliorare struttura e manutenibilità del codice.],
-  ),
-  discord: (
-    short: "Discord",
-    description: [Piattaforma di videochiamate e messaggistica asincrona. È caratterizzata dalla possibilità di creare spazi indipendenti chiamati server, all’interno dei quali è possibile istituire vari canali testuali (tipicamente suddivisi per argomento) e canali vocali indipendenti, utilizzati per chiamate di gruppo tra i membri del server.],
-  ),
-  drag-and-drop: (
-    short: "Drag & Drop",
-    description: [Tecnica di interazione con l’interfaccia utente che permette di selezionare un elemento e spostarlo in un’altra posizione trascinandolo con il cursore del mouse o con il dito su dispositivi touch. Viene spesso utilizzata per organizzare elementi, come file o icone, in modo intuitivo e visivo.],
-  ),
-
-  // --- E ---
-  efficacia: (
-    short: "Efficacia",
-    description: [Indica il modo con cui un insieme di attività raggiunge gli obiettivi attesi.],
-  ),
-  efficienza: (
-    short: "Efficienza",
-    description: [Rapporto tra risultati ottenuti e risorse impiegate per ottenerli.],
-  ),
-  excel: (
-    short: "Excel",
-=======
     short: "decisione",
     description: [Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da adottare per soddisfare un determinato bisogno.],
   ),
@@ -221,20 +143,10 @@
   ),
   excel: (
     short: "excel",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Software di Microsoft per la gestione di fogli di calcolo, che consente di organizzare, analizzare e visualizzare dati in tabelle, grafici e report. È ampiamente utilizzato in ambito aziendale, finanziario e accademico per attività come la contabilità, l’analisi dei dati e la pianificazione.],
   ),
 
   // --- F ---
-<<<<<<< HEAD
-  frontend: (
-    short: "Frontend",
-    description: [La parte di un progetto che si occupa dell’interazione diretta con l’utilizzatore finale.],
-  ),
-  funzionalita: (
-    short: "Funzionalità",
-    description: [Una caratteristica offerta da un Sistema, spesso con lo scopo di soddisfare un bisogno.],
-=======
   fast-api: (
     short: "FastAPI",
     description: [Framework web moderno e ad alte prestazioni per la creazione di API in Python, basato su standard come OpenAPI e JSON Schema. FastAPI semplifica lo sviluppo di applicazioni web e microservizi, offrendo funzionalità come la validazione automatica dei dati e la generazione di documentazione interattiva.],
@@ -246,24 +158,15 @@
   funzionalita: (
     short: "funzionalità",
     description: [Una caratteristica offerta da un sistema, spesso con lo scopo di soddisfare un bisogno.],
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 
   // --- G ---
   gauge: (
-<<<<<<< HEAD
-    short: "Gauge",
-    description: [Elemento grafico simile a un tachimetro o a un contachilometri utilizzato per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.],
-  ),
-  git: (
-    short: "Git",
-=======
     short: "gauge",
     description: [Termine tecnico per un indicatore visivo che mostra lo stato di avanzamento di una metrica. Per la definizione vedere "@indicatori-a-quadrante".],
   ),
   git: (
     short: "git",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Sistema di controllo di versione che traccia le modifiche al codice sorgente nel tempo. Permette a più sviluppatori di collaborare simultaneamente sullo stesso progetto, gestendo la cronologia delle versioni e supportando lo sviluppo parallelo.],
   ),
   gitflow: (
@@ -279,19 +182,11 @@
     description: [Strumento messo a disposizione da GitHub per effettuare automazioni all’interno di una repository.],
   ),
   glossario: (
-<<<<<<< HEAD
-    short: "Glossario",
-    description: [Elenco di termini con le relative definizioni, utilizzato per chiarire il significato di concetti specifici in un determinato contesto.],
-  ),
-  gmail: (
-    short: "Gmail",
-=======
     short: "glossario",
     description: [Elenco di termini con le relative definizioni, utilizzato per chiarire il significato di concetti specifici in un determinato contesto.],
   ),
   gmail: (
     short: "gmail",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Servizio di posta elettronica sviluppato da Google che permette di inviare, ricevere e organizzare email tramite web o applicazioni dedicate.],
   ),
 
@@ -307,21 +202,6 @@
     description: [È l’acronimo di Institute of Electrical and Electronics Engineers, un’associazione internazionale che promuove lo sviluppo delle tecnologie e dell’ingegneria in ambiti come l’elettronica, informatica e le telecomunicazioni.],
   ),
   indicatori-a-quadrante: (
-<<<<<<< HEAD
-    short: "Indicatori a quadrante",
-    description: [Elementi grafici simili a un tachimetro o a un contachilometri utilizzati per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.],
-  ),
-  intelligenza-artificiale: (
-    short: "Intelligenza Artificiale",
-    description: [Disciplina dell’informatica che studia e sviluppa sistemi in grado di eseguire compiti che richiedono tipicamente l’intelligenza umana, come il ragionamento, l’apprendimento e la comprensione del linguaggio naturale.],
-  ),
-  interfaccia-responsive: (
-    short: "Interfaccia responsive",
-    description: [Design grafico che adatta automaticamente layout, dimensioni e disposizione degli elementi dello schermo al dispositivo utilizzato dall'utente (computer desktop, tablet o smartphone), garantendo sempre una navigazione ottimale.],
-  ),
-  issue: (
-    short: "Issue",
-=======
     short: "indicatori a quadrante",
     description: [Elementi grafici simili a un tachimetro o a un contachilometri utilizzati per mostrare a colpo d'occhio lo stato di avanzamento di una metrica rispetto a un valore minimo, un valore massimo e determinate soglie di obiettivo.],
   ),
@@ -335,7 +215,6 @@
   ),
   issue: (
     short: "issue",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [All’interno dell’ecosistema GitHub, rappresenta un’attività che richiede modifiche al codice sorgente per essere svolta, può trattarsi di un bug da risolvere, una feature da aggiungere, di una correzione minore o anche di qualcosa definito dagli sviluppatori.],
   ),
 
@@ -349,36 +228,12 @@
   // --- L ---
   llm: (
     short: "LLM",
-<<<<<<< HEAD
-    long: "Large Language Models",
-    description: [Large Language Models. Indica i modelli addestrati su enormi quantità di testo come ChatGPT e Claude.],
-=======
     long: "Large Language Model",
     description: [Large Language Model. Indica i modelli addestrati su enormi quantità di testo come ChatGPT e Claude.],
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 
   // --- M ---
   manuale-utente: (
-<<<<<<< HEAD
-    short: "Manuale Utente",
-    description: [Documento che descrive le funzionalità di un software e fornisce istruzioni per il suo corretto utilizzo da parte degli utenti finali.],
-  ),
-  manutenzione: (
-    short: "Manutenzione",
-    description: [Insieme di attività atte a risolvere i problemi e migliorare le funzionalità di un prodotto.],
-  ),
-  merge: (
-    short: "Merge",
-    description: [Processo con il quale, in un sistema di versionamento come git, un ramo di lavoro viene fatto confluire in un altro, generalmente in un grado gerarchico più elevato.],
-  ),
-  metodo-agile: (
-    short: "Metodo Agile",
-    description: [Metodo di sviluppo software per la gestione di progetti complessi basato sui cicli iterativi brevi chiamati Sprint, che favorisce la flessibilità del progetto e la collaborazione continua.],
-  ),
-  milestone: (
-    short: "Milestone",
-=======
     short: "manuale utente",
     description: [Documento che descrive le funzionalità di un software e fornisce istruzioni per il suo corretto utilizzo da parte degli utenti finali.],
   ),
@@ -392,7 +247,6 @@
   ),
   milestone: (
     short: "milestone",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Punto significativo nel percorso del progetto in cui il gruppo si pone il raggiungimento di determinati obiettivi.],
   ),
   minimum-viable-product: (
@@ -407,11 +261,7 @@
 
   // --- N ---
   norme-di-progetto: (
-<<<<<<< HEAD
-    short: "Norme di Progetto",
-=======
     short: "norme di progetto",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Documento che descrive il Way of Working del gruppo. Contiene le regole che ByteClub rispetta per garantire un lavoro efficace ed efficiente.],
   ),
 
@@ -427,17 +277,6 @@
     description: [Acronimo di Portable Document Format, è un formato di file standard ideale per esportare, archiviare e condividere report e documenti mantenendo inalterati layout, font e grafici su qualsiasi dispositivo.],
   ),
   pianificazione: (
-<<<<<<< HEAD
-    short: "Pianificazione",
-    description: [Processo di definizione degli obiettivi del progetto identificandone le risorse ed i tempi richiesti per la sua realizzazione.],
-  ),
-  piano-di-progetto: (
-    short: "Piano di Progetto",
-    description: [Documento che si occupa di definire l’organizzazione del gruppo, specificando l’assegnazione dei ruoli, il monte ore previsto per ogni risorsa, le tempistiche e il conto economico preventivo in funzione dell’avanzamento del progetto.],
-  ),
-  piano-di-qualifica: (
-    short: "Piano di Qualifica",
-=======
     short: "pianificazione",
     description: [Processo di definizione degli obiettivi del progetto identificandone le risorse ed i tempi richiesti per la sua realizzazione.],
   ),
@@ -447,7 +286,6 @@
   ),
   piano-di-qualifica: (
     short: "piano di qualifica",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Documento che si occupa di garantire il rispetto dei requisiti del progetto definendo le strategie di verifica e validazione affinché vengano rispettate le attese della proponente.],
   ),
   poc: (
@@ -461,33 +299,6 @@
     description: [Acronimo di Pull Request, per la definizione vedere ‘@pull-request’.],
   ),
   processo: (
-<<<<<<< HEAD
-    short: "Processo",
-    description: [Insieme di attività correlate e coese che trasformano ingressi (bisogni) in uscite (prodotti) secondo regole date, consumando risorse nel farlo.],
-  ),
-  product-baseline: (
-    short: "Product Baseline",
-    description: [Fase finale in un progetto, che prevede la realizzazione di un Minimum Viable Product, a seguito del superamento dei test concordati nella Requirements and Technology Baseline.],
-  ),
-  produzione: (
-    short: "Produzione",
-    description: [Processo di traduzione della progettazione in codice sorgente mediante la programmazione ed i test.],
-  ),
-  progettazione: (
-    short: "Progettazione",
-    description: [Processo che definisce la struttura di un sistema, identificandone componenti, relazioni e livello di dettaglio necessari per la realizzazione. Serve a semplificarne lo sviluppo e la manutenzione futura.],
-  ),
-  progettista: (
-    short: "Progettista",
-    description: [Ruolo che si occupa della progettazione dell’architettura di un progetto, al fine di assicurarsi codice più corretto e manutenibile.],
-  ),
-  progetto: (
-    short: "Progetto",
-    description: [Insieme ordinato di attività, istanziate dai processi di ciclo di vita che soddisfano gli obiettivi dati.],
-  ),
-  programmatore: (
-    short: "Programmatore",
-=======
     short: "processo",
     description: [Insieme di attività correlate e coese che trasformano ingressi (bisogni) in uscite (prodotti) secondo regole date, consumando risorse nel farlo.],
   ),
@@ -513,7 +324,6 @@
   ),
   programmatore: (
     short: "programmatore",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Ruolo che si occupa di svolgere le attività di codifica, data l’architettura.],
   ),
   proof-of-concept: (
@@ -521,57 +331,22 @@
     description: [Prodotto dimostrativo atto a presentare la fattibilità dell’idea.],
   ),
   proponente: (
-<<<<<<< HEAD
-    short: "Proponente",
-    description: [La persona, il gruppo o l’organizzazione che propone un progetto, un’idea o un’iniziativa, e ne definisce obiettivi, requisiti e motivazioni. La proponente di ByteClub è Ergon Informatica s.r.l.],
-  ),
-  pull-request: (
-    short: "Pull Request",
-=======
     short: "proponente",
     description: [La persona, il gruppo o l’organizzazione che propone un progetto, un’idea o un’iniziativa, e ne definisce obiettivi, requisiti e motivazioni. La proponente di ByteClub è Ergon Informatica s.r.l.],
   ),
   pull-request: (
     short: "pull request",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [All’interno dell’ecosistema GitHub, uno strumento che permette di sospendere momentaneamente la pubblicazione di una modifica nel ramo principale della repository, in attesa di approvazione e/o workflow automatici (e.g. GitHub Action).],
   ),
 
   // --- Q ---
   query: (
-<<<<<<< HEAD
-    short: "Query",
-=======
     short: "query",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Richiesta di dati o informazioni inviata a un sistema, come un database o un motore di ricerca, per ottenere risultati specifici.],
   ),
 
   // --- R ---
   redattore: (
-<<<<<<< HEAD
-    short: "Redattore",
-    description: [Colui che scrive il documento, viene identificato come “Autore” nel registro delle modifiche.],
-  ),
-  repository: (
-    short: "Repository",
-    description: [Uno spazio condiviso tra tutti i membri del gruppo, in cui viene memorizzato e versionato tutto il codice sorgente prodotto.],
-  ),
-  requisito-di-vincolo: (
-    short: "Requisito di vincolo",
-    description: [Tipo di requisito che descrive le restrizioni imposte dall’azienda proponente che il progetto deve rispettare.],
-  ),
-  requisito-funzionale: (
-    short: "Requisito funzionale",
-    description: [Definiscono cosa il sistema deve fare, descrivendo le sue azioni e funzioni specifiche. Sono le capacità che l’utente si aspetta, come “aggiungere un prodotto al carrello” in un negozio online.],
-  ),
-  requisito-non-funzionale: (
-    short: "Requisito non funzionale",
-    description: [Specificano come il sistema deve comportarsi mentre svolge quelle funzioni. Si concentrano su qualità come le prestazioni, la sicurezza o l’affidabilità, ad esempio “il sistema deve supportare 1000 utenti contemporanei senza rallentamenti”.],
-  ),
-  responsabile: (
-    short: "Responsabile",
-=======
     short: "redattore",
     description: [Colui che scrive il documento, viene identificato come “Autore” nel registro delle modifiche.],
   ),
@@ -597,7 +372,6 @@
   ),
   responsabile: (
     short: "responsabile",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Ruolo che si occupa di coordinare le attività del gruppo e garantire una pianificazione efficace.],
   ),
   rtb: (
@@ -607,22 +381,6 @@
   ),
 
   // --- S ---
-<<<<<<< HEAD
-  schede-kpi: (
-    short: "Schede KPI",
-    description: [Strumenti di monitoraggio delle prestazioni che visualizzano metriche chiave (KPI) in modo chiaro e conciso, consentendo agli utenti di valutare rapidamente lo stato di un progetto o di un sistema e prendere decisioni informate.],
-  ),
-  self-service: (
-    short: "Self-service",
-    description: [Modalità di interazione con un sistema che consente agli utenti di accedere a funzionalità e informazioni senza l’assistenza diretta di un operatore umano, spesso tramite interfacce intuitive e automatizzate.],
-  ),
-  server: (
-    short: "Server",
-    description: [Sistema informatico (hardware o virtuale) che ospita applicazioni, elabora le richieste degli utenti, gestisce i database e distribuisce i dati attraverso una rete aziendale o tramite internet.],
-  ),
-  sprint: (
-    short: "Sprint",
-=======
   sal: (
     short: "SAL",
     long: "Stato Avanzamento Lavori",
@@ -642,22 +400,11 @@
   ),
   sprint: (
     short: "sprint",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Ciclo di lavoro di durata fissa, tipico dello sviluppo Agile, durante il quale il gruppo si impegna a completare un insieme prefissato di attività per produrre un incremento del software.],
   ),
   sql: (
     short: "SQL",
     long: "Structured Query Language",
-<<<<<<< HEAD
-    description: [Acronimo di Structured Query Language, è un linguaggio dichiarativo con lo scopo di creare, filtrare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.],
-  ),
-  stakeholder: (
-    short: "Stakeholder",
-    description: [Qualunque persona, gruppo o organizzazione che ha interesse, influenza o è coinvolta nel progetto, includendo clienti, utenti, sviluppatori, dirigenti, fornitori e persino organizzazioni esterne, ed è fondamentale per definire requisiti.],
-  ),
-  sviluppo: (
-    short: "Sviluppo",
-=======
     description: [Acronimo di Structured Query Language, è un linguaggio dichiarativo con lo scopo di definire, interrogare, modificare ed eliminare dati memorizzati all’interno di tabelle nei database relazionali.],
   ),
   stakeholder: (
@@ -666,23 +413,11 @@
   ),
   sviluppo: (
     short: "sviluppo",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Attività pratica di scrittura, test e integrazione del codice necessaria a implementare le funzionalità definite durante la fase di progettazione.],
   ),
 
   // --- T ---
   tabelle-pivot: (
-<<<<<<< HEAD
-    short: "Tabelle pivot",
-    description: [Strumento di analisi dei dati che consente di riassumere, aggregare e visualizzare grandi quantità di informazioni in modo interattivo. Le tabelle pivot permettono di riorganizzare i dati, calcolare totali e medie, e creare report personalizzati per facilitare la comprensione e l’interpretazione dei dati.],
-  ),
-  test: (
-    short: "Test",
-    description: [Un processo dello sviluppo software che si occupa di verificare la funzionalità di una o più parti del prodotto.],
-  ),
-  typst: (
-    short: "Typst",
-=======
     short: "tabelle pivot",
     description: [Strumento di analisi dei dati che consente di riassumere, aggregare e visualizzare grandi quantità di informazioni in modo interattivo. Le tabelle pivot permettono di riorganizzare i dati, calcolare totali e medie, e creare report personalizzati per facilitare la comprensione e l’interpretazione dei dati.],
   ),
@@ -692,7 +427,6 @@
   ),
   typst: (
     short: "typst",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Linguaggio di markup utilizzato dal gruppo per produrre tutti i documenti.],
   ),
 
@@ -705,30 +439,12 @@
 
   // --- V ---
   validazione: (
-<<<<<<< HEAD
-    short: "Validazione",
-=======
     short: "validazione",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Insieme di controlli per assicurarsi che un prodotto (o una parte di esso) soddisfi in modo congruo ciò per cui è stato creato.],
   ),
   ve: (
     short: "VE",
     long: "Verbale Esterno",
-<<<<<<< HEAD
-    description: [Acronimo di Verbale Esterno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro esterno. Il codice associato ai VE segue la forma VE x.y.z, dove x identifica il numero progressivo del verbale approvato, y identifica una specifica decisione o voce registrata all’interno del verbale e z identifica le modifiche minori.],
-  ),
-  verifica: (
-    short: "Verifica",
-    description: [Insieme di processi atti a garantire che una funzione all’interno di un prodotto soddisfi determinati requisiti.],
-  ),
-  verificatore: (
-    short: "Verificatore",
-    description: [Ruolo che si occupa di assicurare la qualità dei prodotti e dei processi adottati, effettuando revisioni e test.],
-  ),
-  versionamento: (
-    short: "Versionamento",
-=======
     description: [Acronimo di Verbale Esterno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro esterno. Il codice associato ai VE segue la forma VE_YYYY_MM_DD (YYYY: anno, MM: mese, DD: giorno).],
   ),
   verifica: (
@@ -741,33 +457,16 @@
   ),
   versionamento: (
     short: "versionamento",
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
     description: [Metodo per gestire e tenere traccia di documenti, codice o altri artefatti digitali, organizzandoli in versioni identificate da un codice univoco, in modo da poter monitorare modifiche, confrontare stati diversi e ripristinare versioni precedenti.],
   ),
   vi: (
     short: "VI",
     long: "Verbale Interno",
-<<<<<<< HEAD
-    description: [Acronimo di Verbale Interno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro interno. Il codice associato ai VI segue la forma VI x.y.z, dove x identifica il numero progressivo del verbale approvato, y identifica una specifica decisione o voce registrata all’interno del verbale e z identifica le modifiche minori.],
-=======
     description: [Acronimo di Verbale Interno, viene utilizzato per tracciare nel tempo decisioni e azioni intraprese in un incontro interno. Il codice associato ai VI segue la forma VI_YYYY_MM_DD (YYYY: anno, MM: mese, DD: giorno).],
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 
   // --- W ---
   way-of-working: (
-<<<<<<< HEAD
-    short: "Way of Working",
-    description: [Insieme di metodologie e strutture organizzative approvate dall’intero gruppo per svolgere in modo coerente i propri compiti.],
-  ),
-  widget: (
-    short: "Widget",
-    description: [Elemento dell’interfaccia grafica di un software che consente all’utente di interagire con il sistema, come pulsanti, caselle di testo, menu a discesa o barre di scorrimento. I widget facilitano l’accesso a funzionalità e informazioni, migliorando l’esperienza dell’utente.],
-  ),
-  whatsapp: (
-    short: "WhatsApp",
-    description: [Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne.],
-=======
     short: "way of working",
     description: [Insieme di metodologie e strutture organizzative approvate dall’intero gruppo per svolgere in modo coerente i propri compiti.],
   ),
@@ -778,7 +477,6 @@
   whatsapp: (
     short: "whatsapp",
     description: [Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne e per le comunicazioni esterne con la proponente.],
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 )
 
@@ -802,17 +500,10 @@
   destinatari: gruppo,
   indice: true,
   registroModifiche: (
-<<<<<<< HEAD
-    ("0.1.3", "2026-11-21", "Automazione generazione glossario con pacchetto glossy", BG, "-"),
-    ("0.1.2", "2026-11-15", "Corrette definizioni dopo la verifica", BG, "-"),
-    ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, "-"),
-    ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, "-"),
-=======
     ("0.1.3", "2026-11-15", "Corrette definizioni dopo la verifica e aggiunti termini mancanti", BG, LS),
     ("0.1.2", "2026-11-21", "Automazione generazione glossario con pacchetto glossy", BG, LS),
     ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, LS),
     ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, LS),
->>>>>>> 0662af0ea1a44de4dcbc642af58fbcc411715218
   ),
 )
 
