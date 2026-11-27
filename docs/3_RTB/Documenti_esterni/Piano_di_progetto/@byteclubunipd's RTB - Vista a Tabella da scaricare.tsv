@@ -1,0 +1,39 @@
+Title	URL	Assignees	Status	Priorità	Linked pull requests	Reviewers	Inizio	Fine	Conteggio	Ore	Sprint	Ruolo
+Definizione del Way of Working	https://github.com/byteclubunipd/Progetto-SWE/issues/42	rpontell	Done	1 - Alta			Nov 11, 2026	Nov 11, 2026			1	Responsabile
+Predisposizione e coordinamento dell'incontro con Ergon	https://github.com/byteclubunipd/Progetto-SWE/issues/47	rpontell	Done	1 - Alta			Nov 11, 2026	Nov 11, 2026			1	Responsabile
+Configurazione e aggiornamento della repository GitHub	https://github.com/byteclubunipd/Progetto-SWE/issues/44	ElicoPro	Done	1 - Alta			Nov 12, 2026	Nov 12, 2026			1	Amministratore
+Aggiornamento del workflow di compilazione automatica	https://github.com/byteclubunipd/Progetto-SWE/issues/45	ElicoPro	Done	1 - Alta	https://github.com/byteclubunipd/Progetto-SWE/pull/53		Nov 12, 2026	Nov 12, 2026			1	Amministratore
+Formalizzazione dei ruoli e delle responsabilità	https://github.com/byteclubunipd/Progetto-SWE/issues/43	ElicoPro	Done	1 - Alta			Nov 12, 2026	Nov 13, 2026			1	Amministratore
+Update RTB workflow e aggiunta sezione di test per documenti	https://github.com/byteclubunipd/Progetto-SWE/pull/53	ElicoPro	Done	2 - Media		rpontell	Nov 12, 2026	Nov 12, 2026			1	Verificatore
+Prima bozza dell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/49	BrunoGrimaldi	Waiting review	3 - Bassa			Nov 12, 2026		Ore produttive	1	1	Analista
+Docs/analisi dei requisiti	https://github.com/byteclubunipd/Progetto-SWE/pull/66	BrunoGrimaldi	Waiting review	3 - Bassa		lololoren	Nov 12, 2026		Ore produttive	1	1	Verificatore
+Creazione del glossario di progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/46	BrunoGrimaldi	Done	2 - Media	https://github.com/byteclubunipd/Progetto-SWE/pull/54		Nov 13, 2026	Nov 24, 2026	Ore produttive	3	1	Analista
+Glossario	https://github.com/byteclubunipd/Progetto-SWE/pull/54	BrunoGrimaldi	Done	3 - Bassa		ElicoPro, rpontell	Nov 13, 2026	Nov 24, 2026			1	Verificatore
+Aggiornamento dell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/58	BrunoGrimaldi	Waiting review	3 - Bassa			Nov 13, 2026		Ore produttive	2	1	Analista
+Prima bozza delle Norme di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/50	ElicoPro	Waiting review	3 - Bassa			Nov 13, 2026		Ore produttive	1	1	Amministratore
+Allineamento della vista web alla milestone corrente	https://github.com/byteclubunipd/Progetto-SWE/issues/48	ElicoPro, PitinPitan	Waiting review	0 - Critica	https://github.com/byteclubunipd/Progetto-SWE/pull/77		Nov 15, 2026	Nov 22, 2026			1	Programmatore
+Creazione del gruppo WhatsApp	https://github.com/byteclubunipd/Progetto-SWE/issues/55	rpontell	Done	1 - Alta			Nov 15, 2026	Nov 15, 2026			1	Responsabile
+Diario di bordo 16 Novembre	https://github.com/byteclubunipd/Progetto-SWE/pull/64	rpontell	Done	1 - Alta		lololoren	Nov 15, 2026	Nov 16, 2026			1	Verificatore
+Update sito web 	https://github.com/byteclubunipd/Progetto-SWE/pull/63	PitinPitan	Done	2 - Media		lololoren	Nov 15, 2026	Nov 22, 2026			1	Verificatore
+Organizzazione dell'incontro SAL del 27/11/2026	https://github.com/byteclubunipd/Progetto-SWE/issues/57	rpontell	Done	1 - Alta			Nov 16, 2026	Nov 17, 2026			1	Responsabile
+Invio del verbale alla proponente per approvazione e firma	https://github.com/byteclubunipd/Progetto-SWE/issues/62	rpontell	Done	2 - Media	https://github.com/byteclubunipd/Progetto-SWE/pull/65		Nov 16, 2026	Nov 17, 2026			1	Responsabile
+Docs verbali	https://github.com/byteclubunipd/Progetto-SWE/pull/65	ElicoPro, rpontell	Done	2 - Media		lololoren	Nov 16, 2026	Nov 17, 2026			1	Verificatore
+Prima bozza del Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/51	rpontell	In Progress	3 - Bassa			Nov 16, 2026		Ore produttive	1	1	Responsabile
+Redazione del verbale interno del 2026-11-20	https://github.com/byteclubunipd/Progetto-SWE/issues/68	ElicoPro	Waiting review	2 - Media	https://github.com/byteclubunipd/Progetto-SWE/pull/75		Nov 20, 2026				1	Amministratore
+Aggiornamento dei template per il supporto ai termini del Glossario	https://github.com/byteclubunipd/Progetto-SWE/issues/72	BrunoGrimaldi, lololoren	In Progress	1 - Alta			Nov 21, 2026				1	Analista, Verificatore
+Creazione del file .env.example per la configurazione delle API	https://github.com/byteclubunipd/Progetto-SWE/issues/73	ElicoPro	Done	1 - Alta	https://github.com/byteclubunipd/Progetto-SWE/pull/76		Nov 21, 2026	Nov 24, 2026			1	Amministratore
+VI_2026-11-20	https://github.com/byteclubunipd/Progetto-SWE/pull/75	ElicoPro	Waiting review	3 - Bassa		lololoren	Nov 21, 2026					
+Preparazione del diario di bordo del 2026-11-23	https://github.com/byteclubunipd/Progetto-SWE/issues/67	rpontell	Waiting review	1 - Alta	https://github.com/byteclubunipd/Progetto-SWE/pull/74		Nov 22, 2026	Nov 22, 2026			1	Responsabile
+Diario di bordo 2026-11-23	https://github.com/byteclubunipd/Progetto-SWE/pull/74	rpontell	Waiting review	1 - Alta		lololoren	Nov 22, 2026				1	Verificatore
+Chore/poc_structure	https://github.com/byteclubunipd/Progetto-SWE/pull/76	ElicoPro	Done	1 - Alta		rpontell	Nov 23, 2026	Nov 23, 2026			1	Amministratore
+Update/workflow rtb	https://github.com/byteclubunipd/Progetto-SWE/pull/77	ElicoPro	Waiting review	1 - Alta		lololoren	Nov 24, 2026	Nov 24, 2026			1	Amministratore
+Creazione e test PoC database api 	https://github.com/byteclubunipd/Progetto-SWE/pull/79	PitinPitan	Waiting review			lololoren	Nov 25, 2026	Nov 25, 2026				
+Evidenziazione dei termini del Glossario nelle Norme di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/70	ElicoPro	Waiting requirements	3 - Bassa							1	Amministratore
+Evidenziazione dei termini del Glossario nell'Analisi dei Requisiti	https://github.com/byteclubunipd/Progetto-SWE/issues/71	BrunoGrimaldi	Waiting requirements	3 - Bassa							1	Analista
+Prima bozza del Piano di Qualifica	https://github.com/byteclubunipd/Progetto-SWE/issues/52	lololoren	Todo	3 - Bassa							1	Verificatore
+Studio di Tailwind CSS e ricerca di alternative	https://github.com/byteclubunipd/Progetto-SWE/issues/59	mimi8017	Todo	3 - Bassa							1	Progettista
+Sperimentazione di Tailwind CSS	https://github.com/byteclubunipd/Progetto-SWE/issues/60	PitinPitan	Todo	3 - Bassa							1	Programmatore
+Ricerca delle fonti ufficiali delle tecnologie	https://github.com/byteclubunipd/Progetto-SWE/issues/61	mimi8017	Todo	3 - Bassa							1	Progettista
+Configurazione e test del database e delle API aziendali	https://github.com/byteclubunipd/Progetto-SWE/issues/56	PitinPitan	In Progress	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/79						1	Programmatore
+Evidenziazione dei termini del Glossario nel Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/69	rpontell	In Progress	3 - Bassa							1	Responsabile
+Docs/template	https://github.com/byteclubunipd/Progetto-SWE/pull/78	BrunoGrimaldi	Todo			lololoren						
