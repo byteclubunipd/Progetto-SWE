@@ -1,5 +1,13 @@
 #import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS, tabellaRigaPari, tabellaRigaDispari
 
+#let valore-metadati(valore) = if valore == none {
+  []
+} else if type(valore) == array {
+  valore.map(elemento => [#elemento]).join(linebreak())
+} else {
+  valore
+}
+
 #let documento(
   titolo: "Documento",
   mostraRegistro: true,
@@ -7,13 +15,15 @@
   versione: "",
   stato: "",
   redazione: (),
-  verifica: "",
+  verifica: (),
   approvazione: "",
   proprietario: "",
   uso: "",
-  destinatari: "",
+  destinatari: (),
   registroModifiche: (),
   indice: true,
+  tabelle: false,
+  immagini: false,
   body,
 ) = {
   set document(title: titolo, author: redazione)
@@ -35,12 +45,12 @@
           righe: (
             ([Versione], [#versione]),
             ([Stato], [#stato]),
-            ([Redazione], [#redazione]),
-            ([Verifica], [#verifica]),
+            ([Redazione], [#valore-metadati(redazione)]),
+            ([Verifica], [#valore-metadati(verifica)]),
             ([Approvazione], [#approvazione]),
             ([Proprietario], [#proprietario]),
             ([Uso], [#uso]),
-            ([Destinatari], [#destinatari]),
+            ([Destinatari], [#valore-metadati(destinatari)]),
           ),
         )
       ]
@@ -68,6 +78,22 @@
       #if indice [
         #pagebreak()
         #indiceDocumento()
+        #pagebreak()
+      ]
+      #if tabelle [
+        #outline(
+          title: [Elenco delle tabelle],
+          target: figure.where(kind: table),
+          indent: 1em,
+        )
+        #pagebreak()
+      ]
+      #if immagini [
+        #outline(
+          title: [Elenco delle figure],
+          target: figure.where(kind: image),
+          indent: 1em,
+        )
         #pagebreak()
       ]
       #body
