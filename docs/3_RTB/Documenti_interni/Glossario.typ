@@ -31,18 +31,22 @@
   ),
   attore: (
     short: "attore",
+    plural: "attori",
     description: [Un’entità esterna e non controllabile dal sistema, ma che interagisce con esso, con attività o obiettivi specifici da soddisfare.],
   ),
   autenticazione: (
     short: "autenticazione",
+    plural: "autenticazioni",
     description: [Processo di verifica dell’identità di un utente o di un sistema, al fine di garantire l’accesso sicuro a risorse o servizi. L’autenticazione può avvenire tramite credenziali (come username e password), token, certificati digitali o altri metodi di identificazione. Una volta autenticato, l’utente può accedere alle funzionalità e ai dati autorizzati, mentre l’autenticazione fallita impedisce l’accesso non autorizzato.],
   ),
   autorizzazione: (
     short: "autorizzazione",
+    plural: "autorizzazioni",
     description: [Processo che determina i privilegi e i permessi di un utente o di un sistema autenticato, stabilendo quali azioni può eseguire e quali risorse può accedere. L’autorizzazione viene spesso gestita tramite ruoli, gruppi o politiche di accesso, garantendo che solo gli utenti con i diritti appropriati possano eseguire determinate operazioni o visualizzare informazioni sensibili.],
   ),
   azione: (
     short: "azione",
+    plural: "azioni",
     description: [L’insieme di processi intrapresi per mettere in pratica una determinata decisione.],
   ),
 
@@ -68,10 +72,12 @@
   ),
   caso-d-uso: (
     short: "caso d’uso",
+    plural: "casi d’uso",
     description: [Insieme di azioni all’interno di uno scenario, con in comune uno scopo finale per un attore.],
   ),
   committente: (
     short: "committente",
+    plural: "committenti",
     description: [Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto software, di un sistema informatico o di un servizio IT. Il committente definisce gli obiettivi, approva i requisiti e verifica i risultati, ma non esegue direttamente lo sviluppo.],
   ),
   csv: (
@@ -104,6 +110,7 @@
   ),
   decisione: (
     short: "decisione",
+    plural: "decisioni",
     description: [Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da adottare per soddisfare un determinato bisogno.],
   ),
   design-pattern: (
@@ -300,6 +307,7 @@
   ),
   processo: (
     short: "processo",
+    plural: "processi",
     description: [Insieme di attività correlate e coese che trasformano ingressi (bisogni) in uscite (prodotti) secondo regole date, consumando risorse nel farlo.],
   ),
   product-baseline: (
@@ -356,19 +364,23 @@
   ),
   requisiti-di-qualita: (
     short: "requisiti di qualità",
+    plural: "requisiti di qualità",
     description: [Tipo di requisito che descrive le caratteristiche qualitative che il progetto deve possedere, come prestazioni, sicurezza, affidabilità e usabilità.],
   ),
   requisito-di-vincolo: (
     short: "requisito di vincolo",
+    plural: "requisiti di vincolo",
     description: [Tipo di requisito che descrive le restrizioni imposte dall’azienda proponente che il progetto deve rispettare.],
   ),
   requisito-funzionale: (
     short: "requisito funzionale",
+    plural: "requisiti funzionali",
     description: [Definiscono cosa il sistema deve fare, descrivendo le sue azioni e funzioni specifiche. Sono le capacità che l’utente si aspetta, come “aggiungere un prodotto al carrello” in un negozio online.],
   ),
   requisito-non-funzionale: (
     short: "requisito non funzionale",
-    description: [Specificano come il sistema deve comportarsi mentre svolge quelle funzioni. Si concentrano su qualità come le prestazioni, la sicurezza o l’affidabilità, ad esempio “il sistema deve supportare 1000 utenti contemporanei senza rallentamenti”.],
+    plural: "requisiti non funzionali",
+    description: [Specificano come il sistema deve comportarsi mentre svolge quelle funzioni. Si concentrano su qualità come le prestazioni, la sicurezza o l’affidabilità, ad esempio “il sistema deve supportare 1000 utenti contemporanei senza rallentamenti”.]
   ),
   responsabile: (
     short: "responsabile",
