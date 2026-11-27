@@ -31,6 +31,8 @@
     ("0.1.0", "2026-11-12", "Formattazione e divisione in paragrafi del documento", BG, LS),
   ),
   glossario: termini,
+  tabelle:true,
+  immagini:true,
 )
 
 /*
@@ -52,39 +54,6 @@ IMMAGINE
   caption: [Titolo dell'immagine]
 ) \
 */
-
-// Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
-#show outline.entry: it => {
-  if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
-    let loc = it.element.location()
-    let num = counter(figure.where(kind: it.element.kind)).at(loc).first()
-    let desc = it.element.caption.body
-    let page-num = loc.page()
-    link(loc, [
-      #num -- #desc
-      #box(width: 1fr, repeat([. ]))
-      #page-num \
-    ])
-  } else {
-    it
-  }
-}
-
-//Indice delle tabelle
-#outline(
-  title: [Elenco delle tabelle],
-  target: figure.where(kind: table)
-)
-#pagebreak()
-
-//indice delle immagini
-#outline(
-  title: [Elenco delle immagini],
-  target: figure.where(kind: image)
-)
-#pagebreak()
-
-
 
 = Introduzione
 == Glossario

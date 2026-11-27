@@ -1,6 +1,14 @@
 #import "base.typ": base, copertina, indiceDocumento, tabellaDati, intestazione, tutti, BG, EH, MMI, MMO, RP, LS, tabellaRigaPari, tabellaRigaDispari
 #import "@preview/glossy:0.9.2": *
 
+#let valore-metadati(valore) = if valore == none {
+  []
+} else if type(valore) == array {
+  valore.map(elemento => [#elemento]).join(linebreak())
+} else {
+  valore
+}
+
 #let documento(
   titolo: "Documento",
   mostraRegistro: true,
@@ -8,15 +16,17 @@
   versione: "",
   stato: "",
   redazione: (),
-  verifica: "",
+  verifica: (),
   approvazione: "",
   proprietario: "",
   uso: "",
-  destinatari: "",
+  destinatari: (),
   registroModifiche: (),
   indice: true,
   glossario: none,
-  urlGlossario: "https://byteclub.github.io/docs/Glossario.pdf",
+  urlGlossario: "https://byteclubunipd.github.io/Progetto-SWE/docs/6_Output/3_RTB/Documenti_interni/Glossario.pdf",
+  tabelle: false,
+  immagini: false,
   body,
 ) = {
   set document(title: titolo, author: redazione)
@@ -24,6 +34,38 @@
     tipo: "Documento " + uso,
     intestazione: intestazione(titolo),
     [
+      #show: doc => if glossario != none {
+        show: init-glossary.with(glossario)
+        show ref: it => {
+          let key = str(it.target).split(":").first()
+          if key in glossario {
+            link(urlGlossario + "#" + key)[#it#super[G]]
+          } else {
+            it
+          }
+        }
+        doc
+      } else {
+        doc
+      }
+
+      // Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
+      #show outline.entry: it => {
+        if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
+          let loc = it.element.location()
+          let num = counter(figure.where(kind: it.element.kind)).at(loc).first()
+          let desc = it.element.caption.body
+          let page-num = loc.page()
+          link(loc, [
+            #num -- #desc
+            #box(width: 1fr, repeat([. ]))
+            #page-num \
+          ])
+        } else {
+          it
+        }
+      }
+
       // COPERTINA
       #copertina(titolo)
 
@@ -38,12 +80,12 @@
           righe: (
             ([Versione], [#versione]),
             ([Stato], [#stato]),
-            ([Redazione], [#redazione]),
-            ([Verifica], [#verifica]),
+            ([Redazione], [#valore-metadati(redazione)]),
+            ([Verifica], [#valore-metadati(verifica)]),
             ([Approvazione], [#approvazione]),
             ([Proprietario], [#proprietario]),
             ([Uso], [#uso]),
-            ([Destinatari], [#destinatari]),
+            ([Destinatari], [#valore-metadati(destinatari)]),
           ),
         )
       ]
@@ -65,29 +107,32 @@
           righe: registroModifiche,
         )
       ]
-      
 
-      
       #if indice [
         #pagebreak()
         #indiceDocumento()
         #pagebreak()
       ]
-      
-      #if glossario != none [
-        #show: init-glossary.with(glossario)
-        #show ref: it => {
-          let key = str(it.target).split(":").first()
-          if key in glossario {
-            link(urlGlossario + "#" + key)[#it#super[G]]
-          } else {
-            it
-          }
-        }
-        #body
-      ] else [
-        #body
+
+      #if tabelle [
+        #outline(
+          title: [Elenco delle tabelle],
+          target: figure.where(kind: table),
+          indent: 1em,
+        )
+        #pagebreak()
       ]
+
+      #if immagini [
+        #outline(
+          title: [Elenco delle figure],
+          target: figure.where(kind: image),
+          indent: 1em,
+        )
+        #pagebreak()
+      ]
+
+      #body
     ],
   )
 }
