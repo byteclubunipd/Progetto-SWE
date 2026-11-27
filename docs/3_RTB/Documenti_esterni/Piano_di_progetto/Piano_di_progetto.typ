@@ -2,15 +2,6 @@
 #import "Diagrammi_e_rendiconto_ore_costi.typ": *
 
 #import "../../Documenti_interni/Glossario.typ": termini
-#import "@preview/glossy:0.9.2": *
-
-// Attiva la gestione del glossario usando l'elenco dei termini importato.
-// I collegamenti automatici sono disabilitati perché vengono personalizzati
-// dalla funzione `mostra-termine` definita sopra.
-#show: init-glossary.with(
-  termini,
-  term-links: true,
-)
 
 // ============================================================================
 // CONFIGURAZIONE AUTOMATICA DI MILESTONE E SPRINT
@@ -106,6 +97,7 @@
     ("0.1.0", "2026-11-16", "Creazione della struttura iniziale", RP, EH),
   ),
   indice: true,
+  glossario: termini,
   tabelle: true,
   immagini: true,
 )
@@ -518,7 +510,7 @@ Nei prossimi @sprint verrà adottato un nuovo metodo di @pianificazione. Dopo av
 Registrare cosa ha funzionato, cosa non ha funzionato e le @azione:pl concrete concordate per lo @sprint successivo.
 
 #pagebreak()
-=== *@sprint 2*
+=== *@sprint:cap 2*
 
 ==== Informazioni generali e attività da svolgere
 #mostra-informazioni-sprint(sprint-2, [Completamento della raccolta requisiti e @validazione delle prime integrazioni tecnologiche.])
@@ -551,8 +543,8 @@ Registrare cosa ha funzionato, cosa non ha funzionato e le @azione:pl concrete c
 ==== Rischi incontrati
 - *RO1:* rischio da compilare a consuntivo con riferimento alla tracciabilità tra requisiti, @issue e prodotti.
 
-==== @efficacia delle strategie di gestione e mitigazione dei rischi
-La valutazione viene compilata al termine dello @sprint.
+==== @efficacia:cap delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
 ==== Migliorie da attuare per le attività future
 Registrare le migliorie emerse nel riesame dello @sprint.
@@ -561,7 +553,7 @@ Registrare le migliorie emerse nel riesame dello @sprint.
 Registrare risultati, problemi e @azione:pl per lo @sprint successivo.
 
 #pagebreak()
-=== *@sprint 3*
+=== *@sprint:cap 3*
 
 ==== Informazioni generali e attività da svolgere
 #mostra-informazioni-sprint(sprint-3, [Definizione dell'architettura e consolidamento della Requirements and Technology Baseline (@rtb).])
@@ -594,8 +586,8 @@ Registrare risultati, problemi e @azione:pl per lo @sprint successivo.
 ==== Rischi incontrati
 - *RO1:* rischio da compilare a consuntivo.
 
-==== @efficacia delle strategie di gestione e mitigazione dei rischi
-La valutazione viene compilata al termine dello @sprint.
+==== @efficacia:cap delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
 ==== Migliorie da attuare per le attività future
 Registrare le migliorie emerse nel riesame dello @sprint.
@@ -604,7 +596,7 @@ Registrare le migliorie emerse nel riesame dello @sprint.
 Registrare risultati, problemi e @azione:pl per lo @sprint successivo.
 
 #pagebreak()
-=== *@sprint 4*
+=== *@sprint:cap 4*
 
 ==== Informazioni generali e attività da svolgere
 #mostra-informazioni-sprint(sprint-4, [Completamento dei documenti @rtb e preparazione del riesame della baseline.])
@@ -647,12 +639,12 @@ Registrare le migliorie emerse nel riesame dello @sprint.
 Registrare risultati, problemi e @azione:pl per lo @sprint successivo.
 
 #pagebreak()
-=== *@sprint 5*
+=== *@sprint:cap 5*
 
 ==== Informazioni generali e attività da svolgere
 #mostra-informazioni-sprint(sprint-5, [Riesame e chiusura della @rtb, con @decisione per la @product-baseline.])
-- @verifica coerenza tra requisiti, architettura, @poc e @piano-di-qualifica.
-- Consolidare la baseline e registrare le @decisione:pl aperte.
+- @verifica:cap coerenza tra requisiti, architettura, @poc e @piano-di-qualifica.
+- Consolidare la baseline e registrare le decisioni aperte.
 - Pianificare la @product-baseline sulla base dei consuntivi @rtb.
 
 ==== Attività svolte
@@ -680,8 +672,8 @@ Registrare risultati, problemi e @azione:pl per lo @sprint successivo.
 ==== Rischi incontrati
 - *RO1:* rischio da compilare a consuntivo.
 
-==== @efficacia delle strategie di gestione e mitigazione dei rischi
-La valutazione viene compilata al termine dello @sprint.
+==== @efficacia:cap delle strategie di gestione e mitigazione dei rischi
+La valutazione viene compilata al termine dello Sprint.
 
 ==== Migliorie da attuare per le attività future
 Registrare le migliorie emerse nel riesame della @rtb e applicarle alla @pb.
