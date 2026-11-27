@@ -163,8 +163,8 @@ tabella, salvo i casi in cui uno specifico campo non risulti rilevante.
 
 == Lista casi d'uso
 === UC_01: ???
-
 #pagebreak()
+
 = Requisiti
 Vengono ora descritti i requisiti individuati dal gruppo ByteClub.\ I requisiti vengono classificati in:
 - *Funzionali*: requisiti che individuano ciò che il sistema deve presentare per soddisfare l’aspettativa.
