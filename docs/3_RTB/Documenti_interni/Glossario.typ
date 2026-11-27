@@ -26,6 +26,7 @@
   ),
   api: (
     short: "API",
+    plural: "API",
     long: "Application Programming Interface",
     description: [Acronimo di Application Programming Interface, è un’interfaccia utile a permettere o facilitare la comunicazione tra diversi software o parti di un singolo software.],
   ),
@@ -43,6 +44,7 @@
   ),
   azione: (
     short: "azione",
+    plural: "azioni",
     description: [L’insieme di processi intrapresi per mettere in pratica una determinata decisione.],
   ),
 
@@ -72,6 +74,7 @@
   ),
   committente: (
     short: "committente",
+    plural: "committenti",
     description: [Persona, ente o azienda che richiede e finanzia la realizzazione di un progetto software, di un sistema informatico o di un servizio IT. Il committente definisce gli obiettivi, approva i requisiti e verifica i risultati, ma non esegue direttamente lo sviluppo.],
   ),
   csv: (
@@ -82,6 +85,7 @@
   // --- D ---
   database: (
     short: "database",
+    plural: "database",
     description: [Un database (in italiano: base di dati) è un sistema per la conservazione e gestione dei dati. Comprende una componente fisica, che è il supporto di memorizzazione dei dati, e una componente software, detta DBMS (Guardare definizione @dbms).],
   ),
   data-warehouse: (
@@ -90,6 +94,7 @@
   ),
   dashboard: (
     short: "dashboard",
+    plural: "dashboard",
     description: [Interfaccia grafica che fornisce una panoramica delle informazioni più rilevanti e consente di monitorare lo stato di un sistema o di un progetto. Spesso include grafici, tabelle e indicatori chiave di prestazione (@kpi) per facilitare la comprensione e l’analisi dei dati.],
   ),
   db: (
@@ -104,6 +109,7 @@
   ),
   decisione: (
     short: "decisione",
+    plural: "decisioni",
     description: [Un accordo all’interno del gruppo, riguardante metodologie o convenzioni da adottare per soddisfare un determinato bisogno.],
   ),
   design-pattern: (
@@ -157,6 +163,7 @@
   ),
   funzionalita: (
     short: "funzionalità",
+    plural: "funzionalità",
     description: [Una caratteristica offerta da un sistema, spesso con lo scopo di soddisfare un bisogno.],
   ),
 
@@ -215,6 +222,7 @@
   ),
   issue: (
     short: "issue",
+    plural: "issue",
     description: [All’interno dell’ecosistema GitHub, rappresenta un’attività che richiede modifiche al codice sorgente per essere svolta, può trattarsi di un bug da risolvere, una feature da aggiungere, di una correzione minore o anche di qualcosa definito dagli sviluppatori.],
   ),
 
@@ -247,6 +255,7 @@
   ),
   milestone: (
     short: "milestone",
+    plural: "milestone",
     description: [Punto significativo nel percorso del progetto in cui il gruppo si pone il raggiungimento di determinati obiettivi.],
   ),
   minimum-viable-product: (
@@ -290,6 +299,7 @@
   ),
   poc: (
     short: "PoC",
+    plural: "PoC",
     long: "Proof of Concept",
     description: [Acronimo di Proof of Concept, per la definizione vedere ‘@proof-of-concept’.],
   ),
@@ -300,6 +310,7 @@
   ),
   processo: (
     short: "processo",
+    plural: "processi",
     description: [Insieme di attività correlate e coese che trasformano ingressi (bisogni) in uscite (prodotti) secondo regole date, consumando risorse nel farlo.],
   ),
   product-baseline: (
@@ -336,12 +347,14 @@
   ),
   pull-request: (
     short: "pull request",
+    plural: "pull request",
     description: [All’interno dell’ecosistema GitHub, uno strumento che permette di sospendere momentaneamente la pubblicazione di una modifica nel ramo principale della repository, in attesa di approvazione e/o workflow automatici (e.g. GitHub Action).],
   ),
 
   // --- Q ---
   query: (
     short: "query",
+    plural: "query",
     description: [Richiesta di dati o informazioni inviata a un sistema, come un database o un motore di ricerca, per ottenere risultati specifici.],
   ),
 
@@ -360,14 +373,17 @@
   ),
   requisito-di-vincolo: (
     short: "requisito di vincolo",
+    plural: "requisiti di vincolo",
     description: [Tipo di requisito che descrive le restrizioni imposte dall’azienda proponente che il progetto deve rispettare.],
   ),
   requisito-funzionale: (
     short: "requisito funzionale",
+    plural: "requisiti funzionali",
     description: [Definiscono cosa il sistema deve fare, descrivendo le sue azioni e funzioni specifiche. Sono le capacità che l’utente si aspetta, come “aggiungere un prodotto al carrello” in un negozio online.],
   ),
   requisito-non-funzionale: (
     short: "requisito non funzionale",
+    plural: "requisiti non funzionali",
     description: [Specificano come il sistema deve comportarsi mentre svolge quelle funzioni. Si concentrano su qualità come le prestazioni, la sicurezza o l’affidabilità, ad esempio “il sistema deve supportare 1000 utenti contemporanei senza rallentamenti”.],
   ),
   responsabile: (
@@ -400,6 +416,7 @@
   ),
   sprint: (
     short: "sprint",
+    plural: "sprint",
     description: [Ciclo di lavoro di durata fissa, tipico dello sviluppo Agile, durante il quale il gruppo si impegna a completare un insieme prefissato di attività per produrre un incremento del software.],
   ),
   sql: (
@@ -423,6 +440,7 @@
   ),
   test: (
     short: "test",
+    plural: "test",
     description: [Un processo dello sviluppo software che si occupa di verificare la funzionalità di una o più parti del prodotto.],
   ),
   typst: (

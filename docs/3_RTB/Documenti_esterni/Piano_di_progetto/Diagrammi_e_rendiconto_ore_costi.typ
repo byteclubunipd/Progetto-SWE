@@ -422,14 +422,14 @@
   ore-preventivate,
   abbreviazioni-ruolo,
   rgb("#0F9D8A"),
-  [Preventivo ore per ruolo dello @sprint #dati.numero],
+  [Preventivo ore per ruolo dello @sprint:cap #dati.numero],
 )
 
 #let mostra-consuntivo-ruoli(dati) = grafico-colonne(
   ore-per-ruolo(records-sprint-calcolati(dati)),
   abbreviazioni-ruolo,
   rgb("#8651FF"),
-  [Consuntivo ore per ruolo dello @sprint #dati.numero],
+  [Consuntivo ore per ruolo dello @sprint:cap #dati.numero],
 )
 
 #let mostra-tabella-preventivo-ruoli(ore-per-componente) = {
@@ -465,7 +465,7 @@
   let fine-reale = fine-reale-sprint(dati)
   let ritardo = if fine-reale == none { "—" } else { numero-testo(calc.max(0, int((fine-reale - dati.data-fine).days()))) }
   tabella-report(
-    [@sprint #dati.numero: periodo e avanzamento],
+    [@sprint:cap #dati.numero: periodo e avanzamento],
     (1.5fr, 1fr, 1fr, 1fr),
     ("Inizio", "Fine prevista", "Fine reale", "Giorni di ritardo"),
     ((data-testo(dati.data-inizio), data-testo(dati.data-fine), data-testo(fine-reale), ritardo),),
@@ -493,7 +493,7 @@
     (componente,) + valori
   })
   tabella-report(
-    [@sprint #dati.numero: Aggiornamento delle risorse rimanenti (ore)],
+    [@sprint:cap #dati.numero: Aggiornamento delle risorse rimanenti (ore)],
     (1.5fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 0.8fr),
     ("Componente",) + abbreviazioni-ruolo,
     righe,
@@ -537,9 +537,9 @@
     text(fill: colori-risorse)[(-#numero-testo(costo-sprint.sum()))]
   }
   tabella-report(
-    [@sprint #dati.numero: Aggiornamento delle risorse rimanenti],
+    [@sprint:cap #dati.numero: Aggiornamento delle risorse rimanenti],
     (1.2fr, 0.7fr, 0.65fr, 1fr, 0.95fr, 1.15fr, 1.2fr),
-    ("Ruolo", "Costo orario (€/h)", "Ore (h)", [Costo @sprint preventivo (€)], [Costo @sprint consuntivo (€)], "Ore rimanenti (h)", "Budget rimanente (€)"),
+    ("Ruolo", "Costo orario (€/h)", "Ore (h)", [Costo @sprint:cap preventivo (€)], [Costo @sprint:cap consuntivo (€)], "Ore rimanenti (h)", "Budget rimanente (€)"),
     righe-costo + ((
       strong("Totale"),
       "—",
@@ -724,10 +724,10 @@
         place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: burndown-viola-scuro))
       }
       #place(left + top, dx: -1.55cm, dy: 1.65cm)[
-        #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, [@issue rimanenti])]
+        #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, [@issue:pl:cap rimanenti])]
       ]
       #place(left + top, dx: 5cm, dy: altezza + 0.65cm)[
-        #box(width: 3cm)[#align(center)[#text(size: 7pt, fill: burndown-testo, [Giorni di @sprint])]]
+        #box(width: 3cm)[#align(center)[#text(size: 7pt, fill: burndown-testo, [Giorni di @sprint:cap])]]
       ]
       #place(left + top, dx: 3.2cm, dy: altezza + 1.25cm)[
         #grid(
@@ -736,11 +736,11 @@
           box(width: 0.45cm, height: 2pt, fill: burndown-fucsia)[],
           [Burndown ideale],
           box(width: 0.45cm, height: 2pt, fill: burndown-viola-scuro)[],
-          [@issue rimanenti],
+          [@issue:pl:cap rimanenti],
         )
       ]
     ],
-    caption: [Diagramma di Burndown dello @sprint #dati.numero],
+    caption: [Diagramma di Burndown dello @sprint:cap #dati.numero],
   )
 }
 
@@ -1084,7 +1084,7 @@
     figure(
       kind: image,
       pagina-gantt(dati, prima-pagina),
-      caption: [Diagramma di Gantt dello @sprint #dati.numero],
+      caption: [Diagramma di Gantt dello @sprint:cap #dati.numero],
     )
   } else {
     // Il salto è al livello del documento, fuori dalla figura/contenitore.
@@ -1096,7 +1096,7 @@
       #figure(
         kind: image,
         pagina-gantt(dati, seconda-pagina),
-        caption: [Diagramma di Gantt dello @sprint #dati.numero],
+        caption: [Diagramma di Gantt dello @sprint:cap #dati.numero],
       )
     ]
   }
