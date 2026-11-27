@@ -229,7 +229,7 @@
     text(font: titleFont, size: 14pt, fill: whiteText)[UNIVERSITÀ DI PADOVA],
   )
   #place(left + top, dx: 9.69in, dy: 6.227in,
-    text(font: titleFont, size: 16pt, fill: whiteText)[Autore: #linebreak() #responsible],
+    text(font: titleFont, size: 16pt, fill: whiteText)[Rappresentante: #linebreak() #responsible],
   )
 ])
 }
@@ -302,7 +302,7 @@
     itemList((activityDeadline(item, data),), size: 22pt, top: 0in, indent: -0.32in),
   )).flatten()
   grid(
-    columns: (1fr, 1fr),
+    columns: (3fr, 1fr),
     column-gutter: 0.55in,
     row-gutter: 0.14in,
     text(font: bodyFont, size: 24pt, weight: "bold", fill: whiteText)[ATTIVITÀ],

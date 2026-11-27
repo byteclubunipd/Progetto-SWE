@@ -16,6 +16,7 @@
   --titleShadow: rgb(0 0 0 / 24%);
   --logoShadow: rgb(0 0 0 / 16%);
   --successColor: #15803d;
+  --reviewColor: #b45309;
 }
 
 [data-theme="dark"] {
@@ -33,6 +34,7 @@
   --titleShadow: rgb(255 255 255 / 28%);
   --logoShadow: rgb(255 255 255 / 18%);
   --successColor: #4ade80;
+  --reviewColor: #fbbf24;
 }
 
 * {
@@ -871,6 +873,20 @@ section h2 {
 
 .issue-list .issue-chiusa .issue-icona {
   color: var(--successColor);
+}
+
+.issue-list .issue-revisione .issue-icona {
+  color: var(--reviewColor);
+}
+
+.issue-list .issue-icona svg {
+  width: 0.95em;
+  height: 0.95em;
+  vertical-align: -0.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
 }
 
 .issue-list a,

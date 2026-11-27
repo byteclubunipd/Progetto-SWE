@@ -72,7 +72,7 @@ class DocumentationBuildTest(unittest.TestCase):
     def testEmptySectionsHaveTheRequestedMessage(self):
         self.assertEqual(self.runBuild(), [])
         generated = (self.root / "website/build/index.html").read_text(encoding="utf-8")
-        self.assertEqual(generated.count(PIPELINE.EMPTY), 6)
+        self.assertEqual(generated.count(PIPELINE.EMPTY), 10)
         self.assertNotIn("[DATA_AGGIORNAMENTO]", generated)
         self.assertRegex(
             generated,
@@ -94,6 +94,69 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(self.snapshot(), before)
         self.assertEqual((self.root / PIPELINE.TEMPLATE).read_text(encoding="utf-8"),
                          HTML_TEMPLATE)
+
+    def testRtbDocumentsAreCompiledIntoTheirMatchingOutputDirectories(self):
+        names = [
+            "3_RTB/Documenti_esterni/Specifica.pdf",
+            "3_RTB/Documenti_interni/Analisi.pdf",
+            "3_RTB/Verbali/Esterni/VE_2026-11-11.pdf",
+            "3_RTB/Verbali/Interni/VI_2026-11-11.pdf",
+        ]
+        for name in names:
+            self.write("docs/" + name.removesuffix(".pdf") + ".typ", "Documento RTB")
+
+        outputs = self.runBuild()
+
+        for name in names:
+            output = self.root / "docs/6_Output" / name
+            self.assertTrue(output.is_file(), name)
+            self.assertTrue(output.read_bytes().startswith(b"%PDF-"), name)
+
+            published = self.root / "website/build/docs/6_Output" / name
+            self.assertEqual(published.read_bytes(), output.read_bytes())
+
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        for title in ("Specifica", "Analisi", "VE 2026-11-11", "VI 2026-11-11"):
+            self.assertIn(f'<span class="document-title">{title}</span>', page)
+
+        self.assertEqual(
+            sorted(name for name in outputs if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+        manifest = json.loads(
+            (self.root / PIPELINE.MANIFEST).read_text(encoding="utf-8"))
+        self.assertEqual(
+            sorted(name for name in manifest["outputs"] if name.startswith("3_RTB/")),
+            sorted(names),
+        )
+
+        before = self.snapshot()
+        self.runBuild()
+        self.assertEqual(self.snapshot(), before)
+
+    def testRtbExternalDocumentsCatalog(self):
+        self.write("docs/3_RTB/Documenti_esterni/Specifica.typ", "Specifica RTB")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">Specifica</span>', page)
+
+    def testRtbInternalDocumentsCatalog(self):
+        self.write("docs/3_RTB/Documenti_interni/Analisi.typ", "Analisi RTB")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">Analisi</span>', page)
+
+    def testRtbExternalMinutesCatalog(self):
+        self.write("docs/3_RTB/Verbali/Esterni/VE_2026-11-11.typ", "Verbale esterno")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">VE 2026-11-11</span>', page)
+
+    def testRtbInternalMinutesCatalog(self):
+        self.write("docs/3_RTB/Verbali/Interni/VI_2026-11-11.typ", "Verbale interno")
+        self.runBuild()
+        page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn('<span class="document-title">VI 2026-11-11</span>', page)
 
     def testCompilationFailureKeepsPreviousPdfCatalogAndManifest(self):
         self.write("docs/2_Candidatura/Documento v0.1.0.typ", "Versione precedente")
@@ -272,9 +335,10 @@ class DocumentationBuildTest(unittest.TestCase):
         self.assertEqual(len(pdfReferences), 6)
         self.assertEqual(len(set(pdfReferences)), 6)
         content = page.read_text(encoding="utf-8")
-        self.assertIn('id="lettera-presentazione"', content)
-        self.assertLess(content.index('id="lettera-presentazione"'),
-                        content.index('id="candidatura"'))
+        self.assertIn('id="lettera-presentazione-rtb"', content)
+        self.assertLess(content.index('id="lettera-presentazione-rtb"'),
+                        content.index('id="RTB"'))
+        self.assertLess(content.index("Lettera.pdf"), content.index("Piano.pdf"))
         self.assertNotIn('class="quick-links"', content)
         self.assertNotIn("Portale della documentazione", content)
         self.assertIn("milestone-name", content)
@@ -298,6 +362,10 @@ class DocumentationBuildTest(unittest.TestCase):
 
     def testCatalogUsesTypstDocumentMetadata(self):
         self.write(
+            "docs/2_Candidatura/Lettera_di_presentazione/Lettera v2.0.0.typ",
+            '#show: documento.with(titolo: "SmartDashboard: piattaforma web di '
+            'Business Intelligence", versione: "2.0.0", stato: "Approvato")')
+        self.write(
             "docs/2_Candidatura/Documenti_esterni/Valutazione v1.0.0.typ",
             '#show: documento.with(titolo: "Valutazione Capitolati", '
             'versione: "1.0.0", stato: "Approvato")')
@@ -310,6 +378,8 @@ class DocumentationBuildTest(unittest.TestCase):
             b"%PDF-firmato")
         self.runBuild()
         page = (self.root / "website/build/index.html").read_text(encoding="utf-8")
+        self.assertIn("Lettera di presentazione", page)
+        self.assertNotIn("SmartDashboard: piattaforma web di Business Intelligence", page)
         self.assertIn("Valutazione Capitolati", page)
         self.assertIn("Versione 1.0.0 · Approvato", page)
         self.assertIn("Verbale Riunione", page)
