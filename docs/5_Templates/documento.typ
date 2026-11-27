@@ -34,7 +34,6 @@
     tipo: "Documento " + uso,
     intestazione: intestazione(titolo),
     [
-      // Attiva il glossario per TUTTO il documento (inclusi indice, elenco tabelle ed elenco figure)
       #show: doc => if glossario != none {
         show: init-glossary.with(glossario)
         show ref: it => {
