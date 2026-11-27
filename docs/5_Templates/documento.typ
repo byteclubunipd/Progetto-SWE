@@ -34,6 +34,38 @@
     tipo: "Documento " + uso,
     intestazione: intestazione(titolo),
     [
+      #show: doc => if glossario != none {
+        show: init-glossary.with(glossario)
+        show ref: it => {
+          let key = str(it.target).split(":").first()
+          if key in glossario {
+            link(urlGlossario + "#" + key)[#it#super[G]]
+          } else {
+            it
+          }
+        }
+        doc
+      } else {
+        doc
+      }
+
+      // Modifica l'indice degli elenchi delle tabelle e delle immagini, lasciando inalterati gli altri indici
+      #show outline.entry: it => {
+        if it.element.has("kind") and (it.element.kind == table or it.element.kind == image) {
+          let loc = it.element.location()
+          let num = counter(figure.where(kind: it.element.kind)).at(loc).first()
+          let desc = it.element.caption.body
+          let page-num = loc.page()
+          link(loc, [
+            #num -- #desc
+            #box(width: 1fr, repeat([. ]))
+            #page-num \
+          ])
+        } else {
+          it
+        }
+      }
+
       // COPERTINA
       #copertina(titolo)
 
@@ -75,12 +107,13 @@
           righe: registroModifiche,
         )
       ]
-      
+
       #if indice [
         #pagebreak()
         #indiceDocumento()
         #pagebreak()
       ]
+
       #if tabelle [
         #outline(
           title: [Elenco delle tabelle],
@@ -99,20 +132,7 @@
         #pagebreak()
       ]
 
-      #if glossario != none [
-        #show: init-glossary.with(glossario)
-        #show ref: it => {
-          let key = str(it.target).split(":").first()
-          if key in glossario {
-            link(urlGlossario + "#" + key)[#it#super[G]]
-          } else {
-            it
-          }
-        }
-        #body
-      ] else [
-        #body
-      ]
+      #body
     ],
   )
 }
