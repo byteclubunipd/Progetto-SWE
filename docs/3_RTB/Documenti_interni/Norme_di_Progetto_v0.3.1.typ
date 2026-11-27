@@ -1,5 +1,6 @@
 
 #import "/docs/5_Templates/documento.typ": *
+#import "/docs/3_RTB/Documenti_interni/Glossario.typ": termini
 
 // Norme di Progetto
 // Nomenclatura: Norme_di_Progetto v0.1.0.typ
@@ -16,11 +17,14 @@
   destinatari: "Tutti i componenti del gruppo ByteClub",
   proprietario: "ByteClub",
   registroModifiche: (
+    ("0.3.1", "2026-11-27", "Evidenziazione dei termini da glossario.", EH, LS),
     ("0.3.0", "2026-11-20", "Aggiornamento delle norme per project board, issue, conteggio ore, gestione delle chiavi API e utilizzo del Glossario.", EH, LS),
     ("0.2.0", "2026-11-16", "Integrazione delle norme relative a Gitflow, gestione della documentazione, Typst, build, testing e nomenclatura dei commit.", EH, LS),
     ("0.1.0", "2026-11-13", "Prima stesura del documento", EH, LS),
   ),
   indice: true,
+  glossario: termini,
+  tabelle:true,
 )
 
 = Introduzione
