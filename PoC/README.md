@@ -80,6 +80,7 @@ I test verificano che:
 - il numero di righe di ogni tabella coincida con la documentazione di Ergon;
 - i codici siano testo e conservino gli zeri iniziali;
 - ogni chiave di `fact_fatturato` trovi la sua riga nella dimensione;
+- le colonne usate per il fatturato netto non contengano NULL, in `stattab` e in `fact_fatturato` (la formula usa comunque `COALESCE`, così un eventuale NULL vale 0 invece di escludere l'intera riga dal totale);
 - il fatturato netto di ogni anno sia uguale calcolato da `raw` e da `dwh`.
 
 Per aprire il database e scrivere query:

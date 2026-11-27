@@ -45,9 +45,18 @@ CHIAVI_FATTO = [
     ('sk_id_deposito', 'dim_tabgen', 'sk_id', 'DE'),
 ]
 
+COLONNE_FATTURATO = [
+    'ven_lordo', 'ven_incondizionato', 'ven_offerta', 'ven_canvass', 'ven_finanziari',
+    'res_lordo', 'res_incondizionato', 'res_offerta', 'res_canvass', 'res_finanziari',
+]
+
 FATTURATO_NETTO = '''
-    SUM(ven_lordo - (ven_incondizionato + ven_offerta + ven_canvass + ven_finanziari)
-        - (res_lordo - (res_incondizionato + res_offerta + res_canvass + res_finanziari)))
+    SUM(COALESCE(ven_lordo, 0)
+        - (COALESCE(ven_incondizionato, 0) + COALESCE(ven_offerta, 0)
+           + COALESCE(ven_canvass, 0) + COALESCE(ven_finanziari, 0))
+        - (COALESCE(res_lordo, 0)
+           - (COALESCE(res_incondizionato, 0) + COALESCE(res_offerta, 0)
+              + COALESCE(res_canvass, 0) + COALESCE(res_finanziari, 0))))
 '''
 
 
@@ -84,6 +93,13 @@ def test_chiavi_del_fatto_trovano_la_dimensione(con, colonna, dimensione, chiave
         )
     ''').fetchone()[0]
     assert orfane == 0
+
+
+@pytest.mark.parametrize('tabella', ['raw.stattab', 'dwh.fact_fatturato'])
+def test_colonne_del_fatturato_senza_null(con, tabella):
+    conteggi = ', '.join(f'count(*) FILTER (WHERE {colonna} IS NULL)' for colonna in COLONNE_FATTURATO)
+    nulli = con.execute(f'SELECT {conteggi} FROM {tabella}').fetchone()
+    assert dict(zip(COLONNE_FATTURATO, nulli)) == dict.fromkeys(COLONNE_FATTURATO, 0)
 
 
 def test_fatturato_netto_coerente_tra_raw_e_dwh(con):

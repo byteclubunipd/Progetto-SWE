@@ -19,8 +19,12 @@ MODELLO_OPENAI = os.getenv('OPENAI_MODEL') or 'gpt-5-mini'
 TIMEOUT = 60.0
 
 FATTURATO_NETTO = '''
-    SUM(f.ven_lordo - (f.ven_incondizionato + f.ven_offerta + f.ven_canvass + f.ven_finanziari)
-        - (f.res_lordo - (f.res_incondizionato + f.res_offerta + f.res_canvass + f.res_finanziari)))
+    SUM(COALESCE(f.ven_lordo, 0)
+        - (COALESCE(f.ven_incondizionato, 0) + COALESCE(f.ven_offerta, 0)
+           + COALESCE(f.ven_canvass, 0) + COALESCE(f.ven_finanziari, 0))
+        - (COALESCE(f.res_lordo, 0)
+           - (COALESCE(f.res_incondizionato, 0) + COALESCE(f.res_offerta, 0)
+              + COALESCE(f.res_canvass, 0) + COALESCE(f.res_finanziari, 0))))
 '''
 
 app = FastAPI(title='PoC SmartDashboard', version='0.1.0')
