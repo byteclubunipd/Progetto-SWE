@@ -81,7 +81,24 @@
         #indiceDocumento()
         #pagebreak()
       ]
-      
+      #if tabelle [
+        #outline(
+          title: [Elenco delle tabelle],
+          target: figure.where(kind: table),
+          indent: 1em,
+        )
+        #pagebreak()
+      ]
+
+      #if immagini [
+        #outline(
+          title: [Elenco delle figure],
+          target: figure.where(kind: image),
+          indent: 1em,
+        )
+        #pagebreak()
+      ]
+
       #if glossario != none [
         #show: init-glossary.with(glossario)
         #show ref: it => {
@@ -96,23 +113,6 @@
       ] else [
         #body
       ]
-      #if tabelle [
-        #outline(
-          title: [Elenco delle tabelle],
-          target: figure.where(kind: table),
-          indent: 1em,
-        )
-        #pagebreak()
-      ]
-      #if immagini [
-        #outline(
-          title: [Elenco delle figure],
-          target: figure.where(kind: image),
-          indent: 1em,
-        )
-        #pagebreak()
-      ]
-      #body
     ],
   )
 }
