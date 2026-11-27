@@ -7,6 +7,7 @@ import duckdb
 import openai
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
 CARTELLA = Path(__file__).resolve().parent
@@ -78,6 +79,11 @@ def errore_provider(provider, errore):
 
 
 ERRORI_PROVIDER = (anthropic.APIError, openai.APIError)
+
+
+@app.get('/', include_in_schema=False)
+def inizio():
+    return RedirectResponse('/docs')
 
 
 @app.get('/salute')

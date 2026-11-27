@@ -52,6 +52,12 @@ def chiavi(monkeypatch):
     monkeypatch.setenv('OPENAI_API_KEY', 'chiave-finta')
 
 
+def test_indirizzo_base_porta_alla_documentazione():
+    risposta = client.get('/', follow_redirects=False)
+    assert risposta.status_code == 307
+    assert risposta.headers['location'] == '/docs'
+
+
 def test_salute_non_mostra_le_chiavi(chiavi):
     risposta = client.get('/salute')
     assert risposta.status_code == 200
