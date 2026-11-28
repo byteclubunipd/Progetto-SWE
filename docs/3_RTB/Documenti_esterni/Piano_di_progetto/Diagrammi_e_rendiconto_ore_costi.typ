@@ -242,10 +242,34 @@
 #let costi-ruolo = (30, 20, 25, 25, 15, 15)
 #let budget-rtb-ruolo = (30, 30, 60, 36, 48, 48)
 #let componenti-report = (brunoGrimaldi, elicoHuang, mattiaMilan, margheritaMonaco, riccardoPontello, lorencaShiroka)
+#let username-componenti-report = ("BrunoGrimaldi", "ElicoPro", "PitinPitan", "mimi8017", "rpontell", "lololoren")
 #let colori-risorse = rgb("#C62828")
 #let numero-testo(valore) = if valore == int(valore) { str(int(valore)) } else { str(valore) }
 #let somma-ore(records, ruolo) = records.filter(record => record.ruolo == ruolo and record.ore > 0).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+#let somma-ore-componente(records, username, ruolo) = records.filter(record => persona-in-record(record, username) and record.ruolo == ruolo and record.ore > 0).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
 #let ore-per-ruolo(records) = ruoli-report.map(ruolo => somma-ore(records, ruolo))
+#let cella-ore(valore) = if valore == 0 {
+  [-]
+} else {
+  [#numero-testo(calc.round(valore * 100) / 100)]
+}
+#let valida-ore-per-componente(allocazioni) = {
+  if allocazioni.len() != componenti-report.len() {
+    panic("La matrice preventiva deve contenere una riga per componente")
+  }
+  for riga in allocazioni {
+    if riga.len() != ruoli-report.len() {
+      panic("Ogni riga preventiva deve contenere una colonna per ruolo")
+    }
+  }
+  allocazioni
+}
+#let ore-per-ruolo-da-componenti(allocazioni) = {
+  let allocazioni = valida-ore-per-componente(allocazioni)
+  ruoli-report.enumerate().map(((indice, ruolo)) =>
+    allocazioni.map(riga => riga.at(indice)).fold(0, (totale, ore) => totale + ore)
+  )
+}
 #let costi-per-ruolo(ore) = ore.zip(costi-ruolo).map(((ore-ruolo, costo)) => ore-ruolo * costo)
 #let records-fino-a(numero) = issue-records.filter(record => record.sprint <= numero)
 #let fine-reale-sprint(dati) = {
@@ -321,11 +345,18 @@
   caption: [#codice — #titolo],
 )
 
+#let percentuale-ore(ore, totale) = if totale == 0 {
+  "—"
+} else {
+  numero-testo(calc.round(ore / totale * 1000) / 10) + "%"
+}
+
 #let grafico-colonne(valori, etichette, colore, titolo) = {
   // L'asse usa range, quindi il suo massimo deve essere un intero anche
   // quando il consuntivo contiene ore frazionarie.
   let massimo-reale = valori.fold(0, (massimo, valore) => calc.max(massimo, valore))
   let massimo = calc.max(1, calc.ceil(massimo-reale))
+  let totale-ore = valori.fold(0, (totale, valore) => totale + valore)
   let larghezza = 13cm
   let altezza = 5cm
   let spazio = larghezza / etichette.len()
@@ -369,6 +400,9 @@
         let x = indice * spazio + (spazio - larghezza-colonna) / 2
         let h = ore / massimo * altezza
         place(left + top, dx: x, dy: altezza - h, box(width: larghezza-colonna, height: h, fill: colore)[])
+        place(left + top, dx: x, dy: altezza - h - 9pt, box(width: larghezza-colonna)[
+          #align(center)[#text(size: 6pt, fill: rgb("#07051C"), percentuale-ore(ore, totale-ore))]
+        ])
         place(left + top, dx: indice * spazio, dy: altezza + 5pt)[
           #box(width: spazio)[#align(center)[#text(size: 5.5pt, fill: rgb("#526071"), etichette.at(indice))]]
         ]
@@ -388,21 +422,50 @@
   ore-preventivate,
   abbreviazioni-ruolo,
   rgb("#0F9D8A"),
-  "Preventivo ore per ruolo dello Sprint " + str(dati.numero),
+  [Preventivo ore per ruolo dello @sprint:cap #dati.numero],
 )
 
 #let mostra-consuntivo-ruoli(dati) = grafico-colonne(
   ore-per-ruolo(records-sprint-calcolati(dati)),
   abbreviazioni-ruolo,
   rgb("#8651FF"),
-  "Consuntivo ore per ruolo dello Sprint " + str(dati.numero),
+  [Consuntivo ore per ruolo dello @sprint:cap #dati.numero],
 )
+
+#let mostra-tabella-preventivo-ruoli(ore-per-componente) = {
+  let allocazioni = valida-ore-per-componente(ore-per-componente)
+  let righe = componenti-report.enumerate().map(((indice, componente)) =>
+    (componente,) + allocazioni.at(indice).map(cella-ore)
+  )
+  tabella-report(
+    "Preventivo della suddivisione oraria per ruolo",
+    (1.5fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 0.8fr),
+    ("Componente",) + abbreviazioni-ruolo,
+    righe,
+  )
+}
+
+#let mostra-tabella-consuntivo-ruoli(dati) = {
+  let records = records-sprint-calcolati(dati)
+  let righe = componenti-report.enumerate().map(((indice, componente)) => {
+    let valori = ruoli-report.map(ruolo =>
+      cella-ore(somma-ore-componente(records, username-componenti-report.at(indice), ruolo))
+    )
+    (componente,) + valori
+  })
+  tabella-report(
+    "Consuntivo della suddivisione oraria per ruolo",
+    (1.5fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 0.8fr),
+    ("Componente",) + abbreviazioni-ruolo,
+    righe,
+  )
+}
 
 #let mostra-informazioni-sprint(dati, descrizione) = {
   let fine-reale = fine-reale-sprint(dati)
   let ritardo = if fine-reale == none { "—" } else { numero-testo(calc.max(0, int((fine-reale - dati.data-fine).days()))) }
   tabella-report(
-    "Sprint " + str(dati.numero) + ": periodo e avanzamento",
+    [@sprint:cap #dati.numero: periodo e avanzamento],
     (1.5fr, 1fr, 1fr, 1fr),
     ("Inizio", "Fine prevista", "Fine reale", "Giorni di ritardo"),
     ((data-testo(dati.data-inizio), data-testo(dati.data-fine), data-testo(fine-reale), ritardo),),
@@ -414,11 +477,11 @@
   let precedenti = records-fino-a(dati.numero - 1)
   let correnti = records-sprint-calcolati(dati)
   let righe = componenti-report.enumerate().map(((indice, componente)) => {
-    let username = ("BrunoGrimaldi", "ElicoPro", "PitinPitan", "mimi8017", "rpontell", "lololoren").at(indice)
+    let username = username-componenti-report.at(indice)
     let valori = ruoli-report.enumerate().map(((ruolo-indice, ruolo)) => {
       let budget = budget-rtb-ruolo.at(ruolo-indice) / componenti-report.len()
-      let gia-speso = precedenti.filter(record => persona-in-record(record, username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
-      let sprint-speso = correnti.filter(record => persona-in-record(record, username) and record.ruolo == ruolo).map(record => record.ore).fold(0, (totale, ore) => totale + ore)
+      let gia-speso = somma-ore-componente(precedenti, username, ruolo)
+      let sprint-speso = somma-ore-componente(correnti, username, ruolo)
       let residuo = numero-testo(calc.max(0, budget - gia-speso - sprint-speso))
       let sottrazione = if sprint-speso == 0 {
         [(-#numero-testo(sprint-speso))]
@@ -430,7 +493,7 @@
     (componente,) + valori
   })
   tabella-report(
-    "Sprint " + str(dati.numero) + ": Aggiornamento delle risorse rimanenti (ore)",
+    [@sprint:cap #dati.numero: Aggiornamento delle risorse rimanenti (ore)],
     (1.5fr, 0.8fr, 0.8fr, 0.8fr, 0.8fr, 0.9fr, 0.8fr),
     ("Componente",) + abbreviazioni-ruolo,
     righe,
@@ -474,9 +537,9 @@
     text(fill: colori-risorse)[(-#numero-testo(costo-sprint.sum()))]
   }
   tabella-report(
-    "Sprint " + str(dati.numero) + ": Aggiornamento delle risorse rimanenti",
+    [@sprint:cap #dati.numero: Aggiornamento delle risorse rimanenti],
     (1.2fr, 0.7fr, 0.65fr, 1fr, 0.95fr, 1.15fr, 1.2fr),
-    ("Ruolo", "Costo orario (€/h)", "Ore (h)", "Costo Sprint preventivo (€)", "Costo Sprint consuntivo (€)", "Ore rimanenti (h)", "Budget rimanente (€)"),
+    ("Ruolo", "Costo orario (€/h)", "Ore (h)", [Costo @sprint:cap preventivo (€)], [Costo @sprint:cap consuntivo (€)], "Ore rimanenti (h)", "Budget rimanente (€)"),
     righe-costo + ((
       strong("Totale"),
       "—",
@@ -490,15 +553,15 @@
   )
   let scostamento = costo-sprint.sum() - preventivo.sum()
   let valutazione = if scostamento > 0 {
-    "Il costo consuntivo è aumentato di " + numero-testo(scostamento) + " € rispetto al preventivo dello Sprint."
+    [Il costo consuntivo è aumentato di #numero-testo(scostamento) € rispetto al preventivo dello @sprint.]
   } else if scostamento == 0 {
-    "Il costo consuntivo è rimasto uguale a quello previsto per lo Sprint."
+    [Il costo consuntivo è rimasto uguale a quello previsto per lo @sprint.]
   } else {
-    "Il costo consuntivo è diminuito di " + numero-testo(0 - scostamento) + " € rispetto al preventivo dello Sprint."
+    [Il costo consuntivo è diminuito di #numero-testo(0 - scostamento) € rispetto al preventivo dello @sprint.]
   }
   let budget-massimo = costi-per-ruolo(budget-rtb-ruolo).sum()
   let budget-massimo-rimanente = budget-massimo - costo-sprint.sum()
-  [#valutazione Il budget massimo RTB residuo al termine dello Sprint #dati.numero è di #numero-testo(budget-massimo-rimanente) €.]
+  [#valutazione Il budget massimo @rtb residuo al termine dello @sprint #dati.numero è di #numero-testo(budget-massimo-rimanente) €.]
 }
 
 #let mostra-riepilogo-rtb(sprints) = {
@@ -512,9 +575,9 @@
     numero-testo(budget-rtb-ruolo.at(indice) * costi-ruolo.at(indice) - costi.at(indice)),
   ))
   tabella-report(
-    "Riepilogo RTB: consuntivo e budget massimo",
+    [Riepilogo @rtb: consuntivo e budget massimo],
     (1.3fr, 0.8fr, 1fr, 1fr, 1fr),
-    ("Ruolo", "Ore consuntive (h)", "Costo consuntivo (€)", "Budget RTB (€)", "Saldo (€)"),
+    ("Ruolo", "Ore consuntive (h)", "Costo consuntivo (€)", [Budget @rtb (€)], "Saldo (€)"),
     righe-riepilogo + ((
       strong("Totale"),
       strong(numero-testo(spese.sum())),
@@ -524,7 +587,7 @@
     ),),
     riga-totale: 7,
   )
-  [*Totale RTB:* #numero-testo(costi.sum()) € spesi su #numero-testo(costi-per-ruolo(budget-rtb-ruolo).sum()) € preventivati.]
+  [*Totale @rtb:* #numero-testo(costi.sum()) € spesi su #numero-testo(costi-per-ruolo(budget-rtb-ruolo).sum()) € preventivati.]
 }
 
 // ============================================================================
@@ -661,10 +724,10 @@
         place(left + top, dx: punto.x - 3pt, dy: punto.y - 3pt, circle(radius: 3pt, fill: burndown-viola-scuro))
       }
       #place(left + top, dx: -1.55cm, dy: 1.65cm)[
-        #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, "Issue rimanenti")]
+        #rotate(90deg)[#text(size: 7pt, fill: burndown-testo, [@issue:pl:cap rimanenti])]
       ]
       #place(left + top, dx: 5cm, dy: altezza + 0.65cm)[
-        #box(width: 3cm)[#align(center)[#text(size: 7pt, fill: burndown-testo, "Giorni di sprint")]]
+        #box(width: 3cm)[#align(center)[#text(size: 7pt, fill: burndown-testo, [Giorni di @sprint:cap])]]
       ]
       #place(left + top, dx: 3.2cm, dy: altezza + 1.25cm)[
         #grid(
@@ -673,11 +736,11 @@
           box(width: 0.45cm, height: 2pt, fill: burndown-fucsia)[],
           [Burndown ideale],
           box(width: 0.45cm, height: 2pt, fill: burndown-viola-scuro)[],
-          [Issue rimanenti],
+          [@issue:pl:cap rimanenti],
         )
       ]
     ],
-    caption: [Diagramma di Burndown dello Sprint #dati.numero],
+    caption: [Diagramma di Burndown dello @sprint:cap #dati.numero],
   )
 }
 
@@ -739,7 +802,7 @@
     #h(3pt)
     #text(size: 6pt, fill: gantt-testo-secondario, "#" + record.id)
     #if record.is-pull-request {
-      text(size: 6pt, fill: colore-stato(record), " PR")
+      text(size: 6pt, fill: colore-stato(record), [#h(2pt) @pr])
     }]
 }
 
@@ -1021,7 +1084,7 @@
     figure(
       kind: image,
       pagina-gantt(dati, prima-pagina),
-      caption: [Diagramma di Gantt dello Sprint #dati.numero],
+      caption: [Diagramma di Gantt dello @sprint:cap #dati.numero],
     )
   } else {
     // Il salto è al livello del documento, fuori dalla figura/contenitore.
@@ -1033,7 +1096,7 @@
       #figure(
         kind: image,
         pagina-gantt(dati, seconda-pagina),
-        caption: [Diagramma di Gantt dello Sprint #dati.numero],
+        caption: [Diagramma di Gantt dello @sprint:cap #dati.numero],
       )
     ]
   }
