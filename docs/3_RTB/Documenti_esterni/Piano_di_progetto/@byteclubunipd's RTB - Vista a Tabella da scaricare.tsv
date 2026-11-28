@@ -20,10 +20,12 @@ Organizzazione dell'incontro SAL del 27/11/2026	https://github.com/byteclubunipd
 Invio del verbale alla proponente per approvazione e firma	https://github.com/byteclubunipd/Progetto-SWE/issues/62	rpontell	Done	2 - Media	https://github.com/byteclubunipd/Progetto-SWE/pull/65		Nov 16, 2026	Nov 17, 2026			1	Responsabile
 Docs verbali	https://github.com/byteclubunipd/Progetto-SWE/pull/65	ElicoPro, rpontell	Done	2 - Media		lololoren	Nov 16, 2026	Nov 17, 2026			1	Verificatore
 Prima bozza del Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/51	rpontell	Done	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/80		Nov 16, 2026	Nov 25, 2026	Ore produttive	2	1	Responsabile
+Ricerca delle fonti ufficiali delle tecnologie	https://github.com/byteclubunipd/Progetto-SWE/issues/61	mimi8017	Done	3 - Bassa			Nov 16, 2026	Nov 27, 2026		1	1	Progettista
 Redazione del verbale interno del 2026-11-20	https://github.com/byteclubunipd/Progetto-SWE/issues/68	ElicoPro	Done	2 - Media	https://github.com/byteclubunipd/Progetto-SWE/pull/75		Nov 20, 2026	Nov 21, 2026			1	Amministratore
 Aggiornamento dei template per il supporto ai termini del Glossario	https://github.com/byteclubunipd/Progetto-SWE/issues/72	BrunoGrimaldi, lololoren	Done	1 - Alta			Nov 21, 2026				1	Analista, Verificatore
 Creazione del file .env.example per la configurazione delle API	https://github.com/byteclubunipd/Progetto-SWE/issues/73	ElicoPro	Done	1 - Alta	https://github.com/byteclubunipd/Progetto-SWE/pull/76		Nov 21, 2026	Nov 24, 2026			1	Amministratore
 VI_2026-11-20	https://github.com/byteclubunipd/Progetto-SWE/pull/75	ElicoPro	Done	3 - Bassa		lololoren	Nov 21, 2026	Nov 22, 2026			1	Verificatore
+Studio di Tailwind CSS e ricerca di alternative	https://github.com/byteclubunipd/Progetto-SWE/issues/59	mimi8017	Done	3 - Bassa			Nov 21, 2026	Nov 27, 2026	Ore produttive	2	1	Progettista
 Preparazione del diario di bordo del 2026-11-23	https://github.com/byteclubunipd/Progetto-SWE/issues/67	rpontell	Done	1 - Alta	https://github.com/byteclubunipd/Progetto-SWE/pull/74		Nov 22, 2026	Nov 22, 2026			1	Responsabile
 Diario di bordo 2026-11-23	https://github.com/byteclubunipd/Progetto-SWE/pull/74	rpontell	Done	1 - Alta		lololoren	Nov 22, 2026	Nov 22, 2026			1	Verificatore
 Chore/poc_structure	https://github.com/byteclubunipd/Progetto-SWE/pull/76	ElicoPro	Done	1 - Alta		rpontell	Nov 23, 2026	Nov 23, 2026			1	Amministratore
@@ -33,15 +35,14 @@ Update/workflow rtb	https://github.com/byteclubunipd/Progetto-SWE/pull/77	ElicoP
 Creazione e test PoC database api 	https://github.com/byteclubunipd/Progetto-SWE/pull/79	PitinPitan	Done	2 - Media		lololoren	Nov 25, 2026	Nov 25, 2026	Ore produttive	1	1	Verificatore
 Evidenziazione dei termini del Glossario nel Piano di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/69	rpontell	Done	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/80		Nov 25, 2026	Nov 25, 2026			1	Responsabile
 Prima bozza del Piano di Qualifica	https://github.com/byteclubunipd/Progetto-SWE/issues/52	lololoren	Waiting review	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/84		Nov 25, 2026	Nov 26, 2026	Ore produttive	2	1	Amministratore
-Configurazione e test del database e delle API aziendali	https://github.com/byteclubunipd/Progetto-SWE/issues/56	PitinPitan	Done	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/79		Nov 25, 2026	Nov 25, 2026	Ore produttive	4	1	Analista
+Sperimentazione di Tailwind CSS	https://github.com/byteclubunipd/Progetto-SWE/issues/60	PitinPitan	Done	3 - Bassa			Nov 25, 2026	Nov 25, 2026	Ore produttive	1	1	Analista
+Configurazione e test del database e delle API aziendali	https://github.com/byteclubunipd/Progetto-SWE/issues/56	PitinPitan	Done	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/79		Nov 25, 2026	Nov 25, 2026	Ore produttive	3	1	Analista
 Documento piano di progetto	https://github.com/byteclubunipd/Progetto-SWE/pull/80	rpontell	Done	2 - Media		ElicoPro	Nov 26, 2026	Nov 26, 2026	Ore produttive	1	1	Verificatore
 Docs/norme_di_progetto	https://github.com/byteclubunipd/Progetto-SWE/pull/85	ElicoPro	Waiting review	1 - Alta		lololoren	Nov 27, 2026	Nov 27, 2026	Ore produttive	1	1	Verificatore
 Docs/template	https://github.com/byteclubunipd/Progetto-SWE/pull/78	BrunoGrimaldi	Done	1 - Alta		lololoren	Nov 27, 2026	Nov 27, 2026			1	Verificatore
-Conclusione sprint 1	https://github.com/byteclubunipd/Progetto-SWE/issues/88	rpontell	In Progress	3 - Bassa			Nov 27, 2026	Nov 27, 2026	Ore produttive	2	1	Responsabile
+Documento piano di progetto	https://github.com/byteclubunipd/Progetto-SWE/pull/89	rpontell	Todo	1 - Alta		PitinPitan	Nov 27, 2026	Nov 27, 2026	Ore produttive	1	1	Verificatore
+Conclusione sprint 1	https://github.com/byteclubunipd/Progetto-SWE/issues/88	rpontell	Waiting review	3 - Bassa	https://github.com/byteclubunipd/Progetto-SWE/pull/89		Nov 27, 2026	Nov 27, 2026	Ore produttive	2	1	Responsabile
 Docs/Piano di qualifica v0.1.0	https://github.com/byteclubunipd/Progetto-SWE/pull/84	lololoren	Waiting review	2 - Media		mimi8017			Ore produttive	1	1	Verificatore
-Verbale esterno 27 Novembre	https://github.com/byteclubunipd/Progetto-SWE/issues/86	mimi8017	Todo	2 - Media							2	Amministratore
+Verbale esterno 27 Novembre	https://github.com/byteclubunipd/Progetto-SWE/issues/86	mimi8017	In Progress	2 - Media							2	Amministratore
 Verbale interno 27 Novembre	https://github.com/byteclubunipd/Progetto-SWE/issues/87	lololoren	Todo	2 - Media							2	Amministratore
 Evidenziazione dei termini del Glossario nelle Norme di Progetto	https://github.com/byteclubunipd/Progetto-SWE/issues/70	ElicoPro	In Progress	3 - Bassa							1	Amministratore
-Studio di Tailwind CSS e ricerca di alternative	https://github.com/byteclubunipd/Progetto-SWE/issues/59	mimi8017	Todo	3 - Bassa					Ore produttive	3	1	Analista
-Sperimentazione di Tailwind CSS	https://github.com/byteclubunipd/Progetto-SWE/issues/60	PitinPitan	Todo	3 - Bassa							1	Programmatore
-Ricerca delle fonti ufficiali delle tecnologie	https://github.com/byteclubunipd/Progetto-SWE/issues/61	mimi8017	Todo	3 - Bassa							1	Progettista

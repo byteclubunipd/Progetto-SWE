@@ -117,11 +117,11 @@
     description: [Soluzione progettuale riutilizzabile a problemi comuni nella progettazione del software, utile per migliorare struttura e manutenibilità del codice.],
   ),
   discord: (
-    short: "discord",
+    short: "Discord",
     description: [Piattaforma di videochiamate e messaggistica asincrona. È caratterizzata dalla possibilità di creare spazi indipendenti chiamati server, all’interno dei quali è possibile istituire vari canali testuali (tipicamente suddivisi per argomento) e canali vocali indipendenti, utilizzati per chiamate di gruppo tra i membri del server.],
   ),
   docker: (
-    short: "docker",
+    short: "Docker",
     description: [Piattaforma software che consente di creare, distribuire e gestire applicazioni all’interno di container, che sono ambienti isolati e portabili. Docker semplifica il processo di sviluppo e distribuzione delle applicazioni, garantendo coerenza tra diversi ambienti (sviluppo, test e produzione) e facilitando la scalabilità e la gestione delle dipendenze.],
   ),
   drag-and-drop: (
@@ -148,7 +148,7 @@
     description: [Acronimo di Enterprise Resource Planning, è un sistema software integrato che gestisce e automatizza i processi aziendali principali, come contabilità, gestione delle risorse umane, produzione, approvvigionamento e vendite. Gli ERP consentono alle organizzazioni di centralizzare le informazioni, migliorare la collaborazione tra i reparti e ottimizzare l’efficienza operativa.],
   ),
   excel: (
-    short: "excel",
+    short: "Excel",
     description: [Software di Microsoft per la gestione di fogli di calcolo, che consente di organizzare, analizzare e visualizzare dati in tabelle, grafici e report. È ampiamente utilizzato in ambito aziendale, finanziario e accademico per attività come la contabilità, l’analisi dei dati e la pianificazione.],
   ),
 
@@ -173,7 +173,7 @@
     description: [Termine tecnico per un indicatore visivo che mostra lo stato di avanzamento di una metrica. Per la definizione vedere "@indicatori-a-quadrante".],
   ),
   git: (
-    short: "git",
+    short: "Git",
     description: [Sistema di controllo di versione che traccia le modifiche al codice sorgente nel tempo. Permette a più sviluppatori di collaborare simultaneamente sullo stesso progetto, gestendo la cronologia delle versioni e supportando lo sviluppo parallelo.],
   ),
   gitflow: (
@@ -193,7 +193,7 @@
     description: [Elenco di termini con le relative definizioni, utilizzato per chiarire il significato di concetti specifici in un determinato contesto.],
   ),
   gmail: (
-    short: "gmail",
+    short: "Gmail",
     description: [Servizio di posta elettronica sviluppato da Google che permette di inviare, ricevere e organizzare email tramite web o applicazioni dedicate.],
   ),
 
@@ -251,7 +251,7 @@
   ),
   merge: (
     short: "merge",
-    description: [Processo con il quale, in un sistema di versionamento come git, un ramo di lavoro viene fatto confluire in un altro, generalmente in un grado gerarchico più elevato.],
+    description: [Processo con il quale, in un sistema di versionamento come Git, un ramo di lavoro viene fatto confluire in un altro, generalmente in un grado gerarchico più elevato.],
   ),
   milestone: (
     short: "milestone",
@@ -444,7 +444,7 @@
     description: [Un processo dello sviluppo software che si occupa di verificare la funzionalità di una o più parti del prodotto.],
   ),
   typst: (
-    short: "typst",
+    short: "Typst",
     description: [Linguaggio di markup utilizzato dal gruppo per produrre tutti i documenti.],
   ),
 
@@ -493,7 +493,7 @@
     description: [Elemento dell’interfaccia grafica di un software che consente all’utente di interagire con il sistema, come grafici o tabelle in SmartDashboard. I widget facilitano l’accesso a funzionalità e informazioni, migliorando l’esperienza dell’utente.],
   ),
   whatsapp: (
-    short: "whatsapp",
+    short: "WhatsApp",
     description: [Applicazione di messaggistica istantanea adottata dal gruppo ByteClub per le comunicazioni interne e per le comunicazioni esterne con la proponente.],
   ),
 )
@@ -518,7 +518,7 @@
   destinatari: gruppo,
   indice: true,
   registroModifiche: (
-    ("0.1.3", "2026-11-15", "Corrette definizioni dopo la verifica e aggiunti termini mancanti", BG, LS),
+    ("0.1.3", "2026-11-25", "Corrette definizioni dopo la verifica e aggiunti termini mancanti", BG, LS),
     ("0.1.2", "2026-11-21", "Automazione generazione glossario con pacchetto glossy", BG, LS),
     ("0.1.1", "2026-11-13", "Aggiunti nuovi termini", BG, LS),
     ("0.1.0", "2026-11-12", "Formattazione e prima stesura del documento", BG, LS),

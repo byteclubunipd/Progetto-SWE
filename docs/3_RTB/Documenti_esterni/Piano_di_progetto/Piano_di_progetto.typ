@@ -394,7 +394,7 @@ Il preventivo complessivo è di 540 ore produttive, pari a 90 ore per componente
   intestazioni: ([Ruolo], [Ore totali (h)], [Costo orario (€/h)], [Costo totale (€)]),
   righe: (
     ([@responsabile:cap], [48], [30], [1440]),
-    ([@amministratore:cap], [54], [20], [1080]),
+    ([@amministratore-progetto:cap], [54], [20], [1080]),
     ([@analista:cap], [84], [25], [2100]),
     ([@progettista:cap], [114], [25], [2850]),
     ([@programmatore:cap], [132], [15], [1980]),
@@ -477,7 +477,7 @@ Le ore produttive rappresentano circa il 30% dell'impegno complessivo; il restan
 #mostra-tabella-consuntivo-ruoli(sprint-1)
 #mostra-consuntivo-ruoli(sprint-1)
 
-Il consuntivo ha richiesto una riorganizzazione delle ore a causa di diversi imprevisti. Il ritardo nella consegna del dataset da parte di Ergon ha spostato alla seconda settimana dello @sprint le @issue:pl che dipendevano dai dati. Le incompatibilità riscontrate nei dataset hanno rallentato le attività e riorgainzzando le ore da @amministratore a Margherita Monaco; gli esempi pratici forniti da Ergon sui @database:pl da realizzare le hanno invece agevolato lo studio delle nuove tecnologie facendole risparmiare un'ora.
+Il consuntivo ha richiesto una riorganizzazione delle ore a causa di diversi imprevisti. Il ritardo nella consegna del dataset da parte di Ergon ha spostato alla seconda settimana dello @sprint le @issue:pl che dipendevano dai dati. A metà dello @sprint, dopo aver ricevuto il dataset da Ergon, il gruppo ha riscontrato alcune incompatibilità. Per gestirle, due ore inizialmente previste per le attività del ruolo di @amministratore-progetto sono state riassegnate a Margherita Monaco per il ruolo di @analista. Verso la fine dello @sprint, gli esempi pratici forniti dalla @proponente hanno invece facilitato il suo apprendimento delle nuove tecnologie, facendole risparmiare un’ora di lavoro.
 
 È stato sottostimato il rischio tecnologico legato ai template documentali: l'automazione del @glossario ha richiesto a Bruno Grimaldi un'ora aggiuntiva, togliendola dal ruolo di @verificatore, per studiare e integrare il pacchetto `glossy:0.9.2` di @typst. Il @glossario ha inoltre generato errori nel workflow: Elico Huang ha dovuto occuparsene, con conseguente riorganizzazione delle sue ore da @analista; a Riccardo Pontello è stata aggiunta un'ora per supportarlo nella correzione dei bug. Infine, la disponibilità di Lorenca Shiroka si è rivelata superiore alle previsioni, consentendo di assegnarle due ore aggiuntive per la @verifica dei documenti.
 
@@ -492,19 +492,19 @@ Il consuntivo ha richiesto una riorganizzazione delle ore a causa di diversi imp
 - *#underline(link(<tab-rischio-rp1>)[RP1]):* disponibilità ridotta dei componenti;
 
 ==== Rischi incontrati
-Sono stati incontrati tutti i rischi precedentemenete citati e inoltre anche i seguenti rischi:
+Sono stati incontrati tutti i rischi precedentemente citati e inoltre anche i seguenti rischi:
 - *#underline(link(<tab-rischio-ra1>)[RA1]):* indisponibilità o ritardo dei dati della @proponente
-- *#underline(link(<tab-rischio-rt1>)[RT2]):* dati incompleti o con schema variabile;
-- *#underline(link(<tab-rischio-rt1>)[RO3]):* perdita di tracciabilità tra requisiti, codice, @test:pl e documentazione
+- *#underline(link(<tab-rischio-rt2>)[RT2]):* dati incompleti o con schema variabile;
+- *#underline(link(<tab-rischio-ro3>)[RO3]):* perdita di tracciabilità tra requisiti, codice, @test:pl e documentazione
 - *#underline(link(<tab-rischio-rp2>)[RP2]):* competenze insufficienti o conoscenza concentrata
 
 Come previsto, RT1 è stato causato dalle difficoltà incontrate nella realizzazione dei template in @typst, RO2 dalla limitata esperienza del gruppo e RP1 dagli impegni già assunti dai componenti. Sono invece emersi RA1, dovuto al ritardo di Ergon nella consegna del dataset; RT2, legato alle incompatibilità presenti in alcuni dati; RO3, causato dal numero inizialmente ridotto di @issue:pl e dalla mancata gestione delle priorità; e RP2, dovuto alla competenza insufficiente del gruppo nell'uso di @typst e @github.
 
 ==== @efficacia:cap delle strategie di gestione e mitigazione dei rischi
-RT1, RO2 e RP1 sono stati mitigati in fase di @pianificazione riorganizzando le ore, dando più spazio ai ruoli di @amministratore e @analista e mantenendo per Lorenca un carico di lavoro inferiore; RA1 e RT2 sono stati mitigati grazie al canale @whatsapp, che ha permesso al gruppo di aggiornarsi tempestivamente con l'azienda e di conseguenza riorganizzare le attività in base alla situazione dei dati; RO3 è stato mitigato in parte introducendo la gestione delle priorità e creando @issue:pl più specifiche; RP2 è stato mitigato tramite lo studio individuale e il supporto reciproco per colmare le lacune di competenza.
+RT1, RO2 e RP1 sono stati mitigati in fase di @pianificazione riorganizzando le ore, dando più spazio ai ruoli di @amministratore-progetto e @analista e mantenendo per Lorenca un carico di lavoro inferiore; RA1 e RT2 sono stati mitigati grazie al canale @whatsapp, che ha permesso al gruppo di aggiornarsi tempestivamente con l'azienda e di conseguenza riorganizzare le attività in base alla situazione dei dati; RO3 è stato mitigato in parte introducendo la gestione delle priorità e creando @issue:pl più specifiche; RP2 è stato mitigato tramite lo studio individuale e il supporto reciproco per colmare le lacune di competenza.
 
 ==== Migliorie da attuare per le attività future
-Nei prossimi @sprint:pl verrà adottato un nuovo metodo di @pianificazione. Dopo aver scelto il @responsabile e un @amministratore, il gruppo definirà le attività da svolgere nel corso dello @sprint e preparerà tutte le @issue:pl in un'unica sessione. Per ciascuna @issue verranno indicati la priorità, la Definition of Done nella descrizione e il ruolo incaricato del completamento. Alle @issue:pl con ore da conteggiare verrà assegnata l'etichetta "Ore produttive"; il tempo di completamento sarà stimato con la formula ((OraMin + 4 × OraMedia + OraMax) / 6). Il risultato sarà indicativo e potrà essere arrotondato in base alle esigenze di pianificazione. Infine, i ruoli saranno assegnati agli altri componenti in base a quelli richiesti dalle @issue:pl, si cercherà di distribuire equamente il carico di lavoro tra tutti tenendo conto dei rischi di RP1.
+Nei prossimi @sprint:pl verrà adottato un nuovo metodo di @pianificazione. Dopo aver scelto il @responsabile e un @amministratore-progetto, il gruppo definirà le attività da svolgere nel corso dello @sprint e preparerà tutte le @issue:pl in un'unica sessione. Per ciascuna @issue verranno indicati la priorità, la Definition of Done nella descrizione e il ruolo incaricato del completamento. Alle @issue:pl con ore da conteggiare verrà assegnata l'etichetta "Ore produttive"; il tempo di completamento sarà stimato con la formula ((OraMin + 4 × OraMedia + OraMax) / 6). Il risultato sarà indicativo e potrà essere arrotondato in base alle esigenze di pianificazione. Infine, i ruoli saranno assegnati agli altri componenti in base a quelli richiesti dalle @issue:pl, si cercherà di distribuire equamente il carico di lavoro tra tutti tenendo conto dei rischi di RP1.
 
 ==== Retrospettiva
 Registrare cosa ha funzionato, cosa non ha funzionato e le @azione:pl concrete concordate per lo @sprint successivo.
@@ -678,7 +678,7 @@ La valutazione viene compilata al termine dello Sprint.
 ==== Migliorie da attuare per le attività future
 Registrare le migliorie emerse nel riesame della @rtb e applicarle alla @pb.
 
-==== Retrospe sttiva
+==== Retrospettiva
 Registrare risultati, problemi e @azione:pl concordate per l'avvio della @pb.
 
 #pagebreak()
